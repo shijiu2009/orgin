@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>旅游资讯</title>
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> 
+  <a data-role="button"  onclick="ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>资讯</h1>
+  </div>
+<div data-role="content">
+   <div class="new_box">
+      <div data-role="tabs">
+        <div data-role="navbar" class="nav">
+          <ul id="ul_types">
+            <li><a href="#m1" data-ajax="false" class="ui-btn-active"></a></li>
+            <li><a href="#m1" data-ajax="false"></a></li>
+            <li><a href="#m1" data-ajax="false"></a></li>
+            <li><a href="#m1" data-ajax="false"></a></li>
+          </ul>
+        </div>
+		
+<div id="m1" class="con">
+<ul class="news_list">
+  
+</ul>
+</div>
+
+        </div>
+
+  </div>
+  </div>
+
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js?v=99"></script>
+<script type="text/javascript">
+$(function(){
+	getTypes();
+});
+var theRequest = getRequest ();
+var ty = theRequest['ty'];//获取id
+var vindex = 0;
+var classId = 0;
+var currPage = 0;
+var maxPage = 1;
+//监听滚动
+$(document).on("pageinit","#scenic",function() {
+	$(document).on("scrollstop",function() {
+		if ($(document).scrollTop() >= $(document).height()- $(window).height() - 85) {
+			if (currPage < maxPage) {
+				getList ();
+		    }
+		}
+	});
+});
+function getTypes(){
+	 //ucapp.post(getWebRoot()+"../getypes.do",{},function(data) {
+	ucapp.post(getWebRoot()+"app/information/getypes.do",{},function(data) {
+		if (data.rows) {
+			for (var i = 0; i < data.rows.length; i++) {
+				 var obj = data.rows[i];
+                 $("#ul_types a:eq("+i+")").text(obj.name).attr("v",obj.id).attr("onclick","getList("+obj.id+")");
+				 if(obj.code==ty){
+					 vindex = i;
+				 }
+			}
+		}
+		if(vindex>0){
+			$("#ul_types a:eq("+vindex+")").click();
+		}else{
+			$("#ul_types a:first").click();
+		}
+	});
+}
+function getList(flag){
+	if(!flag){
+		flag = classId;
+	}else{
+		currPage = 0;
+		$(".news_list").empty();
+	}
+	currPage++;
+	//ucapp.post(getWebRoot()+"../list.do",{"classId":flag,page:currPage},function(data) {
+	ucapp.post(getWebRoot()+"app/information/list.do",{"classId":flag,page:currPage},function(data) {
+		if (data.rows) {
+			for (var i = 0; i < data.rows.length; i++) {
+				var obj = data.rows[i];
+				var strDate=obj.createTime;
+				if(strDate){
+					strDate=strDate.substring(0,10);
+				}  
+				var imgpath = getImageUrl()+obj.imgpath;
+				var li = '<li><a href="show.html?id='+obj.id+'" data-ajax="false"><img src="'+imgpath+'"><h2>'+obj.title+'</h><h3>'+strDate+'</h3></a> </li>';
+				$(".news_list").append(li);
+			}
+		}
+		currPage = data.currPage;
+		maxPage = data.maxPage;
+		classId = data.classId;
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>确认订单</title>
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<script src="../js/ucapp.js"></script>
+<style type="text/css">
+.ui-popup-container {
+width: 90%;
+}
+</style>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>确认订单</h1>    
+  </div>
+  <div data-role="content">
+
+ <div class="order_ok" style="border-top-width: 0px;">
+ <div class="title">
+ 	<h3><span id="need1"></span></h3>
+</div>
+
+<div class="mc">
+     <h4><span id="need2"></span></h4>
+     
+</div> 		         
+
+<div class="mc">
+     <h4>订单状态：<span id="h_status" style="color: red"></span></h4>
+</div> 	
+
+<div class="mc">
+     <h3><span id="need3"></span></h3>
+     
+</div> 	
+
+<div class="mc">
+     <h3><em style="color: red;">￥</em><span id="need4"></span></h3>
+</div> 	
+
+
+<!-- 预定人信息 -->
+<div class="order_ok">
+	<div class="mc1">
+       <h4>预定人姓名：<span id="need9"></span></h4>   
+       <h4>预定人手机号：<span id="need10"></span></h4>  
+	</div>
+</div>
+
+	<div class="ui-footer">
+	    <div class="bam_di">
+	      <a href="javascript:sureOrder();" data-ajax="false" class="kfzx" style="padding-right: 36px;padding-left: 36px;">确认消费</a>
+	    </div>
+  	</view>
+</div>
+  
+
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+var theRequest = getRequest();
+var oinfo = theRequest['oinfo']
+var type = oinfo.split('-')[0]
+var id = oinfo.split('-')[1]
+var orderNo = null;
+function reload(){
+    alert(oinfo)
+	ucapp.post(getWebRoot()+"app/user/orderDetail.do",{"id":id,"type":type},function(data){
+		if(data){
+			if(type==0){
+				$('#need1').html('酒店订单'+data.hotel.name)
+				$('#need2').html('入住日期：'+data.order.usedTime)
+				if(data.order.status==2 || data.order.status==3){
+					$('#h_status').html('待入住')
+				}
+				if(data.order.status==4){
+					$('#h_status').html('已完成')
+				}
+				$('#need3').html(data.order.roomName+':'+data.order.roomCount+'间')
+				$('#need4').html(data.order.totalPrice.toFixed(2))
+				$('#need9').html(data.order.name)
+				$('#need10').html(data.order.mobile)
+			}
+			if(type==1){
+				$('#need1').html('景区门票'+data.attraction.name)
+				$('#need2').html('出游日期：'+data.order.usedTime)
+				if(data.order.status==2 || data.order.status==3){
+					$('#h_status').html('待出行')
+				}
+				if(data.order.status==4){
+					$('#h_status').html('已完成')
+				}
+				$('#need3').html(data.ticketOrderItem[0].ticketName+':'+data.ticketOrderItem[0].quantity+'张')
+				$('#need4').html(data.order.totalPrice.toFixed(2))
+				$('#need9').html(data.order.name)
+				$('#need10').html(data.order.mobile)
+			}
+			if(type==2){
+				$('#need1').html('线路套餐'+data.order.title)
+				$('#need2').html('出游日期：'+data.order.usedTime)
+				if(data.order.status==2 || data.order.status==3){
+					$('#h_status').html('待出行')
+				}
+				if(data.order.status==4){
+					$('#h_status').html('已完成')
+				}
+				$('#need3').html(res.data.order.subOrders[0].psubTitle+':'+data.order.subOrders[0].quantity+'份')
+				$('#need4').html(data.order.totalPrice.toFixed(2))
+				$('#need9').html(data.order.name)
+				$('#need10').html(data.order.mobile)
+			}
+		}
+	})
+}
+
+function sureOrder(){
+	ucapp.post(getWebRoot()+"app/user/sureOrder.do",{"oid":id,"type":type},function(data){
+		if(data.success){
+			alert(data.msg)
+			if(type==0){
+				goUrl('showHotel.html?id='+id+'&type=0')
+			}
+			if(type==1){
+				goUrl('showAttr.html?id='+id+'&type=1')
+			}
+			if(type==2){
+				goUrl('showPer.html?id='+id+'&type=2')
+			}
+		}else{
+			alert(data.msg)
+		}
+	})	
+}
+
+$(function(){
+	reload();
+});
+</script>
+</body>
+</html>

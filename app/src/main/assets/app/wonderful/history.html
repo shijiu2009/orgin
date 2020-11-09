@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>人文历史</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+
+$(function(){
+ 	ucapp.post(getWebRoot()+"app/wonderful/history.do",{},function(data){
+		
+		if(data.act){
+			for(var i=0;i<data.act.length;i++){
+				var obj = data.act[i];
+				var div = '<div class="item-list" style="height:auto;">'+
+				'<p class="top"><i class="orange"></i><span>'+obj.title+'</span>'+
+		        '</p><div class="show-txt"><p class="omit">'+obj.contentWeb+'</p>'+
+                '</div></div>';
+                $("#all").append(div);
+			}
+		}
+	}); 
+});
+</script>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>人文历史</h1>    
+  </div>
+<div data-role="content">
+<div class="article">
+  <h2 id="title"></h2>
+                    <div class="article_meta">
+                     <em id="shijian"></em>
+                    </div>
+                    <div class="raiders" id="gallery">
+             <div class="mmin">        
+            <div class="main_t" id="all">
+    		<!-- 人文历史 -->
+                      	</div>
+                </div>
+    </div></div>   
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>填写订单</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+var pid ;
+var ptSubId ;
+var departureDate ;
+var totalPrice = 0;
+$(function(){
+	
+	var Request = new Object();
+	Request = getRequest(); 
+	pid = Request["pid"];
+	ptSubId = Request["ptSubId"];
+	departureDate = Request["departureDate"];
+	
+	reload();
+	
+});
+
+function reload(){
+	ucapp.checkStatus(function(data){
+		if(data.success){
+
+			$('#byid').val(pid);
+			$('#schedule').val(departureDate);
+			ucapp.post(getWebRoot()+"app/order/getptorderfill.do",{"ptSubId":ptSubId,"pid":pid,"departureDate":departureDate},function(data){
+				if(data.pTravel){
+					var o = data.pTravel;
+					//标题、副标题
+					$('#pt_title').html(o.title+'<span>'+o.subtitle+'</span>');
+					$('#departureDate').html(data.departureDate);
+					$('#title').val(o.title);
+				 	if(data.pTravel.psubList){
+				 		$("#pt_sub").empty();
+				 		$(data.pTravel.psubList).each(function(i,o){
+						 var obj = o;
+					     var pri = 0;
+					     if(obj.myPrice && obj.myPrice.price){
+					    	  	pri = obj.myPrice.price;
+					     }
+					     
+					     var val = '0';
+					     if(ptSubId == o.id){
+					    	 val ='1';
+					    	 totalPrice = pri;
+					    	 $('#total_price').html('订单总金额：￥'+pri);
+					     }
+					     
+					     var div='<li class="jtou ui-li-static ui-body-inherit ui-first-child"><div class="title">'+obj.title+'<span>￥'+pri+'</span></div>'+
+					     '<div class="select_x"><a onclick="sub('+i+')" class="t1"></a>'+
+					     '<input type="hidden" name="subOrders['+i+'].pid" value="'+pid+'" >'+
+					     '<input type="hidden" name="subOrders['+i+'].psubId" value="'+o.id+'"  >'+
+					     '<input type="hidden" name="subOrders['+i+'].price" value="'+pri+'"  >'+
+					     '<input type="hidden" name="subOrders['+i+'].psubTitle" value="'+o.title+'" >'+
+					     '<input type="text" name="subOrders['+i+'].quantity" class="t3" id="t3_'+i+'" ptSubId="'+o.id+'"  price="'+pri+'" value="'+val+'">'+
+					     '<a onclick="add('+i+')" class="t2"></a></div></li>';
+					     
+			          	$("#pt_sub").append(div);  
+				   })
+				}
+			  }
+			});
+		}else{
+			ucapp.gotoLogin();
+		}
+	});
+}
+
+var nums = 0;
+//数量加
+function add(i){
+	nums = 0;
+	nums = $('#t3_'+i).val();
+	if(isNaN(nums)){
+		alert('数量有误!');
+		return;
+	}
+	nums = parseInt(nums);
+	nums++;
+	$('#t3_'+i).val(nums);
+	total();
+}
+
+//数量减
+function sub(i){
+	nums = 0;
+	nums = $('#t3_'+i).val();
+	if(isNaN(nums)){
+		alert('数量有误!');
+		return;
+	}
+	nums = parseInt(nums);
+	if(nums > 0){
+		nums--;
+		$('#t3_'+i).val(nums);
+	}
+	total();
+}
+
+//计算总额
+function total(){
+	totalPrice = 0;
+	nums = 0;
+	var temp = 0;
+	$('input[type="text"]').each(function(i,o){
+		nums = $(this).val();
+		if(!isNaN(nums) && nums > 0 && !isNaN($(this).attr('ptSubId'))){
+			temp = $(this).attr('price');
+			totalPrice += temp * nums;
+		}
+	});
+	
+	$('#total_price').html('订单总金额：￥'+totalPrice);
+}
+
+//下一步
+function submit(){
+	var numStr = '';
+	$('input[type="text"]').each(function(i,o){
+		nums = $(this).val();
+		if(!isNaN(nums) && nums > 0 && !isNaN($(this).attr('ptSubId'))){
+			numStr += nums+',';
+		}
+	});
+	
+	if(numStr == ''){
+		alert('至少选择一个套餐!');
+		return ;
+	}
+	
+	var name = $('#name').val();
+	if(name == null || name == ''){
+		alert('请输入姓名！');
+		return ;
+	}
+	
+	var mobile = $('#mobile').val();
+	if(mobile == null || mobile == ''){
+		alert('请输入手机号码！');
+		return ;
+	}else{
+		var myreg = /^(((13[0-9]{1})|15[0-9]{1}|18[0-9]{1}|19[0-9]{1})+\d{8})$/;
+     	if(!myreg.test($('#mobile').val())){
+     		alert('请输入有效的手机号码!');
+	   		return;
+        }
+	}
+	
+	var params = $('#form_pt').serializeArray();
+	var rparam = {};
+	//params返回对象组,需要合并为一个对象
+	$(params).each(function(index,obj){
+		if(obj.value!=''){
+			rparam[obj.name]=obj.value;
+		}
+	});
+	ucapp.post(getWebRoot()+"app/order/ptOrderConfirm.do",rparam,function(data){	
+		if(data.success){
+			goUrl("../order/showPer.html?id="+data.id+"&type="+data.type)
+		}else{
+			alert('信息有误!');
+		}
+	});
+	
+// 	var href = '../order/ptOrderConfirm.do?pid='+pid+'&ptSubId='+ptSubIdStr+'&name='+name+'&mobile='+mobile+'&nums='+numStr+'&departureDate='+departureDate+'&msg='+$('#msg').val();
+// 	window.location.href = href;
+}
+</script>
+
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>填写订单</h1>    
+  </div>
+  <div data-role="content">
+  <form action="" id="form_pt" data-ajax="false">
+  <input type="hidden" name="byid" id="byid" >
+  <input type="hidden" name="title" id="title">
+    <input type="hidden" name="schedule" id="schedule" >
+  <div class="dd_title" id="pt_title"></div>
+  <ul data-role="listview" data-icon="false" id="" class="order_list">
+			<li class="jtou"><a href="#" data-ajax="false" data-transition="slidedown"><div class="title">出游时间</div><div class="the_time" id="departureDate"></div>
+</a>
+     </li></ul>
+     <ul data-role="listview" data-icon="false" id="pt_sub" class="order_list">
+            	
+<!--             <li class="jtou"><div class="title">三人组合套餐<span>￥328</span></div><div class="select_x"><a href="#" class="t1"></a><input type="text" class="t3" value="0"><a href="#" class="t2"></a></div></li> -->
+            </ul>
+            <ul data-role="listview" data-icon="false" id="" class="order_list">
+             <li><a href="#dfs123" data-rel="popup" data-transition="fade"><div class="tips">如出游人数在3人以上，可支持多套餐组合!</div><div class="qb">？</div></a><div data-role="popup" id="dfs123" class="ui-content popup_window win_p" data-theme="a" style="max-width:700px;"><a href="#" data-rel="back" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-right">
+        <img src="../images/app/close.png"> </a>
+				<h2>温馨提示</h2>
+				<div class="text">
+<p>当出游人数在3人以上时，该产品可支持多套餐组合,比如：5人出行时，选择二人组合套餐1份，三人组合套餐1份。订单下的成功后，客服人员会与您取得联系，安排出游时酒店房间与用餐等相关事宜。</p>
+</div>				
+</div></li>
+            </ul>
+   
+    <div class="title_h3">备注信息</div>
+      <ul data-role="listview" data-icon="false"  class="order_list">
+			<li class="jtou"><textarea name="userRemark" id="userRemark" cols="" rows="" placeholder="您想告诉客服人员些什么？（可选）" class="kmj"></textarea></li>
+            </ul>
+     <div class="title_h3">联系人信息</div>
+    <ul data-role="listview" data-icon="false"  class="order_list">
+<li>
+<div class="bar1"><h2>姓名：</h2><input name="name" type="text" placeholder="请填写预定人姓名" id="name" ><img src="../images/app/cv.png" class="cv"></div>
+</li>
+<li>
+<div class="bar2"><h2>手机：</h2><input name="mobile" type="text" placeholder="请填写预定人手机" id="mobile" ><img src="../images/app/cv.png" class="cv"></div>
+</li>
+</ul>
+
+ </form>
+     
+  </div>
+<div data-role="footer" data-position="fixed" style="overflow:hidden;">		
+		<div class="bam_di">
+        <div class="zh" id="total_price">订单总金额：￥0</div>
+         <a href="javascript:submit();"  data-ajax="false" class="kfzx" style="padding-right: 36px;padding-left: 36px;">下一步</a>
+        
+        </div>
+	</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery Mobile Web 应用程序</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/chimee-mobile-player.browser.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+ <style type="text/css">
+chimee-state {
+	font-size: 26px;
+	
+}
+chimee-state svg {
+    border: 3px solid #FFF;
+	border-radius:50%;
+}
+ .nav_back {
+
+    height: 38px;
+    width: 38px;}
+.nav_back img {
+    height: 23px;
+    width: 23px;
+    margin-top: 7px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.article {
+    padding: 10px;
+	background-color:#f2f2f2;
+}
+.article h2 {
+    font-size: 21px;
+    line-height: 27px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #333;
+    margin-top: 15px;
+    max-height: 100%;
+}
+.article .article_meta {
+    font-size: 13px;
+    line-height: 12px;
+    margin-bottom: 15px;
+}
+.article .article_meta em {
+    font-size: 13px;
+    color: #999;
+    font-style: normal;
+    line-height: normal;
+    max-height: 100%;
+}
+.article .raiders p, .article .raiders p font, .article .raiders p span {
+    font-size: 14px!important;
+    font-weight: normal!important;
+    color: #666666!important;
+    line-height: 22px!important;
+    overflow: hidden!important;
+    max-height: 100%!important;
+    margin-top: 0px!important;
+    margin-bottom: 15px!important;
+}
+.mhjs {
+	padding: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #e0e0e0;
+}
+.mhjs h2 {
+	font-size: 16px;
+	line-height: 22px;
+	height: 22px;
+	color: #333;
+	font-weight: normal;
+}
+.mhjs h3 {font-size: 13px;
+    line-height: 20px;
+	height: 20px;
+	    color: #999;
+		font-weight: normal;}
+.mhjs h4 {font-size: 14px;
+    line-height: 20px;
+	height: 20px;
+	    color: #333;
+		font-weight: normal;
+		margin-bottom:5px;}
+.mhjs audio { width:100%;}
+ </style>
+ 
+</head>
+<body>
+<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ffffff;">
+  <div data-theme="b" data-role="header" data-position="fixed">
+  <a data-role="button" onclick="closeMedia()" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h3></h3>
+  </div>
+<div data-role="content">
+<div class="demo">
+ <section id="chimeebox" class="chimee-container">
+         
+    </section>
+   </div>
+  
+<div class="mhjs"><h2>导游点名称导游点名称</h2>
+<h3>f副标题f副标题f副标题f副标题f副标题</h3></div>
+<div class="mhjs">
+<h4>音频导游</h4>
+<audio controls name="media" id="audio" ><source src="http://rm.sina.com.cn/wm/VZ2010050511043310440VK/music/MUSIC1005051622027270.mp3" type="audio/mpeg"></audio></div>
+<div class="article">
+
+                    <div class="raiders" id="Gallery">
+            <p><img src="images/app/b1.jpg"></p>         
+     <p>2月18日～19日，2015TOP100全国城市数字阅读排行/TOP100数字阅读影响力期刊排行发布盛典暨“文化中国·书香宁波”系列文化讲座活动在浙江宁波举行。本次盛会以“让文化惠及百姓，让阅读点亮生活”为主题，由中国新闻出版研究院国民阅读研究与促进中心、宁波市文明办、宁波市文化广电新闻出版局、宁波市海曙区政府和龙源数字传媒集团联合主办。</p> 
+     <p><img src="images/app/b2.jpg"></p>
+		
+		<p>相较2015年，2016年申报参与的网站更多，作品主题更侧重现实类题材。总局组建了权威评审专家队伍，由中国作家协会网络文学委员会主任陈崎嵘担任评委会主任，并委托新华网成立推介活动组委会，秉持“国家规格、政府标尺、网络特质、大众审美”的评选原则，经严格把关、反复讨论、认真筛选，最终确定了推介作品名单。</p>       
+ <p><img src="images/app/b3.jpg"></p>
+ <p>相较2015年，2016年申报参与的网站更多，作品主题更侧重现实类题材。总局组建了权威评审专家队伍，由中国作家协会网络文学委员会主任陈崎嵘担任评委会主任，并委托新华网成立推介活动组委会，秉持“国家规格、政府标尺、网络特质、大众审美”的评选原则，经严格把关、反复讨论、认真筛选，最终确定了推介作品名单。</p>   
+  
+    </div></div>   
+  </div>
+
+</div>
+<script src="../js/chimee-mobile-player.browser.js"></script>
+<script>
+new ChimeeMobilePlayer({
+  wrapper: '#chimeebox',  // video dom容器
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  autoplay: false,
+  controls: true,
+  playsInline: true,
+  preload: true,
+  x5VideoPlayerFullscreen: true,
+  x5VideoOrientation: true,
+  xWebkitAirplay: true,
+  muted: false
+});
+
+function closeMedia(){
+	var audio = document.getElementById('audio');
+	if(audio){
+			audio.pause();//离开页面暂停播放音乐
+		}else{
+			audio.play();
+		}
+	ucapp.goToBack();
+}
+window.onbeforeunload=function(e){
+	var e = window.event||e;  
+　　	if(e.returnValue="确定离开当前调子导游界面吗？"){
+　　		var audio = document.getElementById('audio');
+　　		if(audio){
+　　			audio.pause();//离开页面暂停播放音乐
+　　		}else{
+　　			audio.play();
+　　		}
+　　	}
+}
+
+</script> 
+</body>
+</html>

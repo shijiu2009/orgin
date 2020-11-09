@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport"
+		  content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+		  name="viewport">
+	<title><span class="distination"></span>概况</title>
+	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+	<link rel="stylesheet" href="../css/app/layout.css">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+	<script src="../js/ucapp.js"></script>
+	<script type="text/javascript">
+
+		$(function () {
+			$.post(getCodeUrl() + "app/wonderful/survey.do", {}, function (data) {
+				if (data.resetting && data.survey) {
+					$("#imgpath").attr('src', getImageUrl() + data.resetting.imgpath);
+					$("#totalProportion").html(data.survey.totalProportion);
+					$("#totalperson").html(data.survey.totalperson);
+					$("#summy").html(data.survey.summy);
+					$("#trafficInfo").html(data.survey.trafficInfo);
+					$("#optimum").html(data.survey.optimum);
+					$("#optimuminfo").html(data.survey.optimuminfo);
+					$("#youday").html('建议游玩天数：' + data.survey.youday + "天");
+					$("#qiongprice").html(data.survey.qiongprice);
+					$("#xiaoziprice").html(data.survey.xiaoziprice);
+					$("#haoprice").html(data.survey.haoprice);
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+<div data-role="page" id="scenic">
+	<div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button"
+																		  onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img
+			src="../images/app/nav_back.png"> </a>
+		<h1><span class="distination"></span>概况</h1>
+	</div>
+	<div data-role="content">
+		<div class="article">
+			<div class="article_meta">
+				<em id="shijian"></em>
+			</div>
+			<div class="raiders" id="gallery">
+				<div class="mmin">
+					<div class="main_t">
+						<!-- 概况 -->
+
+						<div class="item-list" id="baseData">
+							<p class="top">
+								<i class="orange"></i>
+								<span>目的地速览</span>
+							</p>
+							<div class="guide">
+								<div class="map"><img id="imgpath" src=""></div>
+								<div class="desc">
+									<p><span class="num" id="totalProportion"></span>km²</p>
+									<p><span class="total">总面积</span></p>
+									<p class="total"><span class="num" id="totalperson"></span>万人</p>
+									<p><span>总人口</span></p>
+								</div>
+							</div>
+						</div>
+
+						<div class="item-list" id="summary">
+							<p class="top">
+								<i class="orange"></i>
+								<span>本地概述</span>
+							</p>
+							<div class="show-txt">
+								<p class="omit" id="summy"></p>
+							</div>
+
+						</div>
+						<!-- 语言 -->
+
+
+
+
+						<div class="item-list" id="bestMonths">
+							<p class="top">
+								<i class="orange"></i>
+								<span>最佳旅游时间</span>
+							</p>
+							<ul class="best">
+								<li>
+									<div class="month" id="optimum"></div>
+									<div class="mess" id="optimuminfo"></div>
+								</li>
+							</ul>
+							<p class="day" id="youday">建议游玩天数：0天</p>
+						</div>
+						<div class="item-list" id="traffic">
+							<p class="top">
+								<i class="orange"></i>
+								<span>交通运输</span>
+							</p>
+							<div class="show-txt">
+								<p class="omit" id="trafficInfo"></p>
+							</div>
+
+						</div>
+
+						<!-- 消费 -->
+
+
+						<div class="item-list" id="budget">
+							<p class="top">
+								<i class="orange"></i>
+								<span>参考预算</span>
+								<span class="recent">(每天)</span>
+							</p>
+							<div class="item">
+								<i class="iconfont yellow"></i>
+								<p class="type">穷游</p>
+								<p class="scope" id="qiongprice"></p>
+								<p class="yuan">元</p>
+							</div>
+							<div class="item">
+								<i class="iconfont orange"></i>
+								<p class="type">小资</p>
+								<p class="scope" id="xiaoziprice"></p>
+								<p class="yuan">元</p>
+							</div>
+							<div class="item">
+								<i class="iconfont pink"></i>
+								<p class="type">土豪</p>
+								<p class="scope" id="haoprice"></p>
+								<p class="yuan">元</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

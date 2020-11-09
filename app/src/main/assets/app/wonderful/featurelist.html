@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>特色餐馆</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css?d=3">
+<link href="../css/app/scrollbar.css" rel="stylesheet" type="text/css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/iscroll.js" type="text/javascript"></script>
+<script src="../js/ucapp.js"></script>
+<style type="text/css">
+.fade.in {
+    min-width: 100%!important;
+    max-width: 100%!important;
+    top: 155px!important;
+    right: 0px!important;
+    left: 0px!important;
+    position: fixed;
+}
+</style>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+	<a href="../search/index.html" data-transition="slide" data-ajax="false" class="search8"><img src="../images/app/search.png">搜<span class="distination"></span>景点/酒店/线路/特产/攻略</a>
+    <h1 style="display:none;"></h1>
+    <div id="grid" class="ui-grid-b c_tad">
+      <div class="ui-block-a"><a  href="javascript:areaPop()" data-rel="popup" data-transition="fade" class="ui-bar ui-bar-a">
+        <div class="d3"  id="namecc">特色餐馆</div>
+        </a><div data-role="popup" id="dfs123" class="ui-content filter">
+				<ul data-role="listview" data-icon="false" id="" class="filter_list">
+                <li class="all">
+                  <a href="#"><h2>好玩<span class="distination"></span></h2></a>
+                </li>
+                </ul>
+                <ul data-role="listview" data-icon="false" id="" class="filter_citylist">
+              <li>
+                  <a href="../attractions/list.html" data-ajax="false"><h2>热门景点</h2><div class="num" id="attr">0</div></a>
+                </li>
+                <li>
+                  <a href="../peripherytravel/list.html" data-ajax="false"><h2>精品线路</h2><div class="num" id="per">0</div></a>
+                </li>
+                <li>
+                  <a href="../hotel/list.html?hotelOrHome=1" data-ajax="false"><h2>酒店住宿</h2><div class="num" id="hotel">0</div></a>
+                </li>
+                <li>
+                  <a href="../hotel/list.html?hotelOrHome=2" data-ajax="false"><h2>特色民宿</h2><div class="num" id="hotel">0</div></a>
+                </li>
+                <li><a href="../article/xiuxianlist.html" data-ajax="false"><h2>休闲娱乐</h2><div class="num" id="xxyl">0</div></a>
+                </li>
+                <li><a href="../interaction/list.html" data-ajax="false"><h2>游记攻略</h2><div class="num" id="inter">0</div></a>
+                </li>
+               
+                </ul>
+                <ul data-role="listview" data-icon="false" id="" class="filter_list">
+                <li class="all">
+                  <a href="#"><h2>好吃<span class="distination"></span></h2></a>
+                </li>
+                </ul>
+                <ul data-role="listview" data-icon="false" id="" class="filter_citylist">
+               <li>
+                  <a href="../product/list.html?byname=lycp" data-ajax="false"><h2>旅游产品</h2><div class="num" id="lycp">0</div></a>
+                </li>
+                <li>
+                  <a href="../product/list.html?byname=dbtc" data-ajax="false"><h2>地标特产</h2><div class="num" id="dbtc">0</div></a>
+                </li>
+                <li>
+                  <a href="../product/list.html?byname=tsms" data-ajax="false"><h2>特色美食</h2><div class="num" id="tsms">0</div></a>
+                </li>
+                <!-- <li><a href="../product/list.html?byname=lysx" data-ajax="false"><h2>旅游手信</h2><div class="num" id="lysx">0</div></a>
+                </li>
+                <li><a href="../wonderful/featurelist.html" data-ajax="false"><h2>特色餐馆</h2><div class="num" id="tscg">0</div></a>
+                </li> -->
+               
+                </ul>				
+				
+</div></div>
+      <div class="ui-block-b"><a href="javascript:sortPop()" data-rel="popup" data-transition="fade" class="ui-bar ui-bar-a">
+        <div class="d3" id="ttv">智能排序</div>
+        </a><div data-role="popup" id="dfs124" class="ui-content filter">
+				<ul data-role="listview" data-icon="false" id="" class="filter_list">
+                <li>
+                  <a href="javascript:paisort(0);"><h2>智能排序</h2></a>
+                </li>
+                <li>
+                  <a href="javascript:paisort(1);"><h2>最新发布</h2></a>
+                </li>
+                </ul>				
+				
+</div></div>
+      <div class="ui-block-c">
+        <a href="javascript:pricePop()" data-rel="popup" data-transition="fade" class="ui-bar ui-bar-a">
+          <div class="d3">筛选</div>
+        </a>
+        <div data-role="popup" id="dfs125" class="ui-content filter">
+				<ul data-role="listview" data-icon="false" id="" class="filter_list">
+				<li>
+                  <div class="wa"><h2>分类</h2>
+                  <div id="gridthe" class="ui-grid-c sle_tad">
+                <div class="ui-block-a"><a href="#" id="nn0" onclick="selthe(0)" data-ajax="false" class="first"><div class="d4">不限</div></a></div>
+            </div></div>                                      
+                </li>
+                <li>
+                  <div class="wa" style="background-color:#f6f6f6; padding:0px;">
+                  <a href="#" onclick="chongzhi()" class="cz">重置</a>
+                  <a href="#" onclick="closesaoxuan()" class="qd">确定</a>
+                  </div>
+                </li>
+                </ul>				
+				
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="ui-panel-wrapper">
+        <div data-role="content">
+
+ <div id="wrapper" style=""  class="index_list2">
+	<div id="scroller">
+<!-- 		<div id="pullDown"> -->
+<!-- 			<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>  -->
+<!-- 		</div> -->
+		
+		<ul data-role="listview" data-icon="false" id="thelist">
+      
+		
+		</ul>
+		
+<!-- 		<div id="pullUp"> -->
+<!-- 			<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span> -->
+<!-- 		</div> -->
+		
+	</div>
+</div>           
+           </div>
+    </div>
+  
+</div>
+<script type="text/javascript">
+var currage= 1;
+var totalPage = 1;
+var isExist = true;
+var myScroll,
+pullDownEl, pullDownOffset,
+pullUpEl, pullUpOffset,
+generatedCount = 0;
+
+$(function(){
+	statistics();
+	getdate();
+});
+
+function getdate(){
+	ucapp.post(getWebRoot()+"app/wonderful/featurelist.do",{"page":currage,"orderBy":orderBy,"cid":classid},function(data){
+		if(data.rows){
+			totalPage = data.pages;
+			for(var i=0;i<data.rows.length;i++){
+				var obj = data.rows[i];
+				var titleimgurl = getImageUrl()+obj.titleimgurl;
+			 var div = '<li><a href="../article/detail.html?id='+obj.id+'" data-transition="fade" data-ajax="false">'+
+				'<img src="'+titleimgurl+'" class="t_img"><h2>'+obj.title+'</h2>'+
+				'<p"></p>'+
+             '<div class="text_2"><h4>'+obj.summary+'</h4></div>'+
+            '</a></li>';
+            $("#thelist").append(div);                                          
+			}
+		}
+		if(currage==totalPage){
+			isExist = false;
+			pullUpEl.querySelector('.pullUpLabel').innerHTML = '已到底部';
+		}
+	});
+}
+var grade =null;
+function sellvel(les){
+	currage = 1;
+	if(les==0){
+		grade = null;
+	}else{
+		grade = les;
+	}
+	$("#gridlevel a").attr("class","");
+	$("#vv"+les).attr("class","first");
+	$("#gridlevel").trigger("create");
+}
+
+function selthe(theid){
+	currage = 1;
+	classid = theid;
+	if(theid==0){
+		classid = null;
+	}
+	$("#gridthe a").attr("class","");
+	$("#nn"+theid).attr("class","first");
+	$("#gridthe").trigger("create");
+	
+}
+var classid = null;
+
+function statistics(){
+	ucapp.post(getWebRoot()+"app/wonderful/statistics.do",{},function(data){
+		
+		if(data.rows){
+			for(var j =0;j<data.rows.length;j++){
+				var cc = "";
+				if(j%4==0){
+					cc = 'ui-block-b';
+				}else if(j%4==1){
+					cc = 'ui-block-c';
+				}else if(j%4==2){
+					cc = 'ui-block-d';
+				}else if(j%4==3){
+					cc = 'ui-block-a';
+				}
+				var di = '<div class="'+cc+'"><a href="#" id="nn'+data.rows[j].id+'" onclick="selthe('+data.rows[j].id+')" data-ajax="false"><div class="d4">'+data.rows[j].name+'</div></a></div>';
+			  $("#gridthe").append(di);
+			}
+			$("#gridthe").trigger("create");
+		}
+		$("#namecc").html(data.namecc);
+		if(data.xxyl){
+			$("#xxyl").html(data.xxyl);
+		}
+		if(data.tscg){
+			$("#tscg").html(data.tscg);
+		}
+		if(data.lycp){
+			$("#lycp").html(data.lycp);
+		}
+		if(data.dbtc){
+			$("#dbtc").html(data.dbtc);
+		}
+		if(data.lysx){
+			$("#lysx").html(data.lysx);
+		}
+		if(data.tsms){
+			$("#tsms").html(data.tsms);
+		}
+		if(data.attr){
+			$("#attr").html(data.attr);
+		}
+		if(data.per){
+			$("#per").html(data.per);
+		}
+		if(data.hotel){
+			$("#hotel").html(data.hotel.length);
+		}
+		if(data.minsu){
+			$("#minsu").html(data.minsu.length);
+		}
+		if(data.inter){
+			$("#inter").html(data.inter);
+		}
+	});
+}
+
+function  closesaoxuan(){
+	$("#dfs125").popup("close");
+	$("#thelist").html("");
+	currage = 1;
+	getdate();
+}
+
+function chongzhi(){	
+	$("#nn0").click();
+	$("#vv0").click();
+}
+var orderBy = 0;
+function paisort(so){
+	orderBy = so;
+	$("#thelist").html("");
+	currage = 1;
+	$("#dfs124").popup("close");
+	if(so==0){
+		$("#ttv").html("智能排序");
+	}else if(so==1){
+		$("#ttv").html("最新发布");
+	}
+	getdate();
+}
+function cls(ty){
+	if(ty==0){
+	$("#dfs123").popup("close");
+	}else if(ty==1){
+		$("#dfs124").popup("close");
+	}else if(ty==2){
+		$("#dfs125").popup("close");
+	}
+	
+}
+
+var areaint = 0;
+var priceint = 0;
+var sortint = 0;
+
+function areaPop(){
+	
+	if(sortint==1){
+		sortint = 0;
+		closePop('#dfs124');
+		setTimeout(function(){
+			openAreaPop();
+		},100);
+		return;
+	}
+	if(priceint==1){
+		priceint = 0;
+		closePop('#dfs125');
+		setTimeout(function(){
+			openAreaPop();
+		},100);
+		return;
+	}
+	openAreaPop();
+};
+function openAreaPop(){
+	if(areaint==0){
+		areaint = 1;
+		openPop('#dfs123');
+	}else if(areaint==1){
+		areaint = 0;
+		closePop('#dfs123');
+	}
+}
+function pricePop(){
+	if(sortint==1){
+		sortint = 0;
+		closePop('#dfs124');
+		setTimeout(function(){
+			openPricePop();
+		},100);
+		return;
+	}
+	if(areaint==1){
+		areaint = 0;
+		closePop('#dfs123');
+		setTimeout(function(){
+			openPricePop();
+		},100);
+		return;
+	}
+	openPricePop();
+	
+};
+function openPricePop(){
+	if(priceint==0){
+		priceint = 1;
+		openPop('#dfs125');
+	}else if(priceint==1){
+		priceint = 0;
+		closePop('#dfs125');
+	}
+}
+function sortPop(){
+	if(areaint==1){
+		areaint = 0;
+		closePop('#dfs123');
+		setTimeout(function(){
+			openSortPop();
+		},100);
+		return;
+	}
+	if(priceint==1){
+		priceint = 0;
+		closePop('#dfs125');
+		setTimeout(function(){
+			openSortPop();
+		},100);
+		return;
+	}
+	openSortPop();
+	
+};
+function openSortPop(){
+	if(sortint==0){
+		sortint = 1;
+		openPop('#dfs124');
+	}else if(sortint==1){
+		sortint = 0;
+		closePop('#dfs124');
+	}
+	
+};
+function closePop(id){
+	//alert('closePop:'+id);
+	$(id).popup("close");
+};
+function openPop(id){
+	//alert('openPop:'+id);
+	$(id).popup();
+	$(id).popup('open');
+	$(''+id+'-popup').addClass('fade in');
+	$(''+id+'-popup').css('top','0px');
+};
+
+/**
+ * 下拉刷新 （自定义实现此方法）
+ * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+ */
+function pullDownAction () {
+	setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+		var el, li, i;
+	/* 	el = document.getElementById('thelist'); */
+
+		/* for (i=0; i<3; i++) {
+			li = document.createElement('li');
+			li.innerText = 'Generated row ' + (++generatedCount);
+			el.insertBefore(li, el.childNodes[0]);
+			
+		} */
+	    currage= 1;
+		 $("#thelist").html("");          
+		getdate();
+		myScroll.refresh();		//数据加载完成后，调用界面更新方法   Remember to refresh when contents are loaded (ie: on ajax completion)
+	}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+}
+
+/**
+ * 滚动翻页 （自定义实现此方法）
+ * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+ */
+function pullUpAction () {
+	setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+		/* var el, li, i;
+		el = document.getElementById('thelist');
+
+		for (i=0; i<3; i++) {
+			li = document.createElement('li');
+			li.innerText = 'Generated row ' + (++generatedCount);
+			el.appendChild(li, el.childNodes[0]);
+		} */
+		if(currage<totalPage){
+			currage++;
+			 $("#thelist").html("");          
+			  getdate();
+		}
+		myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+		
+	}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+}
+
+/**
+ * 初始化iScroll控件
+ */
+function loaded() {
+	pullDownEl = document.getElementById('pullDown');
+	pullDownOffset = pullDownEl.offsetHeight;
+	pullUpEl = document.getElementById('pullUp');	
+	pullUpOffset = pullUpEl.offsetHeight;
+	
+	myScroll = new iScroll('wrapper', {
+		scrollbarClass: 'myScrollbar', /* 重要样式 */
+		useTransition: false, /* 此属性不知用意，本人从true改为false */
+		topOffset: pullDownOffset,
+		onRefresh: function () {
+// 			if (pullDownEl.className.match('loading')) {
+// 				pullDownEl.className = '';
+// 				pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+// 			} else 
+				if (pullUpEl.className.match('loading')) {
+				pullUpEl.className = '';
+				if(currage==totalPage){
+					pullUpEl.querySelector('.pullUpLabel').innerHTML = '已到底部';
+				}else{
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+				}
+			}
+		},
+		onScrollMove: function () {
+// 			if (this.y > 5 && !pullDownEl.className.match('flip')) {
+// 				pullDownEl.className = 'flip';
+// 				pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+// 				this.minScrollY = 0;
+// 			} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+// 				pullDownEl.className = '';
+// 				pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+// 				this.minScrollY = -pullDownOffset;
+// 			} else 
+			if(isExist){ //没到最后一页继续可以上拉翻页
+				if (this.y < (this.maxScrollY - 6) && !pullUpEl.className.match('flip')) {
+					pullUpEl.className = 'flip';
+					pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+					this.maxScrollY = this.maxScrollY;
+				} else if (this.y > (this.maxScrollY + 6) && pullUpEl.className.match('flip')) {
+					pullUpEl.className = '';
+					pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+					this.maxScrollY = pullUpOffset;
+				}
+			}
+		},
+		onScrollEnd: function () {
+// 			if (pullDownEl.className.match('flip')) {
+// 				pullDownEl.className = 'loading';
+// 				pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';				
+// 				pullDownAction();	// Execute custom function (ajax call?)
+// 			} else 
+			if(isExist){ //没到最后一页继续可以上拉翻页
+				if (pullUpEl.className.match('flip')) {
+					pullUpEl.className = 'loading';
+					pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';				
+					pullUpAction();	// Execute custom function (ajax call?)
+				}
+			}
+		}
+	});
+	
+	setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+}
+
+//初始化绑定iScroll控件 
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('DOMContentLoaded', loaded, false); 
+
+</script>
+</body>
+</html>

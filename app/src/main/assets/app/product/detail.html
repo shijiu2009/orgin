@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>产品详情</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css?d=3">
+<link rel="stylesheet" href="../css/app/gldp_default.css?d=3">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js"></script>
+    <link rel="stylesheet" href="../css/app/photoswipe.css">
+<script type="text/javascript" src="../js/klass.min.js"></script>
+<script type="text/javascript" src="../js/code.photoswipe-3.0.5.min.js"></script>
+   
+<script type="text/javascript">
+        function closePop(){
+			$("#popup_window").popup("close");
+		};
+		
+		var id;
+	    var currage= 1;
+	    var totalPage = 1;
+		$(function(){
+			 var theRequest = getRequest();
+			    id = theRequest['id'];
+			ucapp.post(getWebRoot()+"app/product/detail.do",{"id":id},function(data){
+				 if(data.product){
+					 
+					 //多图轮播
+		    		 if(data.imgs){
+		     			for(var i =0;i<data.imgs.length;i++){
+		     				var ddd = 'list slide in';
+		     				if(i==0){
+		     					ddd="";
+		     				}else{
+		     					ddd="list slide out";
+		     				}
+		     				var img = getImageUrl()+ data.imgs[i].path;
+		     				var div = '<div class="'+ddd+'"><a href="'+img+'" class="ui-link" data-ajax="false"><img src="'+img+'" class="ij"></a></div>';
+		     				$("#box").append(div);
+		     			}
+		     			$('#box').mySlide({
+		     				interval:3000,
+		     				direction:'left'
+		     			});
+		     			//initPS(window.Code.PhotoSwipe);
+		     		}
+					 
+					$("#name").html(data.product.name); 
+					$("#sub").html(data.product.subTitle);
+					$("#jiangxi").html(data.product.info);
+					//批量替换图片路径
+		   			var imgsrc = "";
+		   			$("#jiangxi img").each(function(){
+		   			    $(this).height(200);
+		   				imgsrc = $(this).attr("src");
+		   				if(imgsrc.indexOf(getImageUrl())==-1){
+		   					var imgUrl = getImageUrl() + imgsrc;
+		   					$(this).attr("src",imgUrl);
+		   				}
+		   			});
+					$("#yuding").html(data.product.notice);
+					$("#topimg").attr("src",getImageUrl()+data.product.titleImg);
+					 $("#hao").html('<div class="num" >'+data.product.haoping+'%</div> 购买此产品的用户满意度为'+data.product.haoping+'%<br/> 已有'+data.product.numcomment+'人点评');
+					if(data.product.items){
+					
+				if(data.product.isOpen == 1){//开放预定
+					for(var i=0;i<data.product.items.length;i++){
+						   var obj = data.product.items[i];
+						var div = '<li><a href="javascript:gofill('+obj.id+')" data-transition="fade" data-ajax="false" style="padding-left: 20px;">'+
+		                          '<h2 style="margin-bottom: 12px;margin-right: 180px;height: 68px;line-height: 34px;margin-top: 5px;white-space:normal;">'+
+		                          obj.name+'</h2><div class="tj" style="bottom: 50px;">预定</div>'+
+					                '<div class="price" style="left: 15px;right:inherit;top: 84px;">'+
+					                '<span><em>￥</em>'+obj.showPrice+'</span>起</div></a></li>';
+					                $("#all").append(div);
+							   }
+					    $('#all').listview('refresh');
+				}
+					}
+				 }
+				 if(data.vvv){
+				    	if(data.vvv==1){
+				    		$("#imgg").attr("src","../images/app/nav_collect_a.png");
+					   }
+				   }
+			});
+			commentpage();
+		});
+		
+		
+		//检测是否可以支付
+	    var canPay = false;
+	    var hasLogin = false;
+	    $(function(){
+	    	reload();
+	    });
+		function reload(){
+			ucapp.showWatting();
+			ucapp.post(getWebRoot()+"app/public/checkpay.do",{ptype:3},function(data){
+	    		canPay = data.canPay;
+	    		hasLogin = data.hasLogin;
+	    	});
+			ucapp.hideWatting();
+		}
+	    
+	    
+		function gofill(oid){
+			if(!hasLogin){
+				ucapp.gotoLogin();
+				return;
+			}
+			if(!canPay){
+	 			ucapp.showTip("演示系统已关闭支付功能");
+	 			return;
+	 	    }
+			
+			ucapp.checkStatus(function(data){
+				if(data.success){
+					window.location= 'order_fill.html?productId='+id+'&piid='+oid;
+				}else{
+					ucapp.gotoLogin();
+				}
+			});
+		}
+		
+	    function commentpage(){
+	    	ucapp.post(getWebRoot()+"app/product/commentpage.do",{"page":currage,"objectId":id,"type":3},function(data){
+	    		totalPage =data.pages;
+	    		currage = data.currage;
+	    		if(currage>=totalPage){
+	    			$("#xiaye").hide();
+	    		}
+	    		if(data.rows){
+	    			for(var i =0;i<data.rows.length;i++){
+	    				   var obj = data.rows[i];
+	    				   if(obj.createTime){
+	    					   obj.createTime = obj.createTime.substring(0,10);
+	    				   }
+	    				   var dd = "";
+	    	    			if(obj.star){
+	    	    				for(var j=0;j<data.onecomt.star;j++){
+	    	    					dd+='<img src="../images/app/star.png">';
+	    	    				}
+	    	    			}
+	    	    			if(obj.headImg==null||obj.headImg==""){
+	    	    				obj.headImg = '../images/app/userHead.jpg';
+	    	    			}else{
+	    	    				obj.headImg = getImageUrl()+obj.headImg;
+	    	    			}
+	        		      	var  div ='<li><div class="comment"><div class="title"><img src="'+obj.headImg+'" class="user">'+
+	        	   			'<h2>'+obj.userName+'</h2><div class="star">'+dd+'</div></div>'+
+	        	                   '<div class="container"><div class="time">'+obj.createTime+'</div>'+
+	        	                   '<div class="text">'+obj.content+'</div>'+
+	        	                   '</div></div></li>';
+	    		          $("#ccc").append(div);
+	    			}
+	    		}else{
+	    			$("#pings").html("暂无评价");
+	    			$("#pings").attr("href","#");
+	    		}
+	    		if(data.onecomt){
+	    			var dd = "";
+	    			if(data.onecomt.star){
+	    				for(var j=0;j<data.onecomt.star;j++){
+	    					dd+='<img src="../images/app/star.png">';
+	    				}
+	    			}
+	    			if(data.onecomt.headImg==null||data.onecomt.headImg==""){
+	    				data.onecomt.headImg = '../images/app/user.jpg';
+	    			}else{
+	    				data.onecomt.headImg = getImageUrl()+data.onecomt.headImg;
+	    			}
+	    			var  li ='<li><div class="comment"><div class="title"><img src="'+data.onecomt.headImg+'" class="user">'+
+	    			'<h2>'+data.onecomt.userName+'</h2><div class="star">'+dd+'</div></div>'+
+	                    '<div class="container"><div class="time">'+data.onecomt.createTime+'</div>'+
+	                    '<div class="text">'+data.onecomt.content+'</div>'+
+	                    '</div></div></li>';
+	                    $("#onecom").html("");
+	                    $("#onecom").append(li);
+	    		}
+	    	});
+	    }
+	    function xia(){
+	    	if(currage<totalPage){
+	    		currage++;
+	    		$("#ccc").html("");
+	    		commentpage();
+	    }else{
+	    	$("#xiaye").hide();
+	    }
+	   }
+	    
+	    
+	    function collect() {
+	    	ucapp.checkStatus(function(data){
+	    		if(data.success){
+	    			ucapp.post(getWebRoot()+'app/product/collectornot.do',{'yjId' : id}, 
+	    					function(data) {
+    								if (parseInt(data.count) > -1) {
+    									$('#colle').html(data.count);
+    								}
+    								if(data.ccc==0){
+    									$("#imgg").attr("src","../images/app/nav_collect.png");
+    								}else if(data.ccc==1){
+    									$("#imgg").attr("src","../images/app/nav_collect_a.png");
+    								}
+    								ucapp.showTip(data.msg);
+	    					});
+	    		}else{
+	    			ucapp.gotoLogin();
+	    		}
+				
+	    	});
+		}
+	</script>
+	<style type="text/css">
+.ui-popup-container {
+width: 90%;
+}
+.index {
+    right: 0px;
+    left: 0px;
+    bottom: 20px;
+    text-align: center;
+}
+.slide.out{
+	display:block;
+	width: 100%;
+}
+.slide.in{
+	display:block;
+	width: 100%;
+}
+</style>
+</head>
+<body>
+<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ebebeb;">
+  <div data-theme="b" data-role="header" data-position="fixed">
+  <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+<a class="ui-btn-right nav_share" data-role="button" href="#" onclick="collect()" > <img id="imgg" src="../images/app/nav_collect.png"> </a>
+    <h3></h3>
+  </div>
+  <div data-role="content">
+    <!-- <div data-controltype="image" class="index_show">
+    <img src="" id="topimg" alt="image" class="show_img">
+    </div>
+    <div class="detail_title"> 
+  		<h4 id="name"></h4>  
+ 		<h5 id="sub"></h5>               
+    </div> -->
+
+   	<div id="MainContent" class="demo">
+     <div id="Gallery" >
+         <div id="box" class="box" data-pswp-uid="1"></div>  
+     </div>
+     </div>
+     
+    </div>
+    <div class="detail_title"> 
+  		<h4 id="name"></h4>  
+ 		<h5 id="sub"></h5>               
+    </div>
+    
+    <ul data-role="listview" data-icon="false" class="room_list" id="all">
+
+           
+    </ul>
+    
+    <!-- 平台协议 -->
+     <!-- <ul data-role="listview" data-inset="true" class="jd_list">
+      <li class="jtou">
+		<a href="../public/agreement.html" data-transition="fade"> <img src="../images/app/eu1.png" class="ui-li-icon">
+		<h2>服务条款</h2>
+		</a>
+	  </li>
+    </ul> -->
+    
+    
+    <!-- <div class="comment_on">
+      <h1>评价</h1>
+	  <ul id = "onecom">
+          </ul>
+      <div class="btn_an">
+      <a  href="#bbs" data-ajax="false" class="ui-link">查看全部评价</a></div></div> -->
+      <div class="jt_text">
+      <h2 class="title">产品详细</h2>
+      <div class="con" id="jiangxi">
+       
+      </div>
+    </div>
+
+    <!-- <div class="jt_text">
+      <h2 class="title">预订须知</h2>
+      <div class="con" id="yuding">
+     
+      </div>
+    </div> -->
+  </div>
+  
+</div>
+<div data-role="page" id="bbs">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>评价</h1>
+  </div>
+  <div data-role="content">
+    <ul data-role="listview" data-icon="false" id="thelist" class="bbs_list1">
+    <div >
+      <li class="li5">
+        <div class="txt" id="hao">
+         </div>
+         <div id="ccc">
+         </div>
+      </li>
+    </div>
+      <li id="xiaye" class="li2"  style="border-top-width: 1px;border-top-style: solid;border-top-color: #ededed;"> <a href="#" onclick="xia()" data-transition="fade" class="more" style="text-align:center" data-ajax="false"> 查看更多点评 </a> </li>
+    </ul>
+  </div>
+</div>
+    <script type="text/javascript">
+    //初始化图片插件
+    function initPS(PhotoSwipe){
+
+ 		
+ 		var options = {enableMouseWheel: false , enableKeyboard: false },
+ 			instance = PhotoSwipe.attach( window.document.querySelectorAll('#Gallery a'), options );
+ 			
+ 			// onBeforeShow
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeShow, function(e){
+ 				console.log('onBeforeShow');
+ 			});
+ 			
+ 			// onShow
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onShow, function(e){
+ 				console.log('onShow');
+ 			});
+ 			
+ 			// onBeforeHide
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeHide, function(e){
+ 				console.log('onBeforeHide');
+ 			});
+ 			
+ 			// onHide
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onHide, function(e){
+ 				console.log('onHide');
+ 			});
+ 			
+ 			// onDisplayImage
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onDisplayImage, function(e){
+ 				console.log('onDisplayImage{');
+ 				console.log('onDisplayImage - e.action = ' + e.action);
+ 				console.log('onDisplayImage - e.index = ' + e.index);
+ 				console.log(instance.getCurrentImage());
+ 				console.log('onDisplayImage}');
+ 			});
+ 			
+ 			// onResetPosition
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onResetPosition, function(e){
+ 				console.log('onResetPosition');
+ 			});
+ 			
+ 			// onSlideshowStart
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onSlideshowStart, function(e){
+ 				console.log('onSlideshowStart');
+ 			});
+ 			
+ 			// onSlideshowStop
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onSlideshowStop, function(e){
+ 				console.log('onSlideshowStop');
+ 			});
+ 			
+ 			// onTouch
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onTouch, function(e){
+ 				console.log('onTouch{');
+ 				console.log('onTouch - e.action = ' + e.action);
+ 				console.log('onTouch - e.point = ');
+ 				console.log(e.point);
+ 				console.log('onTouch}');
+ 			});
+ 			
+ 			// onBeforeCaptionAndToolbarShow
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeCaptionAndToolbarShow, function(e){
+ 				console.log('onBeforeCaptionAndToolbarShow');
+ 			});
+ 			
+ 			// onCaptionAndToolbarShow
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onCaptionAndToolbarShow, function(e){
+ 				console.log('onCaptionAndToolbarShow');
+ 			});
+ 			
+ 			// onBeforeCaptionAndToolbarHide
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeCaptionAndToolbarHide, function(e){
+ 				console.log('onBeforeCaptionAndToolbarHide');
+ 			});
+ 			
+ 			// onCaptionAndToolbarHide
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onCaptionAndToolbarHide, function(e){
+ 				console.log('onCaptionAndToolbarHide');
+ 			});
+ 			
+ 			// onToolbarTap
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onToolbarTap, function(e){
+ 				console.log('onToolbarTap');
+ 				console.log(e);
+ 			});
+ 			
+ 			// onBeforeZoomPanRotateShow
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeZoomPanRotateShow, function(e){
+ 				console.log('onBeforeZoomPanRotateShow');
+ 			});
+ 			
+ 			// onZoomPanRotateShow
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateShow, function(e){
+ 				console.log('onZoomPanRotateShow');
+ 			});
+ 			
+ 			// onBeforeZoomPanRotateHide
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeZoomPanRotateHide, function(e){
+ 				console.log('onBeforeZoomPanRotateHide');
+ 			});
+ 			
+ 			// onZoomPanRotateHide
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateHide, function(e){
+ 				console.log('onZoomPanRotateHide');
+ 			});
+ 			
+ 			// onZoomPanRotateTransform
+ 			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateTransform, function(e){
+ 				console.log('onZoomPanRotateTransform');
+ 				console.log(e);
+ 			});
+ 			
+ 	}
+    </script>
+</body>
+</html>

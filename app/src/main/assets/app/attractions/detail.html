@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta id="viewport"
+          content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+          name="viewport">
+    <title>景点详情</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+    <link rel="stylesheet" href="../css/app/layout.css">
+    <link rel="stylesheet" href="../css/app/gldp_default.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.mobile-1.4.2.min.js"></script>
+    <script src="../js/jquery.myslide.js"></script>
+    <script src="../js/ucapp.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=jxL9ZCE1KGypzG1MbPwSSAcR"></script>
+    <style type="text/css">
+		.ui-popup-container {
+			width: 90%;
+		}
+
+		.index {
+			right: 0px;
+			left: 0px;
+			bottom: .2rem;
+			text-align: center;
+		}
+
+		.slide.out {
+			display: block;
+			width: 100%;
+		}
+
+		.slide.in {
+			display: block;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ebebeb;">
+    <div data-theme="b" data-role="header" data-position="fixed"> <a data-role="button" onclick="ucapp.goToBack();"
+                                                                     data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+        <img src="../images/app/nav_back.png"> </a> <a data-role="button" onclick="collect()"
+                                                       class="ui-btn-right nav_share"> <img id="imgg" src="../images/app/nav_collect.png"> </a>
+        <h3></h3>
+    </div>
+    <div data-role="content">
+
+        <div id="MainContent" class="demo">
+            <div id="Gallery">
+                <div id="box" class="box" data-pswp-uid="1"></div>
+            </div>
+        </div>
+
+        <div class="index_show">
+            <div class="name">
+                <h2 id="names"></h2>
+                <h3 id="kaifang">景区级别：</h3>
+                <h3 id="openInfo">开放时间：</h3>
+            </div>
+        </div>
+
+        <ul data-role="listview" id="jd_list0" data-inset="true" class="jd_list">
+            <li class="jtou">
+                <a href="javascript:goNav();" data-transition="fade">
+                    <img src="../images/app/eu2.png" class="ui-li-icon">
+                    <h2>景点地址：<span id="add"></span><span class="dh">导航</span></h2>
+                </a> <img src="../images/app/d30.png" class="khj">
+            </li>
+            <li class="jtou">
+                <a href="javascript:goGuide()" data-transition="fade" data-ajax="false">
+                    <img src="../images/app/eu8.png" class="ui-li-icon">
+                    <h2>语音视频导游</h2>
+                    <!-- <h2 >联系电话：<span id="span_phone"></span></h2>
+    </a> 	<img src="../images/app/d30.png" class="khj"> -->
+            </li>
+            <!-- <li class="jtou">
+      <a href="#" data-transition="fade" >
+      <img src="../images/app/eu17.png" class="ui-li-icon">
+    <h2 style="width: auto;white-space: normal;line-height: 34px;">公交线路：<span id="span_bus"></span></h2>
+    </a>
+  </li> -->
+            <li class="jtou" style="display: none;">
+                <a href="#" data-transition="fade"> <img src="../images/app/eu5.png" class="ui-li-icon">
+                    <h2>虚拟展示<span class="dh">进入</span></h2>
+                </a>
+            </li>
+        </ul>
+        <div id="" class="ui-grid-b jd_tips">
+            <div class="ui-block-a">
+                <div class="ui-bar ui-bar-a">
+                    <div class="d3">入园保证</div>
+                </div>
+            </div>
+            <div class="ui-block-b">
+                <div class="ui-bar ui-bar-a">
+                    <div class="d3">快速入园</div>
+                </div>
+            </div>
+            <div class="ui-block-c">
+                <div class="ui-bar ui-bar-a">
+                    <div class="d3">随时退</div>
+                </div>
+            </div>
+        </div>
+        <div class="jd_tip" id="yuding">如需预定，您最晚要在出行当天<span>00：00</span>前下单，请尽早预定。</div>
+        <ul data-role="listview" data-icon="false" class="room_list" id="all">
+
+
+        </ul>
+
+        <!-- 平台协议 -->
+        <!--<ul data-role="listview" data-inset="true" class="jd_list">
+            <li class="jtou">
+                <a href="../public/agreement.html" data-ajax="false" data-transition="fade"> <img
+                        src="../images/app/eu1.png" class="ui-li-icon">
+                    <h2>服务条款</h2>
+                </a><img src="../images/app/d30.png" class="khj">
+            </li>
+        </ul>-->
+
+
+        <div class="comment_on" id="userComment">
+            <h1>评价</h1>
+            <ul id="onecom">
+
+            </ul>
+            <div class="btn_an">
+                <a href="#bbs" data-ajax="false" class="ui-link">查看全部评价</a></div>
+        </div>
+        <div class="jt_text">
+            <h2 class="title">景点介绍</h2>
+            <div class="con" id="con">
+
+            </div>
+        </div>
+        <div class="jt_text" id="yudxz">
+            <h2 class="title">预订须知</h2>
+            <div class="con" id="yud">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div data-role="page" id="bbs">
+    <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" href="#page1"
+                                                                          data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img
+            src="../images/app/nav_back.png"> </a>
+        <h1>评价</h1>
+    </div>
+    <div data-role="content">
+        <ul data-role="listview" data-icon="false" id="thelist" class="bbs_list1">
+            <div>
+                <li class="li5">
+                    <div class="txt" id="hao">
+                        <div class="num">0%</div>
+                        购买此产品的用户满意度为0%<br /> 已有0人点评
+                    </div>
+                    <div id="ccc">
+                    </div>
+                </li>
+            </div>
+            <li id="xiaye" class="li2"
+                style="border-top-width: 1px;border-top-style: solid;border-top-color: #ededed;"> <a href="#"
+                                                                                                     onclick="xia()" data-transition="fade" class="more" style="text-align:center" data-ajax="false">
+                查看更多点评 </a> </li>
+        </ul>
+    </div>
+</div>
+<link rel="stylesheet" href="../css/app/photoswipe.css">
+<script type="text/javascript" src="../js/klass.min.js"></script>
+<script type="text/javascript" src="../js/code.photoswipe-3.0.5.min.js"></script>
+
+<script type="text/javascript">
+		var id;
+		var currage = 1;
+		var totalPage = 1;
+		var iscoll = false;
+		var currLatitude = null;
+		var currLongitude = null;
+		var currAddress = null;
+		$(function () {
+			var Request = new Object();
+			Request = getRequest();
+			id = Request["id"];
+
+			reload();
+
+
+		});
+		function reload() {
+			commentpage();
+			getdate();
+			getVtour();
+			if (iscoll) {
+				iscoll = false;
+				collect();
+			}
+			checkPay();
+		}
+		function getdate() {
+			$("#box").empty();
+			$("#all").empty();
+			ucapp.post(getWebRoot() + "app/attractions/detail.do", { "id": id }, function (data) {
+				//景点轮播图
+				if (data.imgs) {
+					for (var i = 0; i < data.imgs.length; i++) {
+						var ddd = 'list slide in';
+						if (i == 0) {
+							ddd = "";
+						} else {
+							ddd = "list slide out";
+						}
+
+						var img = getFullImageUrl(data.imgs[i].path);
+						var div = '<div class="' + ddd + '"><a href="' + img + '"  class="ui-link" data-ajax="false"><img src="' + img + '" class="ij"></a></div>';
+						$("#box").append(div);
+					}
+					$('#box').mySlide({
+						interval: 3000,
+						direction: 'left'
+					});
+					//initPS(window.Code.PhotoSwipe);
+				}
+				if (data.attractions) {
+
+					//经纬度
+					currLatitude = data.attractions.latitude;
+					currLongitude = data.attractions.longitude;
+					currAddress = data.attractions.address;
+					$("#span_phone").text(data.attractions.phone/* +" "+data.attractions.linkman */);
+					/* $("#span_bus").text(data.attractions.busInfo); */
+
+					//开闭馆信息
+					$("#openInfo").text('开放时间：' + data.attractions.opening);
+
+					//景点信息
+					$("#names").html(data.attractions.name);
+
+					var spanGrade = "";
+
+					if (data.attractions.qualityGrade) {
+						spanGrade = '景区级别：' + data.attractions.qualityGrade;
+					} else if (data.attractions.bstars) {
+
+						switch (data.attractions.bstars) {
+							case 1: spanGrade = '景区级别：广西五星级乡村旅游区'; break;
+							case 2: spanGrade = '景区级别：广西五星级农家乐'; break;
+							case 3: spanGrade = '景区级别：广西四星级乡村旅游区'; break;
+							case 4: spanGrade = '景区级别：广西四星级农家乐'; break;
+							case 5: spanGrade = '景区级别：广西三星级乡村旅游区'; break;
+							case 6: spanGrade = '景区级别：广西三星级农家乐'; break;
+							case 0: spanGrade = '景区级别：无星级'; break;
+							default: break;
+						}
+					}
+					$("#kaifang").html(spanGrade);
+
+					$("#topimg").attr("src", getImageUrl() + data.attractions.indexImg);
+					$("#add").html(data.attractions.address);
+
+					$("#con").html(data.attractions.info);
+					//批量替换图片路径
+					var imgsrc = "";
+					$("#con img").each(function () {
+					    $(this).height(200);
+						imgsrc = $(this).attr("src");
+						if (imgsrc.indexOf(getImageUrl()) == -1) {
+							var imgUrl = getImageUrl() + imgsrc;
+							$(this).attr("src", imgUrl);
+						}
+					});
+					$("#hao").html('<div class="num" >' + data.attractions.haoping + '%</div> 购买此产品的用户满意度为' + data.attractions.haoping + '%<br/> 已有' + data.attractions.numcomment + '人点评');
+					$("#yud").html(data.attractions.notice);
+					var dd = "";
+					if (data.attractions.advanceDay == 0) {
+						dd = "当天"
+					} else {
+						dd = "前" + data.attractions.advanceDay + "天";
+					}
+					if (data.attractions.lastReserveTime) {
+						data.attractions.lastReserveTime = data.attractions.lastReserveTime.substring(11, 16);
+					}
+					if (data.attractions.isOpen == 1) {//开放预定
+						$("#yuding").html("如需预定，您最晚要在出行" + dd + "<span>" + data.attractions.lastReserveTime + "</span>前下单，请尽早预定。");
+						if (data.attractions.tickets!=null && data.attractions.tickets!='') {
+							for (var i = 0; i < data.attractions.tickets.length; i++) {
+								var obj = data.attractions.tickets[i];
+								var pinfor = obj.information;
+								if (!pinfor) {
+									pinfor = "暂无";
+								}
+								if (obj.salePrice == 0) {
+									$('#all').hide()
+									$('#yuding').hide()
+									$('#yudxz').hide()
+									$('#userComment').hide()
+								}
+								var div = '<li><a href="#dfs123' + obj.id + '"  data-rel="popup" data-transition="fade">' +
+									'<h2>' + obj.name + '</h2><div class="price1"><span><em>￥</em>' + obj.salePrice + '</span></div>' +
+									'<div class="text_2"><h5>网上支付</h5></div><div class="tj">预定</div></a>' +
+									'<div data-role="popup" id="dfs123' + obj.id + '" class="ui-content popup_window win_p" data-theme="a" style="max-width:700px;">' +
+									'<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-right">' +
+									'<img src="../images/app/close.png" width="60" height="60"> </a>' +
+									'<h2>票型说明</h2><div class="text">' + pinfor + '</div>' +
+									'<div class="tj"> 在线支付：<span class="jg"><em>￥</em>' + obj.salePrice + '</span> <a class="btn_xd" href="javascript:yuding(' + obj.id + ')" data-transition="fade" data-ajax="false">立即预定</a> </div>' +
+									'</div></li>';
+								$("#all").append(div);
+							}
+							$("#all").trigger("create");
+							$('#all').listview('refresh');
+						} else {
+							$('#all').hide()
+							$('#yuding').hide()
+							$('#yudxz').hide()
+							$('#userComment').hide()
+						}
+					}
+				}
+				if (data.vvv) {
+					if (data.vvv == 1) {
+						$("#imgg").attr("src", "../images/app/nav_collect_a.png");
+					}
+				}
+			});
+		}
+		function getVtour() {
+			var vli = $("#jd_list0 li:eq(3)");
+			$(vli).hide();
+			ucapp.post(getWebRoot() + "app/vrtour/getByAid.do", { "id": id }, function (data) {
+				if (data.vrtour) {
+					$("a", vli).attr("href", data.vrtour.url);
+					$(vli).show();
+				}
+			});
+		}
+
+		function commentpage() {
+			ucapp.post(getWebRoot() + "app/attractions/commentpage.do", { "page": currage, "objectId": id, "type": 1 }, function (data) {
+				totalPage = data.pages;
+				currage = data.currage;
+				if (currage >= totalPage) {
+					$("#xiaye").hide();
+				}
+				if (data.rows) {
+					$("#ccc").empty();
+					for (var i = 0; i < data.rows.length; i++) {
+						var obj = data.rows[i];
+						if (obj.createTime) {
+							obj.createTime = obj.createTime.substring(0, 10);
+						}
+						var dd = "";
+						if (obj.star) {
+							for (var j = 0; j < data.onecomt.star; j++) {
+								dd += '<img src="../images/app/star.png">';
+							}
+						}
+						/* var div = '<li class="li5"><div class="txt1"><h2>'+obj.userName+'</h2>'+
+				  '<div class="star">'+dd+'</div>'+
+				  '<h3>'+obj.content+'</h3>'+
+				  '<div class="time">'+obj.createTime+'</div></div></li>'; */
+						if (obj.headImg == null || obj.headImg == "") {
+							obj.headImg = '../images/app/userHead.jpg';
+						} else {
+							obj.headImg = getImageUrl() + obj.headImg;
+						}
+						var div = '<li><div class="comment"><div class="title"><img src="' + obj.headImg + '" class="user">' +
+							'<h2>' + obj.userName + '</h2><div class="star">' + dd + '</div></div>' +
+							'<div class="container"><div class="time">' + obj.createTime + '</div>' +
+							'<div class="text">' + obj.content + '</div>' +
+							'</div></div></li>';
+						$("#ccc").append(div);
+					}
+				} else {
+					$("#pings").html("暂无评价");
+					$("#pings").attr("href", "#");
+				}
+				if (data.onecomt) {
+					var dd = "";
+					if (data.onecomt.star) {
+						for (var j = 0; j < data.onecomt.star; j++) {
+							dd += '<img src="../images/app/star.png">';
+						}
+					}
+					if (data.onecomt.headImg == null || data.onecomt.headImg == "") {
+						data.onecomt.headImg = '../images/app/user.jpg';
+					} else {
+						data.onecomt.headImg = getImageUrl() + data.onecomt.headImg;
+					}
+					var li = '<li><div class="comment"><div class="title"><img src="' + data.onecomt.headImg + '" class="user">' +
+						'<h2>' + data.onecomt.userName + '</h2><div class="star">' + dd + '</div></div>' +
+						'<div class="container"><div class="time">' + data.onecomt.createTime + '</div>' +
+						'<div class="text">' + data.onecomt.content + '</div>' +
+						'</div></div></li>';
+
+
+					$("#onecom").empty();
+					$("#onecom").append(li);
+				}
+			});
+		}
+
+		function xia() {
+			if (currage < totalPage) {
+				currage++;
+				$("#ccc").html("");
+				commentpage();
+			} else {
+				$("#xiaye").hide();
+			}
+		}
+
+		//检测是否可以支付
+		var canPay = false;
+		var hasLogin = false;
+
+		function checkPay() {
+			ucapp.showWatting();
+			ucapp.post(getWebRoot() + "app/public/checkpay.do", { ptype: 1 }, function (data) {
+				canPay = data.canPay;
+				hasLogin = data.hasLogin;
+				ucapp.hideWatting();
+			});
+		}
+
+
+		function yuding(objid) {
+			if (!hasLogin) {
+				ucapp.gotoLogin();
+				return;
+			}
+			if (!canPay) {
+				ucapp.showTip("演示系统已关闭支付功能");
+				return;
+			}
+			ucapp.checkStatus(function (data) {
+				if (data.success) {
+					window.location = "order_fill.html?aid=" + id + "&ticketId=" + objid;
+				} else {
+					ucapp.gotoLogin();
+				}
+			});
+		}
+
+		function collect() {
+			ucapp.checkStatus(function (data) {
+				if (data.success) {
+					ucapp.post(getWebRoot() + "app/attractions/collectornot.do", { 'yjId': id },
+						function (data) {
+							if (parseInt(data.count) > -1) {
+								$('#colle').html(data.count);
+							}
+							if (data.ccc == 0) {
+								$("#imgg").attr("src", "../images/app/nav_collect.png");
+							} else if (data.ccc == 1) {
+								$("#imgg").attr("src", "../images/app/nav_collect_a.png");
+							}
+							ucapp.showTip(data.msg);
+						});
+				} else {
+					iscoll = true;
+					ucapp.gotoLogin();
+				}
+			});
+
+		}
+		function goNav() {
+			if (currLatitude && currLongitude && currAddress) {
+				ucapp.startNavi(currLatitude, currLongitude, currAddress);
+				//direct(currLatitude,currLongitude)
+			} else {
+				ucapp.showTip("抱歉，经纬度参数缺失");
+			}
+		}
+
+		function direct(lat, lng) {
+			var geolocation = new BMap.Geolocation();
+			geolocation.getCurrentPosition(function (r) {
+				if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+					ucapp.direct("http://api.map.baidu.com/direction?origin=" + r.point.lat + "," + r.point.lng + "&destination=" + lat + "," + lng + "&mode=driving&region=''&output=html")
+				}
+				else {
+					alert('failed' + this.getStatus());
+				}
+			});
+		}
+
+		function goGuide() {
+			if (id != null && id != '') {
+				goUrl('videoList.html?aid=' + id)
+			}
+		}
+	</script>
+<script type="text/javascript">
+		//初始化图片插件
+		function initPS(PhotoSwipe) {
+
+
+			var options = { enableMouseWheel: false, enableKeyboard: false },
+				instance = PhotoSwipe.attach(window.document.querySelectorAll('#Gallery a'), options);
+
+			// onBeforeShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeShow, function (e) {
+				console.log('onBeforeShow');
+			});
+
+			// onShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onShow, function (e) {
+				console.log('onShow');
+			});
+
+			// onBeforeHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeHide, function (e) {
+				console.log('onBeforeHide');
+			});
+
+			// onHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onHide, function (e) {
+				console.log('onHide');
+			});
+
+			// onDisplayImage
+			instance.addEventHandler(PhotoSwipe.EventTypes.onDisplayImage, function (e) {
+				console.log('onDisplayImage{');
+				console.log('onDisplayImage - e.action = ' + e.action);
+				console.log('onDisplayImage - e.index = ' + e.index);
+				console.log(instance.getCurrentImage());
+				console.log('onDisplayImage}');
+			});
+
+			// onResetPosition
+			instance.addEventHandler(PhotoSwipe.EventTypes.onResetPosition, function (e) {
+				console.log('onResetPosition');
+			});
+
+			// onSlideshowStart
+			instance.addEventHandler(PhotoSwipe.EventTypes.onSlideshowStart, function (e) {
+				console.log('onSlideshowStart');
+			});
+
+			// onSlideshowStop
+			instance.addEventHandler(PhotoSwipe.EventTypes.onSlideshowStop, function (e) {
+				console.log('onSlideshowStop');
+			});
+
+			// onTouch
+			instance.addEventHandler(PhotoSwipe.EventTypes.onTouch, function (e) {
+				console.log('onTouch{');
+				console.log('onTouch - e.action = ' + e.action);
+				console.log('onTouch - e.point = ');
+				console.log(e.point);
+				console.log('onTouch}');
+			});
+
+			// onBeforeCaptionAndToolbarShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeCaptionAndToolbarShow, function (e) {
+				console.log('onBeforeCaptionAndToolbarShow');
+			});
+
+			// onCaptionAndToolbarShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onCaptionAndToolbarShow, function (e) {
+				console.log('onCaptionAndToolbarShow');
+			});
+
+			// onBeforeCaptionAndToolbarHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeCaptionAndToolbarHide, function (e) {
+				console.log('onBeforeCaptionAndToolbarHide');
+			});
+
+			// onCaptionAndToolbarHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onCaptionAndToolbarHide, function (e) {
+				console.log('onCaptionAndToolbarHide');
+			});
+
+			// onToolbarTap
+			instance.addEventHandler(PhotoSwipe.EventTypes.onToolbarTap, function (e) {
+				console.log('onToolbarTap');
+				console.log(e);
+			});
+
+			// onBeforeZoomPanRotateShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeZoomPanRotateShow, function (e) {
+				console.log('onBeforeZoomPanRotateShow');
+			});
+
+			// onZoomPanRotateShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateShow, function (e) {
+				console.log('onZoomPanRotateShow');
+			});
+
+			// onBeforeZoomPanRotateHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeZoomPanRotateHide, function (e) {
+				console.log('onBeforeZoomPanRotateHide');
+			});
+
+			// onZoomPanRotateHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateHide, function (e) {
+				console.log('onZoomPanRotateHide');
+			});
+
+			// onZoomPanRotateTransform
+			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateTransform, function (e) {
+				console.log('onZoomPanRotateTransform');
+				console.log(e);
+			});
+
+		}
+	</script>
+</body>
+
+</html>

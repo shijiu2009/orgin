@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>产品订单</title>
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<style type="text/css">
+.slideup.in {
+    min-width: 100%!important;
+    max-width: 100%!important;
+    bottom: 0px!important;
+    right: 0px!important;
+    left: 0px!important;
+    position: fixed;
+    top: auto!important;
+}
+.popup_window {
+    border-radius: 0px;
+    font-size: 28px;
+    color: #333;
+    background-color: #FFF;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.filter_list li .ui-btn {
+    margin: 0px;
+    position: relative;
+    font-weight: normal;
+    padding-top: 20px;
+    padding-right: 0px;
+    padding-bottom: 20px;
+    padding-left: 0px;
+    border-bottom-width: 0px;
+    border-bottom-style: solid;
+    border-bottom-color: #e0e0e0;
+}
+.win_p {
+    padding: 0px;
+}
+.win_p h2 {border-bottom-width: 0px;
+height:auto;}
+</style>
+
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+  </div>
+  <div data-role="content">
+  <div class="gx" id="div_gx">
+  
+  <!-- <h1>您的订单已成功提交！
+  <span>请您在24小时内完成支付</span>
+  </h1> -->
+
+</div> 
+<div class="add_panel" style="background-image:none;margin-top:0px">
+  <img src="../images/app/pin_2.png">
+    <div class="media-body" style="background-image:none;padding-bottom: 12px;"> 
+                <h4>收货人：<span id="span_name"></span>
+                  <span class="pull-right" id="span_mobile"></span> 
+                </h4>  
+                <h5>收货地址：<span id="span_stree"></span></h5>  
+              </div>
+  </div>
+  
+  <ul data-role="listview" data-inset="true" data-icon="" class="list1 cart_div">
+  
+      <li>
+      
+      	
+        <!-- <div class="panel-heading">
+        <h2>XXXXX店铺</h2>
+        </div> -->
+        
+        
+        <div class="panel-container">
+          <ul id="ul_pros">
+         </ul>
+  </div> 
+
+  
+  </li>
+  <li style="margin-bottom:0px;"><div class="btn-xs"><span class="pull-right3" id="liuyan"></span>
+ <span class="pull-left">我的留言</span></div>
+ 
+ </li>
+ 
+ <!-- 
+   <li style="margin-bottom:0px;"><div class="btn-xs"><span class="pull-right1">￥0.00</span>
+ <span class="pull-left">运费</span></div>
+ </li> -->
+ 
+ 
+ <li style="margin-bottom:0px;"><div class="btn-xs"><span class="pull-right1">￥<span id="span_total"></span></span>
+ <span class="pull-left">实付款(含运费)</span></div>
+ </li>
+ 
+ <li style="margin-bottom:0px;"><div class="btn-xs"><span class="pull-right1"><span id="span_payment"></span></span>
+ <span class="pull-left">可支付方式</span></div>
+ </li>
+ 
+ <li><div class="btn-xs"><span class="pull-right2">共<span id="span_quantity"></span>件商品</span>
+</div>
+ 
+ </li>
+ 
+
+ 
+ 
+  </ul>
+
+  </div>
+  <div data-role="popup" id="popup" class="ui-content popup_window win_p" data-theme="a">
+        <div class="title0">
+        
+        <a href="#" data-rel="back" class="close-btn">
+        <img src="../images/app/close.png" class="c_img"> </a>
+				付款情况
+                </div>
+<div class="text" style="padding-top:0px;">
+<ul data-role="listview" data-icon="false" id="ul_payway" class="filter_list">
+                <li>
+                  <a href="#" class="active" class="" v="1"><h2>微信支付</h2><i class="checkmark"></i></a>
+                </li>
+                 <li>
+                  <a href="#"  v="0"><h2>支付宝支付</h2><i class="checkmark"></i></a>
+                </li>
+                <!-- <li>
+                  <a href="#" class="" v="-1"><h2>线下支付</h2><i class="checkmark"></i></a>
+                </li> -->
+
+</ul>
+
+<div class="pay"><h2>需付款</h2><h3>￥<span id="span_needtotal"></span></h3></div>
+</div>	
+<div class="footet"> <ul class="nav_td">
+
+     <li style="width: 100%;"><a href="javascript:PayNow();" class="js">立即支付</a></li>
+       </ul>
+<!-- 默认是微信支付 -->
+<input type="hidden" id="payType" value="1">       
+</div>				
+</div>
+<!-- 电子二维码 -->
+<li id="div_etc">
+<div><img src="" id="img_etc"></div>
+ </li>
+<div data-role="footer" data-position="fixed" style="overflow:hidden;" id="div_selpay">		
+		<div class="bam_di">
+		<a href="javascript:cancelorder();" data-rel="popup" data-transition="slideup" class="kfzx" style="padding-right: 36px;padding-left: 36px;float:left;margin-left: 15px;">取消订单</a>
+         <a href="#popup" data-rel="popup" data-transition="slideup" class="kfzx" style="padding-right: 36px;padding-left: 36px;">立即支付</a>
+        
+        </div>
+	</div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+var theRequest = getRequest();
+var id = theRequest['id'];
+var type = theRequest['type'];
+var orderNo = null;
+function reload(){
+	
+	$("#div_gx").html('');
+	$("#span_payment").text('');
+	$("#span_name").text('');
+	$("#span_mobile").html('');
+	$("#span_stree").html('');
+	$("#ul_pros").empty();
+	
+	if(id && type){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		ucapp.post(getWebRoot()+"app/user/orderDetail.do",parms,function(data){
+			if(data.order){
+			     $("#liuyan").html(data.order.userRemark);
+				var orderInfo = '';
+				var order = data.order;
+				
+				//订单状态和说明
+				switch (order.status) {
+					case -1:orderInfo = '<h1>您的订单已取消！</h1>';break;
+					case 1:orderInfo = '<h1>您的订单已成功提交！<span>请您尽快支付</span></h1>';break;
+					case 2:orderInfo = '<h1>您的订单已支付！<span>请等待管理员处理订单</span></h1>';break;
+					case 3:orderInfo = '<h1>您的订单订购成功！<span>请等待处理</span></h1>';break;
+					case 4:orderInfo = '<h1>您的订单已完成！<span></span></h1>';break;
+					default:break;
+				}
+				$("#div_gx").append(orderInfo);
+				
+				//可支付方式
+				if(order.status==1){
+					var payment = 1;
+					switch (payment) {
+						case 1:
+							payment = '线上支付';
+							$("#ul_payway li:eq(2)").remove();
+							break;
+						case 2:
+							payment = '线下支付';
+							$("#ul_payway li:lt(2)").remove();
+							$("#payType").val(-1);
+							$("#ul_payway a:first").addClass("active");
+							break;
+						case 3:payment = '线上线下均可';
+						/* var op = '<option value="1">微信支付</option>'+
+								'<option value="0">支付宝支付</option>'+
+								'<option value="-1">到店支付</option>';
+								$("#payType").html(op);  */
+						default:break;
+					}
+					$("#span_payment").text(payment);
+				}else{
+					$("#div_selpay").hide();
+				}
+				
+				//地址信息
+				$("#span_name").text(order.name);
+				$("#span_mobile").html(order.mobile);
+				$("#span_stree").html(order.address);
+				
+				//商品信息
+				if(order.subOrders && data.product){
+				   var product = data.product;
+				   for(var i=0;i<order.subOrders.length;i++){
+					   var obj = order.subOrders[i];
+					   product.icon = getImageUrl()+product.icon;
+					   var li = '<li>'+
+			              '<div class="ui_ca">'+
+			               '<div class="pic"> <img src="'+product.icon+'"> </div>'+
+			              '<span class="h5">'+product.name+'</span>'+
+			                '<div class="h6">'+obj.psubTitle+'</div>'+
+			                '<div class="price"><em>￥</em><span>'+obj.price+'</span></div>'+
+			                '<div class="quantity">'+obj.quantity+'</div>'+
+			              '</div>'+
+			            '</li>';
+						$("#ul_pros").append(li);
+				   }
+				}
+				
+				//总价
+				$("#span_total").text(order.totalPrice);
+				$("#span_quantity").text(order.quantity);
+				$("#span_needtotal").text(order.totalPrice);
+				
+				//订单编号
+				orderNo = order.orderNo;
+				
+				//订单状态判断
+				if(order.status==1){
+					$("#div_pay").show();
+				}else{
+					$("#div_pay").hide();
+				}
+				
+				//订单二维码
+				if(order.status==2 || order.status==3){
+					$("#img_etc").attr("src",getImageUrl()+order.electronicImg);
+				}else{
+					$("#div_etc").hide();
+				}
+			}
+		});
+	}
+}
+
+
+
+//支付类型:0支付宝;1微信
+function PayNow(){
+	var payType = $("#payType").val();
+	if(orderNo){
+		if(payType==0){
+			ALIPay();
+		}else if(payType==1){
+			WXPay();
+		}else if(payType==-1){
+			belowLinePay();
+		}
+	}else{
+		alert('订单编号有误');
+	}
+}
+
+function ALIPay(){
+	if(orderNo){
+		var url = getCodeUrl()+'app/alipay/getPayParameter.do';
+		var params = {};
+		params['orderNo'] = orderNo;
+		$.post(url,params,function(data){
+			if(data.success){
+				ucapp.alipay(data.payInfo);
+			}else{
+				alert(alidata.msg);
+			}
+		});
+	}
+}
+function WXPay(){
+	//ucapp.showTip("暂未开通");
+	 if(orderNo){
+			ucapp.post(getWebRoot()+"/wx/appPay/getPayInfo.do",{'orderNo':orderNo},function(data){
+				if(data.success && data.tmpMap){
+					var tmpMap = data.tmpMap;
+					ucapp.wxpay(tmpMap.prepayid,tmpMap.appid,
+							tmpMap.noncestr,tmpMap.package,
+							tmpMap.partnerid,tmpMap.timestamp,tmpMap.sign);
+				}else{
+					ucapp.showTip(data.msg);
+				}
+			});
+	}
+}
+//线下支付
+function belowLinePay(){
+	var r=confirm("确定将订单修改为线下支付吗?");
+	if(r){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		$.post("belowLinePay.do",parms,function(data){
+			alert(data.msg);
+			if(data.success){
+				location = "orderlist.html?type=0";
+			}
+		});
+	}
+} 
+//取消订单
+function cancelorder(){
+	var r=confirm("确定取消订单吗?");
+	if(r){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		ucapp.post(getWebRoot()+"app/user/cancelorder.do",{"id":id,"type":type},function(data){
+			if(data.success){
+				alert(data.msg);
+				if(data.success){
+					location = "list.html";
+				}
+			}
+		});
+	}
+}
+$(function(){
+	
+	reload();
+	
+	var ul_payway = $("#ul_payway a");
+	ul_payway.click(function(){
+		ul_payway.removeClass("active");//active
+		$(this).addClass("active");
+		$("#payType").val($(this).attr("v"));
+	});
+});
+</script>
+</body>
+</html>

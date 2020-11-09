@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>景点订单</title>
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> 
+  <a data-role="button" onclick="ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> 
+  <img src="../images/app/nav_back.png"> 
+  </a>
+    <h1>景点订单</h1>    
+  </div>
+  <div data-role="content">
+
+ <div class="order_ok" style="border-top-width: 0px;">
+ <div class="title">
+			<h2 id="need0"></h2>
+            <!--  <h3>所属景点：南宁青秀山景区</h3> -->
+     </div>
+     
+<div class="mc">
+     <h4>订单状态：<span id="h_status" style="color: red"></span></h4>
+</div> 	
+     
+<div class="mc">
+     <h4>可支付方式：<span id="h_payment" style="color: red"></span></h4>
+</div>
+
+     <div class="mc" id="div_tlist">
+     <h4>数量：</h4>
+        <!-- <h3>成人票2张，儿童2张</h3> -->
+     </div> 
+     
+     	  
+      <div class="mc" style="border-bottom-width: 0px;">
+     <h4 style="float:left;">订单总价：</h4><div class="price"><span><em>￥</em><span id="span_total">0</span></span></div>
+        </div>  
+</div>
+
+
+<div class="order_ok">
+<div class="mc">
+     <h4>出游日期：<span id="span_chu"></span></h4>
+        <!-- <h3>入园方式：景区售票处，凭验证码换票入园</h3> -->
+</div>
+<div class="mc1">
+    <h4>预定人姓名：<span id="span_name"></span></h4>   
+    <h4>预定人手机号：<span id="span_mobile"></span></h4>  
+	</div>
+</div>
+     
+     
+     
+
+
+  </div>
+    
+    
+   <ul data-role="listview" data-icon="false" id="div_selpay" class="order_list">
+             <li class="jtou">
+             <a href="javascript:void(0);"><div class="title">支付方式</div>
+             <div class="the_time">
+             <select name="select-choice-a" id="payType" data-native-menu="false"  data-icon="false">
+        		<option value="1">微信支付</option>
+            	<option value="0">支付宝支付</option>
+            	<!-- <option value="-1">到店支付</option>  -->
+
+          	  </select></div>
+          	  </a>
+			</li>
+    </ul>
+    
+<!-- 订单二维码 -->
+<div class="order_ok" id="div_etc">
+<div class="mc">
+     <div><img src="" id="img_etc" ></div>
+     <h4>电子二维码</h4>  
+</div>
+</div>
+           <!--  <ul data-role="listview" data-icon="false" id="" class="order_list" >
+             <li class="jtou"><a href="#ticket" data-transition="slide"><div class="title">申请退改</div></a>
+			</li>
+            </ul> -->
+            
+            
+            
+<div id="div_pay" data-role="footer" data-position="fixed" style="overflow:hidden;">		
+		<div class="bam_di">
+        <a href="javascript:cancelorder();" data-ajax="false" class="qxyd">取消订单</a>
+        <a onclick="PayNow();" href="javascript:void(0);" data-ajax="false" class="kfzx" 
+        
+        style="padding-right: 42px;padding-left: 42px;">立即支付</a>
+        
+        </div>
+	</div>
+</div>
+<div data-role="page" id="ticket">
+        <div data-role="header" data-position="fixed" class="normal_head">
+        <a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+        <a data-role="button" href="#page1" class="ui-btn-right nav_more"> <img src="../images/app/nav_more.png"> </a>
+            <h1>申请退改</h1>
+            
+        </div>
+        <div data-role="content">        
+          <div class="jt_text" style="margin-top:6px;">
+<h2 class="title">退改说明</h2>
+<div class="con">
+<p>如需退改请登录指挥龙州旅游客户端，在订单详情页申请。本产品支持退款，请于游玩当日24：00前申请，无需支付手续费；同时，本产品不支持修改日期，敬请谅解。</p>
+</div>
+</div>
+        </div>
+    </div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="../js/wxjs.js" ></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+var Request = getRequest(); 
+var id = Request["id"];
+var type = Request["type"];
+var orderNo = null;
+$(function(){
+   	getOrderDetail();
+});
+function getOrderDetail(){
+	if(id && type){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		ucapp.post(getWebRoot()+"app/user/orderDetail.do",parms,function(data){
+			if(data.order){
+				var order = data.order;
+				$("#need0").text(order.attrName);
+				$("#span_total").text(order.totalPrice);
+				
+				var schedule = order.schedule.substring(0,10);
+				$("#span_chu").text(schedule);
+				$("#span_name").text(order.name);
+				$("#span_mobile").text(order.mobile);
+				
+				//订单编号
+				orderNo = order.orderNo;
+				
+				//订单状态判断
+				//订单状态判断
+				if(order.status==1){
+					$("#div_pay").show();
+				}else{
+					$("#div_pay").hide();
+				}
+				
+				//订单状态显示
+				var sta = '';
+				// -1已取消（用户主动取消）,-2超时未支付取消订单，-3作废订单（平台删除），-4已无效（超时未消费）
+				// 1未付款，2已付款待处理，3订购成功，4已完成（已消费）
+				switch (order.status) {
+					case -1:sta = '已取消';break;
+					case 1:sta = '未付款';break;
+					case 2:sta = '已付款，请等待管理员处理订单';break;
+					case 3:sta = '订购成功';break;
+					case 4:sta = '已完成';break;
+					default:break;
+				}
+				$("#h_status").text(sta);
+				
+				//可支付方式
+				if(order.status==1){
+					var payment = order.payment;
+					switch (payment) {
+						case 1:
+							payment = '线上支付';
+							var op = '<option value="1">微信支付</option>'+
+									'<option value="0">支付宝支付</option>';
+							$("#payType").html(op);
+							break;
+						case 2:
+							payment = '线下支付';
+							var op = '<option value="-1">到店支付</option>';
+							$("#payType").html(op);
+						break;
+						case 3:payment = '线上线下均可';
+						var op = '<option value="1">微信支付</option>'+
+								'<option value="0">支付宝支付</option>'+
+								'<option value="-1">到店支付</option>';
+								$("#payType").html(op);
+						default:break;
+					}
+					$("#h_payment").text(payment);
+					$("#payType").selectmenu("refresh");
+				}else{
+					$("#div_selpay").hide();
+				}
+				
+				//订单二维码
+				if(order.status==2 || order.status==3){
+					$("#img_etc").attr("src",getImageUrl()+order.electronicImg);
+				}else{
+					$("#div_etc").hide();
+				}
+				
+			}
+			if(data.ticketOrderItem){
+				var ticketOrderItem = data.ticketOrderItem;
+				var item = null;
+				for(var i = 0;i<ticketOrderItem.length;i++){
+					item = ticketOrderItem[i];
+					var li = '<h3>'+item.ticketName+item.quantity+'张</h3>';
+					$("#div_tlist").append(li);
+				}
+			}
+		});
+	}
+}
+
+//支付类型:0支付宝;1微信
+function PayNow(){
+	var payType = $("#payType").val();
+	if(orderNo){
+		if(payType==0){
+			ALIPay();
+		}else if(payType==1){
+			WXPay();
+		}else if(payType==-1){
+			belowLinePay();
+		}
+	}else{
+		alert('订单编号有误');
+	}
+}
+
+function ALIPay(){
+	if(orderNo){
+		$.post(getCodeUrl()+"app/alipay/getPayParameter.do",{'orderNo':orderNo},function(data){
+			if(data.success){
+				ucapp.alipay(data.payInfo);
+			}else{
+				alert(alidata.msg);
+			}
+		});
+	}
+}
+
+function WXPay(){
+	//alert("暂未开通");
+	 if(orderNo){
+			ucapp.post(getWebRoot()+"/wx/appPay/getPayInfo.do",{'orderNo':orderNo},function(data){
+				if(data.success && data.tmpMap){
+					var tmpMap = data.tmpMap;
+					ucapp.wxpay(tmpMap.prepayid,tmpMap.appid,
+							tmpMap.noncestr,tmpMap.package,
+							tmpMap.partnerid,tmpMap.timestamp,tmpMap.sign);
+				}else{
+					ucapp.showTip(data.msg);
+				}
+			});
+
+	}
+}
+//线下支付
+function belowLinePay(){
+	var r=confirm("确定将订单修改为线下支付吗?");
+	if(r){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		$.post("belowLinePay.do",parms,function(data){
+			alert(data.msg);
+			if(data.success){
+				location = "list.html?type=0";
+			}
+		});
+	}
+} 
+//取消订单
+function cancelorder(){
+	var r=confirm("确定取消订单吗?");
+	if(r){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		ucapp.post(getWebRoot()+"app/user/cancelorder.do",{"id":id,"type":type},function(data){
+			if(data.success){
+				alert(data.msg);
+				if(data.success){
+					location = "list.html";
+				}
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

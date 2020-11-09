@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>确认订单</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+var aid;
+var ticketId;
+var totsum = 0;
+$(function(){
+	 
+	var Request = new Object();
+   	Request = getRequest(); 
+   	aid = Request["aid"];
+   	ticketId = Request["ticketId"];
+   	
+	$("#aid").val(aid);
+	var myDate = new Date ();
+	var mo =myDate.getMonth () + 1;
+	var st =  myDate.getFullYear()+"-"+add0 (myDate.getMonth () + 1) + '-' + add0 (myDate.getDate ());
+    $("#tim").html(st);
+    $("#schedules").val(st);
+	$("#pa1").html(myDate.getFullYear()+"年"+mo+"月");
+	myDate.setMonth(myDate.getMonth()+1);
+ 	var mc =myDate.getMonth () + 1;
+ 	$("#pa2").html(myDate.getFullYear()+"年"+mc+"月");
+	ticketorderfill();
+	gettimes();
+	
+});
+  
+function ticketorderfill(){
+	
+	    var stt =$("#tim").html();
+	    ucapp.post(getWebRoot()+"app/order/ticketorderfill.do",{"aid":aid,"ticketId":ticketId,"schedule":stt},function(data){
+        	if(data.attractions){
+        		$("#name").html(data.attractions.name);
+        	}
+        	if(data.tickets){
+        		totsum = data.tickets.length;
+        		for(var i=0;i<data.tickets.length;i++){
+        			var obj = data.tickets[i];
+        			var dd = 0;
+        			if(obj.id==ticketId){
+        				dd=1;
+        			}
+        			if(obj.salePrice){
+        				obj.salePrice = obj.salePrice.toFixed(2);
+        			}else{
+        				obj.salePrice = 0;
+        			}
+        			var div = ' <li class="jtou"><div class="title">'+obj.name+'<span id="price'+i+'">￥'+obj.salePrice+'</span></div><input type="hidden" id="pri'+i+'" value="'+obj.salePrice+'">'+
+        			'<div class="select_x"><a href="#" onclick="jiannum('+i+')" class="t1"></a><input type="text" name="items['+i+'].quantity" readonly="readonly" class="t3" id="va'+i+'" value="'+dd+'">'+
+        			'<input type="hidden" name="items['+i+'].ticketId" value="'+obj.id+'"><a href="#" onclick="jianum('+i+')" class="t2"></a></div></li>';
+        			$("#order").append(div);
+        		}
+        		$("#order").trigger("create");
+			    $('#order').listview('refresh'); 
+			    count();
+        	}
+
+        });
+}
+  
+function add0 (i) {
+     i = parseInt (i);
+     if (!isNaN (i)) {
+ 	    if (i < 10) {
+ 		    i = '0' + i;
+ 	    }
+     }
+     return i;
+}
+
+  
+function jianum(i){
+	 var shuliang   = $("#va"+i).val();
+	 shuliang = parseInt(shuliang)+parseInt(1);
+		 $("#va"+i).val(shuliang);
+		 count();
+}
+function jiannum(i){
+	 var shuliang   = $("#va"+i).val();
+	 shuliang = parseInt(shuliang);
+	 if(shuliang>=1){
+		 shuliang = shuliang-parseInt(1);
+		 $("#va"+i).val(shuliang);
+		 count();
+	 }
+}
+	
+function count(){
+  if(totsum>0){
+	  total = 0;
+	  for(var i=0;i<totsum;i++){
+		  var pri = $("#pri"+i).val();
+		  var sum = $("#va"+i).val();
+		  var dd = Number(pri)*parseInt(sum);
+		  total  = total+dd;
+	  }
+	  $("#totals").html('订单金额：￥'+total.toFixed(2));
+  }
+ }
+	  
+function selectStartDate(xuan){	
+		$("#tim").html(xuan);
+		$("#schedules").val(xuan);
+		history.go(-1);
+		gettimes();
+}
+	  
+function gettimes(){
+ 	var cc = $("#tim").html();
+ 	ucapp.post(getWebRoot()+"app/order/gettimes.do",{"st":cc},function(data){
+     	 if(data.monthMap){
+       		 $("#datst").html("");
+       		 for (var key in data.monthMap) {  
+                  var il = '';
+                  var lll = '';
+                 
+                  if(data.monthMap[key]==1){
+                 	 lll='<li><a href="#">&nbsp;</a></li>';
+                  }else if(data.monthMap[key]==2){
+                 
+                     lll='<li class="past"><a href="#"><h2>'+key.substring(8,10)+'</h2><h3></h3></a></li>';
+                  }else if(data.monthMap[key]==3){
+                 	 lll='<li class="m"><a href="javascript:selectStartDate(\''+key.substring(0,10)+'\');"><h2>今天</h2><h3></h3></a></li>';
+
+                  }else if(data.monthMap[key]==4){
+                 	 lll='<li><a href="javascript:selectStartDate(\''+key.substring(0,10)+'\');"><h2>'+key.substring(8,10)+'</h2><h3></h3></a></li>';
+                 	
+                  }else if(data.monthMap[key]==5){
+                 	 lll='<li class="first"><a href="#" class="ui-link">'+key.substring(8,10)+'<h2></h2><h3>出行</h3></a></li>';
+                 	
+                  }else if(data.monthMap[key]==6){
+                 	 lll='<li class="first"><a href="#"><h2>今天</h2><h3出发</h3></a></li>';
+               
+                  }else if(data.monthMap[key]==7){
+                 	 lll='<li><a href="javascript:selectStartDate(\''+key.substring(0,10)+'\');"><h2>'+key.substring(8,10)+'</h2><h3></h3></a></li>'
+                
+                  }
+                  $("#datst").append(lll);
+              }
+       	   }
+       	   if(data.nextMonthMap){
+         		 $("#datend").html("");
+         		 for (var key in data.nextMonthMap) {  
+                    var il = '';
+                    var lll = '';
+                    
+                    if(data.nextMonthMap[key]==1){
+               
+                   	 lll='<li><a href="#">&nbsp;</a></li>';
+                    }else if(data.nextMonthMap[key]==2){
+                   
+                       lll='<li class="past"><a href="#"><h2>'+key.substring(8,10)+'</h2><h3></h3></a></li>';
+                    }else if(data.nextMonthMap[key]==3){
+                   	 lll='<li class="m"><a href="javascript:selectStartDate(\''+key.substring(0,10)+'\');"><h2>今天</h2><h3></h3></a></li>';
+     
+                    }else if(data.nextMonthMap[key]==4){
+                   	 lll='<li><a href="javascript:selectStartDate(\''+key.substring(0,10)+'\');"><h2>'+key.substring(8,10)+'</h2><h3></h3></a></li>';
+                   	
+                    }else if(data.nextMonthMap[key]==5){
+                   	 lll='<li class="first"><a href="#" class="ui-link">'+key.substring(8,10)+'<h2></h2><h3>出行</h3></a></li>';
+
+                    }else if(data.nextMonthMap[key]==6){
+                   	 lll='<li class="first"><a href="#"><h2>今天</h2><h3>出发</h3></a></li>';
+                   	
+                    }else if(data.nextMonthMap[key]==7){
+                   	 lll='<li><a href="javascript:selectStartDate(\''+key.substring(0,10)+'\');"><h2>'+key.substring(8,10)+'</h2><h3></h3></a></li>'
+                   	 
+                    }
+                    $("#datend").append(lll);
+                  }
+           }
+ 	});
+}
+	  
+var myreg = /^[1]([3-9])[0-9]{9}$/;
+function tijiaos(){
+		  var mobile = $("#mobile").val();
+		  var name = $("#namesss").val();
+		  if(name==null||name==""){
+			  alert("姓名不能为空！");
+			  return;
+		  }
+		  if(mobile==null||mobile==""){
+			  alert("手机号不能为空！");
+			  return;
+		  }
+		  if(!myreg.test(mobile)){
+				alert("请输入有效的手机号码");
+				return;
+			}
+		  var dd = 0;
+		  for(j =0;j<totsum;j++){
+			  var sum = $("#va"+j).val();
+			    dd=parseInt(dd)+parseInt(sum);
+		  }
+		  if(dd<1){
+				alert("购买数量不能为0");
+				return;
+		  }
+		 /*  var params = $('#tis').serializeArray();
+		  $.post("ticketorderverify.do",params,function(data){
+			  
+		  }); */
+		  var params = $('#tis').serializeArray();
+			var rparam = {};
+			//params返回对象组,需要合并为一个对象
+			$(params).each(function(index,obj){
+				if(obj.value!=''){
+					rparam[obj.name]=obj.value;
+				}
+			});
+			ucapp.post(getWebRoot()+"app/order/ticketorderverify.do",rparam,function(data){	
+			
+				if(data.success){
+					goUrl('../order/showAttr.html?id='+data.id+'&type=1');
+					//window.location.href ="../order/showAttr.html?id="+data.id+"&type="+data.type;
+				}else{
+					if(data.fal){
+						alert(data.fal);	
+					}else{
+					alert('信息有误!');
+					}
+				}
+			});
+}
+function closePop(){
+	$("#popup_window").popup("close");
+};
+</script>
+<style type="text/css">
+.ui-popup-container {
+width: 90%;
+}
+</style>
+
+</head>
+<body>
+<div data-role="page" id="scenic">
+<form action="" id="tis"  data-ajax="false">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>填写订单</h1>    
+  </div>
+  <div data-role="content">
+  
+  <input type="hidden" name="schedule" id="schedules" value="">
+  <input type="hidden" name="aid" id="aid" value="">
+  <div class="dd_title" id="name"></div>
+  <ul data-role="listview" data-icon="false" id="order"  class="order_list">
+			<li class="jtou"><a href="#itinerary" data-transition="slidedown"><div class="title">选择出游时间</div><div class="the_time" id="tim">请选择出游日期</div>
+</a>
+     </li>
+
+            </ul>
+
+    <ul data-role="listview" data-icon="false" id="" class="order_list">
+<li>
+<div class="bar1"><h2>姓名：</h2><input id="namesss" name="name" type="text" placeholder="请填写预定人姓名" value=""><img src="../images/app/cv.png" class="cv"></div>
+</li>
+<li>
+<div class="bar2"><h2>手机：</h2><input id="mobile" name="mobile" type="text" placeholder="请填写预定人手机" value=""><img src="../images/app/cv.png" class="cv"></div>
+</li>
+</ul>
+   
+  </div>
+<div data-role="footer" data-position="fixed" style="overflow:hidden;">		
+		<div class="bam_di">
+        <div class="zh" id="totals">订单金额：￥0</div>
+         <a href="javascript:tijiaos()" data-ajax="false" class="kfzx" style="padding-right: 36px;padding-left: 36px;">提交订单</a>
+        
+        </div>
+	</div>
+	  </form>
+</div>
+<div data-role="page" id="itinerary">
+        <div data-role="header" data-position="fixed" class="normal_head">
+        <a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back_a.png"> </a>
+        <a data-role="button" href="#page1" class="ui-btn-right nav_more"> <img src="../images/app/nav_more_a.png"> </a>
+            <h1>出游日程</h1>
+            
+        </div>
+        <div data-role="content">
+          <div class="gldp_default">
+<div class="titte" id="pa1"></div>
+<div class="container">
+<ul class="week">
+  <li>日</li>
+  <li>一</li>
+  <li>二</li>
+  <li>三</li>
+  <li>四</li>
+  <li>五</li>
+  <li>六</li>
+</ul><div class="clear"></div>
+<ul class="con" id="datst">
+
+</ul><div class="clear"></div>
+</div>
+<div class="titte" id="pa2"></div>
+<div class="container">
+<ul class="week">
+  <li>日</li>
+  <li>一</li>
+  <li>二</li>
+  <li>三</li>
+  <li>四</li>
+  <li>五</li>
+  <li>六</li>
+</ul><div class="clear"></div>
+<ul class="con" id="datend">
+
+</ul><div class="clear"></div>
+</div>
+</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport"
+		content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+		name="viewport">
+	<title>线路详情</title>
+	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+	<link rel="stylesheet" href="../css/app/layout.css">
+	<link rel="stylesheet" href="../css/app/gldp_default.css">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+	<script src="../js/jquery.myslide.js"></script>
+	<script src="../js/mydate2.0.js"></script>
+	<script src="../js/ucapp.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var id;
+		var currage = 1;
+		var totalPage = 1;
+		var iscoll = false;
+		$(function () {
+
+			var Request = new Object();
+			Request = getRequest();
+			id = Request["id"];
+
+			reload();
+		});
+
+		function reload() {
+			currage = 1;
+			totalPage = 1;
+			getdata();
+			commentpage();
+
+			if (iscoll) {
+				iscoll = false;
+				collect();
+			}
+		}
+
+		function getdata() {
+			ucapp.post(getWebRoot() + "app/peripherytravel/detailpost.do", { "id": id }, function (data) {
+				//价格日期数据
+				var dateLists = new Array(); //对应日期
+				var priceLists = new Array();//对应价格
+				$(data.dateLists).each(function (i, o) {
+					var dateList = new Array();
+					dateList = o;
+					console.log(dateList);
+					dateLists.push(dateList);
+				})
+				$(data.priceLists).each(function (i, o) {
+					var priceList = new Array();
+					priceList = o;
+					priceLists.push(priceList);
+				})
+				var bottomArray = new Array();
+				if (dateLists && priceLists && dateLists.length > 0 && priceLists.length > 0) {
+					for (var j = 0; j < dateLists.length; j++) {
+						var bottomArrays = new Array();
+						if (dateLists[j] && priceLists[j] && dateLists[j].length > 0 && priceLists[j].length > 0) {
+							for (var i = 0; i < dateLists[j].length; i++) {
+								var obj = {};
+								obj.date = dateLists[j][i];
+								obj.text = $.trim(priceLists[j][i]);
+								bottomArrays.push(obj);
+							}
+						}
+						bottomArray.push(bottomArrays);
+					}
+				}
+				if (data.peripheryTravel) {
+
+					$("#lis").empty();
+					$("div[id^='itinerary_']").each(function (i) {
+						// 			 alert($(this).html());
+						$(this).remove();
+					});
+
+
+					//标题图
+					$('#show_img').attr('src', getImageUrl() + data.peripheryTravel.titlePath);
+					$("#tit").html(data.peripheryTravel.title);
+					$("#ji").html(data.peripheryTravel.schedule);
+					$("#notice").html(data.peripheryTravel.notice);
+					$("#priceintroduction").html(data.peripheryTravel.priceintroduction);
+					if (data.tital && data.haoping) {
+						$("#ttl").html('<div class="num" id="">' + data.haoping + '%</div>购买此产品的用户满意度为' + data.haoping + '%<br/>已有' + data.tital + '人点评')
+					}
+					//套餐
+					if (data.peripheryTravel.psubList) {
+						$(data.peripheryTravel.psubList).each(function (i, o) {
+							//套餐价格日期div					
+							var dateDiv = '<div data-role="page" id="itinerary_' + i + '">' +
+								'<div data-role="header" data-position="fixed" class="normal_head">' +
+								'<a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>' +
+								'<h1>出游日程</h1>' +
+								'</div>' +
+								'<div data-role="content" id="date_' + i + '">' +
+								'</div>' +
+								'<div data-role="content" id="date2">' +
+								'</div></div>';
+							$("body").append(dateDiv);
+							//价格日期控件
+							$('#date_' + i).myDate({
+								limitStart: data.startDate,
+								limitEnd: data.endDate,
+								priceFix: o.myPrice.price + '￥',
+								allShow: false,
+								currIndex: i,
+								bottomArray: bottomArray[i],
+								callback: function (data) {
+									date = data.date;
+									var psubId = $('#psubId').val();
+									var href = "order_fill.html?pid=" + id + "&ptSubId=" + o.id;
+									href += "&departureDate=" + date.getFullYear() + '-';
+									href += (date.getMonth() + 1 <= 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+									href += date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();
+									window.location.href = href;
+								}
+							});
+
+							var obj = o;
+							if (obj.peoNum == null) {
+								obj.peoNum = 0;
+							}
+							var dd = '精品' + obj.peoNum + '人套餐';
+							var pri = 0;
+							if (obj.myPrice) {
+								pri = obj.myPrice.price;
+							}
+							var div =`<li style="margin:0;padding:1.3vw 0 0 4.3vw;height:12vh;">
+								<a onclick="openri(${obj.id},${i})"  data-transition="fade" data-ajax="false">
+								<h2 style="margin-bottom:1.6vh">${dd}</h2>
+								<h3>${ obj.title} </h3>
+								<div class="tj">预定</div><div class="price"><span><em>￥</em>${pri}</span>起</div>
+							</a></li>`
+							
+							// '<li style="margin:0;padding:0;"><a onclick="openri(' + obj.id + ',' + i + ')" data-transition="fade" data-ajax="false" style="padding-left: 2.7vw;margin:0">' +
+							// 	'<h2 style="margin-bottom: 12px;margin-top:1.2vh">' + dd + '</h2>' +
+							// 	'<h3 style="line-height: 5.1vh;height: 5.1vh;margin-right: 24vw;">' + obj.title + '</h3>' +
+							// 	'<div class="tj">预定</div><div class="price"><span><em>￥</em>' + pri + '</span>起</div>' +
+							// 	'</a></li>';
+							$(div).addClass("jingping")
+							$("#lis").append(div);
+						})
+					}
+
+					//详细行程
+					if (data.peripheryTravel.trips) {
+
+						$('#div_con').empty();
+
+						$(data.peripheryTravel.trips).each(function (i, o) {
+							var tridiv = '<div class="itinerary">' +
+								'<h3><img src="../images/app/xc/d1.png"><span>第' + o.sorted + '天</span>' + o.title + '</h3>' +
+								'<h4><img src="../images/app/xc/u1.png">集合计划</h4><p>' + o.gather + '</p>' +
+								'<h4><img src="../images/app/xc/u2.png">旅途餐饮</h4>' +
+								'<p>' + o.food + '</p>' +
+								'<h4><img src="../images/app/xc/u3.png">入住酒店</h4>' +
+								'<p>' + o.hotel + '</p></div>';
+
+							$('#div_con').append(tridiv);
+						});
+					}
+
+				}
+				if (data.vvv) {
+					if (data.vvv == 1) {
+						$("#imgg").attr("src", "../images/app/nav_collect_a.png");
+					}
+				}
+
+			});
+		}
+
+		//评论
+		function commentpage() {
+			ucapp.post(getWebRoot() + "app/peripherytravel/commentpage.do", { "page": currage, "objectId": id, "type": 2 }, function (data) {
+				totalPage = data.pages;
+				currage = data.currage;
+				if (currage >= totalPage) {
+					$("#xiaye").hide();
+				}
+				if (data.rows) {
+					$("#cccv").empty();
+					for (var i = 0; i < data.rows.length; i++) {
+						var obj = data.rows[i];
+						if (obj.createTime) {
+							obj.createTime = obj.createTime.substring(0, 10);
+						}
+						var dd = "";
+						if (obj.star) {
+							for (var j = 0; j < data.onecomt.star; j++) {
+								dd += '<img src="../images/app/star.png">';
+							}
+						}
+						if (obj.headImg == null || obj.headImg == "") {
+							obj.headImg = '../images/app/userHead.jpg';
+						} else {
+							obj.headImg = getImageUrl() + obj.headImg;
+						}
+						var div = '<li><div class="comment"><div class="title"><img src="' + obj.headImg + '" class="user">' +
+							'<h2>' + obj.userName + '</h2><div class="star">' + dd + '</div></div>' +
+							'<div class="container"><div class="time">' + obj.createTime + '</div>' +
+							'<div class="text">' + obj.content + '</div>' +
+							'</div></div></li>';
+						$("#cccv").append(div);
+						$("#onecom").append(div);
+					}
+				}
+				if (data.onecomt) {
+					var dd = "";
+					if (data.onecomt.star) {
+						for (var j = 0; j < data.onecomt.star; j++) {
+							dd += '<img src="../images/app/star.png">';
+						}
+					}
+					var li = '<li><div class="comment"><div class="title"><img src="' + data.onecomt.headImg + '" class="user">' +
+						'<h2>' + data.onecomt.userName + '</h2><div class="star">' + dd + '</div></div>' +
+						'<div class="container"><div class="time">' + data.onecomt.createTime + '</div>' +
+						'<div class="text">' + data.onecomt.content + '</div>' +
+						'</div></div></li>';
+					$("#onecom").empyt();
+					$("#onecom").append(li);
+				}
+			});
+		}
+
+		function xia() {
+			if (currage < totalPage) {
+				currage++;
+				$("#cccv").empty();
+				commentpage();
+			} else {
+				$("#xiaye").hide();
+			}
+
+		}
+
+		//收藏
+		function collect() {
+			ucapp.checkStatus(function (data) {
+				if (data.success) {
+					ucapp.post(getWebRoot() + 'app/peripherytravel/collectornot.do', { 'yjId': id },
+						function (data) {
+							if (parseInt(data.count) > -1) {
+								$('#colle').html(data.count);
+							}
+							if (data.ccc == 0) {
+								$("#imgg").attr("src", "../images/app/nav_collect.png");
+							} else if (data.ccc == 1) {
+								$("#imgg").attr("src", "../images/app/nav_collect_a.png");
+							}
+							alert(data.msg);
+						});
+				} else {
+					iscoll = true;
+					ucapp.gotoLogin();
+				}
+			})
+		}
+
+		function openri(puids, i) {
+			puid = puids;
+			var href = "#itinerary_" + i;
+			window.location.href = href;
+		}
+
+	</script>
+	<style type="text/css">
+		.ui-popup-container {
+			width: 90%;
+		}
+	</style>
+</head>
+
+<body>
+	<a href="#itinerary" id="dianss"></a>
+	<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ebebeb;">
+		<div data-theme="b" data-role="header" data-position="fixed">
+			<a data-role="button" onclick="javascript:ucapp.goToBack();" data-rel="back" data-transition="slide"
+				class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+			<!-- <a data-role="button" href="#" class="ui-btn-right nav_share"> <img src="images/app/nav_share.png"> </a> -->
+			<a data-role="button" onclick="collect()" class="ui-btn-right nav_share"> <img id="imgg"
+					src="../images/app/nav_collect.png"> </a>
+			<h3></h3>
+		</div>
+		<div data-role="content">
+			<div data-controltype="image" class="index_show">
+				<img id="show_img" src="" alt="image" class="show_img">
+				<div class="name" style="position: absolute;">
+					<h2 id="tit"></h2>
+					<h3 id="ji"></h3>
+				</div>
+			</div>
+
+
+			<ul data-role="listview" data-icon="false" class="room_list" id="lis">
+				  <!-- <li><a href="出游时间.html" data-transition="fade" data-ajax="false" style="padding-left: 20px;">
+				
+				<h2 style="margin-bottom: 12px;">精选家庭两人套餐</h2>
+                <h3 style="line-height: 34px;height: 68px;margin-right: 180px;">桂林南溪山公园成人票2张+白龙泉门票2张+桂林统一联邦大酒店标准双人房1晚</h3>
+              
+                <div class="tj">预定</div>
+                <div class="price"><span><em>￥</em>1528</span>起</div>
+                </a>
+			</li> -->
+			
+			</ul>
+			<div class="comment_on">
+				<h1>评价</h1>
+				<ul id="onecom">
+					<!--    <li><div class="comment">
+                  <div class="title"><img src="images/app/user.jpg" class="user"><h2>世***得（匿名）</h2><div class="star"> <img src="images/app/star.png"> <img src="images/app/star.png"> <img src="images/app/star.png"> <img src="images/app/star.png"> <img src="images/app/star.png"> </div></div>
+                  <div class="container">
+                    <div class="time">2016-05-01 12:22:00</div>
+                    <div class="text">评价内容评价内容评价内容评价内容评价内容评价内容评价内容评价内容</div>
+                  </div>
+                  </div></li> -->
+				</ul>
+				<div class="btn_an">
+					<a href="#bbs" data-ajax="false" class="ui-link">查看全部评价</a></div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">详细行程</h2>
+				<div class="con" id="div_con">
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">价格说明</h2>
+				<div class="con" id="priceintroduction">
+
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">预订须知</h2>
+				<div class="con" id="notice">
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div data-role="page" id="bbs">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+				<img src="../images/app/nav_back.png"> </a>
+
+			<h1>评价</h1>
+
+		</div>
+		<div data-role="content">
+			<ul data-role="listview" data-icon="false" id="thelist" class="bbs_list1">
+				<li class="li5">
+					<div class="txt" id="ttl">
+						<div class="num" id="">0%</div>
+						购买此产品的用户满意度为0%<br />
+						已有0人点评
+					</div>
+				</li>
+				<div id="cccv">
+				</div>
+				<li class="li2" id="xiaye"
+					style="border-top-width: 1px;border-top-style: solid;border-top-color: #ededed;"> <a href="#"
+						data-transition="fade" class="more" style="text-align:center" data-ajax="false"> 查看更多点评 </a>
+				</li>
+			</ul>
+		</div>
+
+
+	</div>
+</body>
+
+</html>

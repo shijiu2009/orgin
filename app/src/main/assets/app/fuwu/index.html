@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+	<title>jQuery Mobile Web 应用程序</title>
+	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+	<link rel="stylesheet" href="../css/app/layout.css">
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+	<script src="../js/ucapp.js" type="text/javascript"></script>
+	<meta name="format-detection" content="telephone=yes" />
+	<script type="text/javascript">
+function scanning(){
+
+	ucapp.scanning(function(content){
+		//获取扫码结果，上传打卡信息
+
+	});
+}
+
+</script>
+</head>
+<body>
+<div data-role="page" id="page1" style="background-color:#fff;">
+	<div data-role="header" data-position="fixed" class="normal_head" style="background-color: #fff!important;">
+		<h1></h1>
+
+	</div>
+
+	<div data-role="content">
+		<div class="fw_style">
+			<h2>认识<span class="distination"></span></h2>
+			<div class='ioo'>
+				<a href="../wonderful/survey.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/gk.png" class="mm">
+					<h4><span class="distination"></span>概况</h4>
+
+				</a>
+				<a href="../video/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/wsp.png" class="mm">
+					<h4>微视频</h4>
+
+				</a>
+
+				<a href="../article/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/mswh.png" class="mm">
+					<h4>民俗文化</h4>
+
+				</a>
+				<a href="../information/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/lyzx.png" class="mm">
+					<h4>旅游资讯</h4>
+
+				</a>
+
+				<a href="../product/list.html?byname=tsms" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/tsms.png" class="mm">
+					<h4>特色美食</h4>
+
+				</a>
+			</div>
+			<h2>旅行服务</h2>
+			<div class='ioo'>
+				<a href="../attractions/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/rmjd.png" class="mm">
+					<h4>热门景点</h4>
+
+				</a>
+				<a href="../peripherytravel/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/jpxl.png" class="mm">
+					<h4>精品线路</h4>
+
+				</a>
+				<a href="../hotel/list.html?hotelOrHome=1" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/jdzs.png" class="mm">
+					<h4>酒店住宿</h4>
+
+				</a>
+				<a href="../hotel/list.html?hotelOrHome=2" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/ii4.png" class="mm">
+					<h4>特色民宿</h4>
+
+				</a>
+				<a href="../product/list.html?byname=dbtc" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/dbtc.png" class="mm">
+					<h4>地标特产</h4>
+
+				</a>
+			</div>
+			<h2>智能服务</h2>
+			<div class='ioo'>
+				<a href="../serviceInformation/index.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/znfw.png" class="mm">
+					<h4>智能服务</h4>
+
+				</a>
+				<a href="../my/consultation.html?typeId=2" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/lyzx1.png" class="mm">
+					<h4>旅游咨询</h4>
+
+				</a>
+
+			</div>
+			<h2>旅游服务</h2>
+			<div class='ioo'>
+				<!--<a href="javascript:scanning();" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/dy.png" class="mm">
+					<h4>电子导游</h4>
+
+				</a>-->
+				<a href="../my/complaint.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/tsjy.png" class="mm">
+					<h4>投诉建议</h4>
+
+				</a>
+				<a href="javascript:ucapp.call(110)"  data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/yjjy.png" class="mm">
+					<h4>一键救援</h4>
+
+				</a>
+
+			</div>
+			<h2>其他服务</h2>
+			<div class='ioo'>
+				<a href="../article/alist.html" data-ajax="false" data-transition="slide" class="li">
+					<img src="../images/app/fuwu/ii1.png" class="mm">
+					<h4>精品文章</h4>
+				</a>
+				<a href="../activitys/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/hdss.png" class="mm">
+					<h4>活动盛世</h4>
+
+				</a>
+				<a href="../atlas/list.html" data-ajax="false" data-transition="slide" class="li">
+
+					<img src="../images/app/fuwu/zm.png" class="mm">
+					<h4>最美<span class="distination"></span></h4>
+
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+</body>
+</html>

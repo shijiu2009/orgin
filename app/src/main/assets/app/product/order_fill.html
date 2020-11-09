@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>产品订单</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/login.css?s=3">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<link rel="stylesheet" href="../css/app/order.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+var theRequest = getRequest();
+var productId = theRequest['productId'];
+var piid = theRequest['piid'];
+$(function(){
+	$("#byid").val(productId);
+	$("#quantity").val(1);
+	$("#piid").val(piid);
+	
+	reload();
+
+});
+
+ function reload(){
+	    $("#address").html("");
+		ucapp.checkStatus(function(data){
+			if(data.success){ 
+		ucapp.post(getWebRoot()+"app/order/getproductorder.do",{"piid":piid,"productId":productId},function(data){
+			if(data.addrlist){
+				for(var i=0;i<data.addrlist.length;i++){
+				 	var obj = data.addrlist[i];
+				 	var dd='';
+				 	var cc = '';
+				 	if(obj.theDefault==1){
+				 		dd='<a class="add_first" href="javascript:xuanaddress('+obj.id+')">';
+				 		cc = '[默认]';
+				 	}else{
+				 		dd='<a class="add_li" href="javascript:xuanaddress('+obj.id+')">';
+				 	}
+					var div = '<li>'+dd+'<div class="media-body"><h4>收货人：'+obj.consignee+
+					'<span class="pull-right">'+obj.mobile+'</span></h4><h5>'+cc+
+						'收货地址：'+obj.province+obj.city+obj.county+obj.street+'</h5></div></a></li>';
+					$("#address").append(div);
+					
+				}
+			} 
+			if(data.mo){
+				$("#adds").val(data.mo.id);
+				$("#shouhuo").html('收货人：'+data.mo.consignee+'<span class="pull-right">'+data.mo.mobile+'</span> ');
+			    $("#addre").html('收货地址:'+data.mo.province+data.mo.city+data.mo.county+data.mo.street);
+			}
+			if(data.product&&data.productItem){
+				
+				var icon = getFullImageUrl(data.product.icon);
+				var ll = '<li><div class="ui_ca"><div class="pic"> <img src="'+icon+'"> </div>'+
+	           '<span class="h5">'+data.product.name+'</span>'+
+	            '<div class="h6">'+data.productItem.name+'</div><div class="price"><em>￥</em><span>'+data.productItem.showPrice+'</span></div>'+
+	            '<div class="tb-numberOperation">'+
+	            '<a class="pull-left x-gray ui-link" href="javascript:jiannum()" ><span class="">-</span></a>'+
+	            '<span class="pull-text"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">'+
+	            '<input name="" id="ss" readonly="readonly" type="text" value="1"></div></span>'+
+	            '<a class="pull-left x-gray ui-link" href="javascript:jianum()"><span class="">+</span></a>'+
+	            '</div></div></li>';
+	            price = data.productItem.showPrice;
+	            $("#quan").html('共1件商品 合计：<span id="price">￥'+price.toFixed(2)+'</span>');
+	            
+			  $("#all").html(ll);
+			}
+		 });
+	    }else{
+	    	ucapp.gotoLogin();
+	    }
+	  });
+}
+var price = 0;
+function jianum(){
+	 var shuliang   = $("#ss").val();
+	 shuliang = parseInt(shuliang)+parseInt(1);
+		 $("#ss").val(shuliang);
+		var cc = price*shuliang;
+		 $("#quan").html('共'+shuliang+'件商品 合计：<span id="price">￥'+cc.toFixed(2)+'</span>');
+		 $("#quantity").val(shuliang);
+}
+function jiannum(){
+	 var shuliang   = $("#ss").val();
+	 shuliang = parseInt(shuliang);
+	 if(shuliang>=2){
+		 shuliang = shuliang-parseInt(1);
+		 $("#ss").val(shuliang);
+		 var cc = price*shuliang;
+		 $("#quan").html('共'+shuliang+'件商品 合计：<span id="price">￥'+cc.toFixed(2)+'</span>');
+		 $("#quantity").val(shuliang);
+	 }
+}
+
+function gobuy(){
+	var ad = $("#adds").val();
+	var byid =$("#byid").val();
+	var quantity = $("#quantity").val();
+	var userRemark = $("#userRemark").val();
+	if(ad==null){
+		alert("请选择地址!");
+		return;
+	}
+	if(quantity<1){
+		alert("请选择数量!");
+		return;
+	}
+	if(ad!=null&&ad!=''){
+	if(byid!=null&&productId!=null&&piid!=null){
+		ucapp.post(getWebRoot()+"app/order/productorderverify.do",
+				{"addressid":ad,"byid":byid,"subOrders[0].quantity":quantity,"subOrders[0].psubId":piid
+			,"userRemark":userRemark},function(data){
+				if(data.fal){
+					alert(data.fal);
+				}
+				if(data.order){
+					goUrl('../order/showProduct.html?id='+data.order.id+'&type=3');
+				}
+		});
+	}
+  }else{
+	  alert("请选择地址");
+  }
+}
+
+function xuanaddress(id){
+    ucapp.post(getWebRoot()+"/app/order/getaddress.do",{"id":id},function(data){
+    	if(data.mo){
+    		$("#adds").val(data.mo.id);
+    		$("#shouhuo").html('收货人：'+data.mo.consignee+'<span class="pull-right">'+data.mo.mobile+'</span> ');
+		    $("#addre").html('收货地址:'+data.mo.province+data.mo.city+data.mo.county+data.mo.street);
+    	}
+    	history.back();
+    });
+}
+</script>
+
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>确认订单</h1>    
+  </div>
+  <div data-role="content">
+  <form action="productorderverify.do" id="ccs" method="post" data-ajax="false" >
+  <input id="adds" name="addressid"  type="hidden">
+    <input id="byid" name="byid"  type="hidden">
+      <input id="quantity" name="subOrders[0].quantity"  type="hidden">
+        <input id="piid" name="subOrders[0].psubId"  type="hidden">
+ 
+<a class="add_panel" href="#bbs" data-transition="slideup" data-ajax="false">
+  <img src="../images/app/pin_2.png">
+    <div class="media-body" > 
+                <h4 id="shouhuo">收货人：
+                  <span class="pull-right"></span> 
+                </h4>  
+                <h5 id="addre">收货地址：</h5>  
+                <!--<h5 class="text-warning">（收货不方便时，可选择代收货服务）</h5> -->
+              </div>
+  </a>
+  <div data-role="popup" id="dfs009" class="ui-content popup_window" data-theme="a" style="max-width:700px;border-radius: 10px;">
+  <p>抱歉，该商品在收货地址内不可售，请重选收货地址！</p>
+  <a href="javascript:closePop();" class="btn">确定</a>
+</div>
+  <ul data-role="listview" data-inset="true"  data-icon="" class="list1 cart_div">
+  
+      <li>
+        <div class="panel-heading">
+           </div>
+        <div class="panel-container">
+          <ul id="all">
+            </ul>
+  </div> 
+  <div class="tip0">
+     
+                   
+
+
+<div class="btn-xs"> 
+          <span class="div-right"><textarea cols="" name="userRemark" id="userRemark" rows="" placeholder="选填，可填写您和卖家达成一致的要求"></textarea></span>  
+                  <span class="pull-left">买家留言</span> 
+                  </div>
+<div class="btn-xs"> 
+                   <span class="aoc-right" id="quan" >共1件商品 合计：<span id="price">￥0</span></span>  
+                  </div>
+  </div>
+  
+  </li>
+  </ul>
+ </form>
+  </div>
+<div data-role="footer" data-position="fixed" style="overflow:hidden;">		
+		<div class="bam_di">
+
+         <a href="javascript:gobuy();" data-ajax="false" class="kfzx" style="padding-right: 36px;padding-left: 36px;">提交订单</a>
+        
+        </div>
+	</div>
+</div>
+<div data-role="page" id="bbs">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+<!--    <a data-role="button" href="#page1" class="ui-btn-right nav_more"> <img src="${pageContext.request.contextPath}/wxplatform/images/app/nav_more.png"> </a> -->
+    <h1>收获地址</h1>
+  </div>
+  <div data-role="content">
+  
+  
+  <ul id="address">
+  
+				<!-- <li>
+					<a class="add_first">
+						<div class="media-body">
+							<h4>
+								收货人：张三 <span class="pull-right">13758547152</span>
+							</h4>
+							<h5>[默认]收货地址：云南省昆明市高新区昌源北路300号城市新A座1508室</h5>
+						</div>
+					</a>
+				</li>
+				<li>
+					<a class="add_li" href="收货地址详细.html" data-ajax="false">
+						<div class="media-body">
+							<h4>
+								收货人：张三 <span class="pull-right">13758547152</span>
+							</h4>
+							<h5>收货地址：云南省昆明市高新区昌源北路300号城市新A座1508室</h5>
+						</div>
+					</a>
+				</li> -->
+
+			</ul>
+  </div> 
+  <div data-role="footer" data-position="fixed" data-tap-toggle="false" style="overflow:hidden;">
+    <div data-role="navbar">
+      <div class="nav_cart">
+      
+      <a href="../my/addressAdd.html" class="js_a" data-ajax="false" style="width:100%;font-size: 26px;">添加新地址</a>
+	       </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

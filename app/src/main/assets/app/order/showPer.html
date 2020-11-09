@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>线路订单</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/jquery.myslide.js"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> 
+  <a data-role="button" onclick="javascript:ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>线路订单</h1>    
+  </div>
+  <div data-role="content">
+  <div id="content">
+
+ </div>
+ 
+ 
+ <div class="title_h3">订单状态</div>
+<div class="order_ok" style="margin-bottom: 0px;">
+ <div class="mc" style="border-bottom-width: 0px;">
+            <h3 style="color: red;" id="h_status"></h3>
+     </div>      
+ </div>
+ 
+ 
+ <div class="title_h3">备注信息</div>
+<div class="order_ok" style="margin-bottom: 0px;">
+ <div class="mc" style="border-bottom-width: 0px;" id="mc">
+            <h3></h3>
+     </div>      
+ </div>
+ 
+ <div class="title_h3">联系人信息</div>
+<div class="order_ok">
+<div class="mc1" id="mc1">
+        <h4>预定人姓名：**</h4>   
+        <h4>预定人手机号 ****</h4>  
+		</div>
+        </div>
+
+ <div class="order_ok" style="background-color: transparent;border-bottom-width: 0px;border-top-width: 0px;"> 
+  <div class="mc" style="border-bottom-width: 0px;">
+     <h4 style="float:left;">订单总价：</h4><div class="price"><span id="totalPrice"><em>￥</em>0</span></div>
+        </div>   
+ </div>    
+  </div>
+
+		<ul data-role="listview" data-icon="false" id="" class="order_list">
+             <li class="jtou">
+             <a href="javascript:void(0);"><div class="title">支付方式</div>
+             <div class="the_time">
+             <select name="select-choice-a" id="payType" data-native-menu="false"  data-icon="false">
+        		<option value="1">微信支付</option>
+            	<option value="0">支付宝支付</option>
+            	<!-- <option value="-1">到店支付</option> -->
+          	  </select></div>
+          	  </a>
+			</li>
+    </ul>
+		<br/><br/><br/>
+<div id="div_pay" data-role="footer" data-position="fixed" style="overflow:hidden;display: none;">		
+		<div class="bam_di">
+        <a href="javascript:cancelorder();" data-ajax="false" class="qxyd">取消订单</a>
+        <a href="javascript:PayNow();" data-ajax="false" class="kfzx" style="padding-right: 36px;padding-left: 36px;">立即支付</a>
+        </div>
+	</div>
+</div>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/wxplatform/js/wxjs.js?v=44" ></script>
+<script type="text/javascript">
+var Request = getRequest(); 
+var id = Request["id"];
+var type = Request["type"];
+var totalPrice = 0;
+var orderNo = null;
+$(function(){
+	reload();
+});
+function reload(){
+	//先请内容
+		$("#content").html("");  
+	ucapp.post(getWebRoot()+"app/user/orderDetail.do",{"type":type,"id":id},function(data){
+		if(data.order){
+			var obj = data.order;
+			if(obj.userRemark != null){
+				$('#mc').html('<h3>'+obj.userRemark+'</h3>');
+			}
+			$('#mc1').html('<h4>预定人姓名：'+obj.name+'</h4><h4>预定人手机号：'+obj.mobile+'</h4> ');
+			$("#totalPrice").html('<em>￥</em>'+obj.totalPrice);
+		 	
+			//订单编号
+			orderNo = obj.orderNo;
+			
+			//订单状态判断
+			if(obj.status==1){
+				$("#div_pay").show();
+			}else{
+				$("#div_pay").hide();
+			}
+			
+			//订单状态显示
+			var sta = '';
+			// -1已取消（用户主动取消）,-2超时未支付取消订单，-3作废订单（平台删除），-4已无效（超时未消费）
+			// 1未付款，2已付款待处理，3订购成功，4已完成（已消费）
+			switch (obj.status) {
+				case -1:sta = '已取消';break;
+				case 1:sta = '未付款';break;
+				case 2:sta = '已付款';break;
+				case 3:sta = '订购成功';break;
+				case 4:sta = '已完成';break;
+				default:break;
+			}
+			$("#h_status").text(sta);
+			
+			
+			if(data.item){
+		 		$(data.item).each(function(i,o){
+			     var item ='';
+			     //套餐子项
+			     $(o.items).each(function(i,o){
+			    	var name='';
+			    	var addrdss = '';
+			    	var lastDate= '';
+			    	var startTime ='';
+			    	var endTime ='';
+			    	 if(o.productType == 1){//景点门票
+			    		 if(o.ticket != null){
+			    			 name =o.ticket.attractionsName;
+			    		 }
+			    		 
+			    		 item='<div class="title"><h2>'+o.title+'<span class="aoc">数量：'+o.quantity+'张</span></h2>'+
+			                '<h3>所属景点：'+name+'</h3></div>';
+			    	 }else if(o.productType == 2){//酒店房型
+			    		 if(o.hotel != null){
+			    			 name =o.hotel.name;
+			    			 addrdss = o.hotel.address;
+			    			 lastDate = o.hotel.lastDate;
+			    		 }
+			    	 	 if(o.hotelRoom != null){
+			    	 		startTime = o.hotelRoom.startTime;
+			    	 		endTime = o.hotelRoom.endTime;
+			    	 		
+			    	 		if(startTime.length >10){
+			    	 			startTime = startTime.substring(0,10);
+			    	 		}
+			    	 		
+			    	 		if(endTime.length >10){
+			    	 			endTime = endTime.substring(0,10);
+			    	 		}
+			    	 	 }
+			    		 
+			    		 item='<div class="title"><h2>'+o.title+'<span class="aoc">数量：'+o.quantity+'间</span></h2>'+
+					                '<h3>所属酒店：'+name+'</h3>'+
+					                '<h3>地址：'+addrdss+'</h3>'+
+					                '<h3>入住时间：'+startTime+' 离店：'+endTime+' 共1晚</h3></div>'+
+					         '<div class="mc">'+
+					         '<h3>最晚到店时间：'+lastDate+'</h3>'+
+					         '<h3>入住方式：酒店前台，凭验证码办理入住相关手续</h3></div>';
+			    	 }else if(o.productType == 3){//产品规格
+			    		 
+			    	 }
+			    	 
+			     });
+			     var div='<div class="title_h3">'+o.psubTitle+'</div>'+
+		    	 		 '<div class="order_ok">'+item+'</div>';
+			     
+	          	$("#content").append(div);  
+		   })
+		}
+		
+	  }
+	});
+}
+//支付类型:0支付宝;1微信
+function PayNow(){
+	var payType = $("#payType").val();
+	if(orderNo){
+		if(payType==0){
+			ALIPay();
+		}else if(payType==1){
+			WXPay();
+		}else if(payType==-1){
+			belowLinePay();
+		}
+	}else{
+		alert('订单编号有误');
+	}
+}
+
+function ALIPay(){
+	if(orderNo){
+		$.post(getCodeUrl()+"app/alipay/getPayParameter.do",{'orderNo':orderNo},function(data){
+			if(data.success){
+				ucapp.alipay(data.payInfo);
+			}else{
+				alert(alidata.msg);
+			}
+		});
+	}
+}
+
+function WXPay(){
+	 if(orderNo){
+			ucapp.post(getWebRoot()+"/wx/appPay/getPayInfo.do",{'orderNo':orderNo},function(data){
+				if(data.success && data.tmpMap){
+					var tmpMap = data.tmpMap;
+					ucapp.wxpay(tmpMap.prepayid,tmpMap.appid,
+							tmpMap.noncestr,tmpMap.package,
+							tmpMap.partnerid,tmpMap.timestamp,tmpMap.sign);
+				}else{
+					ucapp.showTip(data.msg);
+				}
+			});
+	}
+}
+//线下支付
+function belowLinePay(){
+	var r=confirm("确定将订单修改为线下支付吗?");
+	if(r){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		$.post("belowLinePay.do",parms,function(data){
+			alert(data.msg);
+			if(data.success){
+				location = "list.html?type=0";
+			}
+		});
+	}
+} 
+//取消订单
+function cancelorder(){
+	var r=confirm("确定取消订单吗?");
+	if(r){
+		var parms = {};
+		parms['id'] = id;
+		parms['type'] = type;
+		ucapp.post(getWebRoot()+"app/user/cancelorder.do",{"id":id,"type":type},function(data){
+			if(data.success){
+				alert(data.msg);
+				if(data.success){
+					location = "list.html";
+				}
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>评价</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css?v=111">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link href="../css/app/scrollbar.css" rel="stylesheet" type="text/css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/iscroll.js" type="text/javascript"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+var Request = getRequest(); 
+var type = Request["type"];
+var forid = Request["forid"];
+$(function(){
+	
+	ucapp.post(getWebRoot()+"app/user/release.do",{"type":type,"forid":forid},function(data){
+		if(data.name){
+			$("#name").html('<span class="blue" id="tty">'+data.tty+'</span>'+data.name);
+		}
+		if(data.img){
+			
+			$("#imgs").attr("src",getImageUrl()+data.img);
+		}
+	});
+});
+var star = 3;
+function showStar(starss){
+	star  = starss;
+	$("#cc img").attr("src","../images/app/xx5.png");
+    for(var i=1;i<=starss;i++){
+    	$("#img"+i).attr("src","../images/app/star1.png");
+    }
+}
+
+function gorelease(){
+	var com = $("#com").val();
+	if(type!=null&&type!=""&&forid!=null&&forid!=""){
+	ucapp.post(getWebRoot()+"app/user/gorelease.do",
+			{"star":star,"content":com,"type":type,"forid":forid},function(data){
+		if(data.succ){
+			alert(data.succ);
+			window.location = 'list.html';
+		}
+		if(data.fal){
+			alert(fal);
+		}
+	});
+  }
+}
+</script>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>待点评</h1>
+    
+  </div>
+    <div data-role="content">
+    <ul data-role="listview" data-icon="false" id="thelist" class="md_list2">
+		   <li style="border-top-width:0px">
+           <a href="#" data-transition="fade" data-ajax="false" class="ui-btn">
+				<img src="" id="imgs" class="t_img">
+				<h2 id="name"><span class="blue" id="tty"></span></h2>				
+                
+                </a>
+			</li>
+            </ul>
+    <div class="rating_stars">
+      <div  class="ui-grid-d star_nav" id="cc">
+        <div class="ui-block-a"><a href="#" id="star1" onclick="showStar(1)"><img id="img1" src="../images/app/star1.png"></a></div>
+        <div class="ui-block-b"><a href="#" id="star2" onclick="showStar(2)"><img id="img2" src="../images/app/star1.png"></a></div>
+        <div class="ui-block-c"><a href="#" id="star3" onclick="showStar(3)"><img id="img3" src="../images/app/star1.png"></a></div>
+        <div class="ui-block-d"><a href="#" id="star4" onclick="showStar(4)"><img id="img4" src="../images/app/xx5.png"></a></div>
+        <div class="ui-block-e"><a href="#" id="star5" onclick="showStar(5)"><img id="img5" src="../images/app/xx5.png"></a></div>
+      </div>
+      <div class="text">请对产品打分！</div>
+    </div>
+    <div class="text_comments">
+      <textarea cols="" rows=""   placeholder="请输入评价!" class="inp9" id="com"></textarea>
+    </div>
+     <a href="#registration" onclick="gorelease()" class="btn_10">发布评论</a>
+  </div>
+
+</div>
+</body>
+</html>

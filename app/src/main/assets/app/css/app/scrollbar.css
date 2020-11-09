@@ -1,0 +1,209 @@
+/**
+*  涓嬫媺鍒锋柊銆佹粴鍔ㄧ炕椤垫牱寮�
+*  SnoopyChen (ceo@vmeitime.com)
+*  2013-04-26
+*/
+
+/*------------- S 榛樿蹇呴』鏍峰紡  -------------*/
+/**
+ *
+ * 涓嬫媺鏍峰紡 Pull down styles
+ *
+ */
+#pullDown, #pullUp {
+	background:#f7f7f7;
+	height:.8rem;
+	line-height:.8rem;
+	padding:.1rem .2rem;
+	border-bottom:0px solid #ccc;
+	font-weight:normal;
+	font-size:.24rem;
+	color:#888;
+}
+#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
+	display:block; float:left;
+	width:.8rem; height:.8rem;
+	background:url(pull-icon@2x.png) 0 0 no-repeat;
+	-webkit-background-size:.8rem 1.6rem; background-size:.8rem 1.6rem;
+	-webkit-transition-property:-webkit-transform;
+	-webkit-transition-duration:250ms;	
+}
+#pullDown .pullDownIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp .pullUpIcon  {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullDown.flip .pullDownIcon {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullUp.flip .pullUpIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+	background-position:0 100%;
+	-webkit-transform:rotate(0deg) translateZ(0);
+	-webkit-transition-duration:0ms;
+
+	-webkit-animation-name:loading;
+	-webkit-animation-duration:2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+}
+
+@-webkit-keyframes loading {
+	from { -webkit-transform:rotate(0deg) translateZ(0); }
+	to { -webkit-transform:rotate(360deg) translateZ(0); }
+}
+/*------------- E 榛樿蹇呴』鏍峰紡  -------------*/		
+		
+
+
+
+/*------------- S 浠ヤ笅css涓昏鏄豢IOS婊氬姩鏉℃牱寮�鍙�鏍峰紡)  -------------*/		
+/**
+ * Horizontal Scrollbar
+ */
+.myScrollbarH {
+	position:absolute;
+	z-index:100;
+	height:.07rem;
+	bottom:.01rem;
+	left:.02rem;
+	right:.07rem
+}
+
+.myScrollbarH > div {
+	height:100%;
+}
+
+/**
+ * Vertical Scrollbar
+ */
+.myScrollbarV {
+	position:absolute;
+	z-index:100;
+	width:.07rem;bottom:.07rem;top:.02rem;right:.01rem
+}
+
+.myScrollbarV > div {
+	width:100%;
+}
+
+/**
+ * Both Scrollbars
+ */
+.myScrollbarH > div,
+.myScrollbarV > div {
+	position:absolute;
+	z-index:100;
+
+	/* The following is probably what you want to customize */
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	
+	border-width:.03rem;
+	-webkit-border-image:url(../../images/app/scrollbar.png) 6 6 6 6;
+	-moz-border-image:url(../../images/app/scrollbar.png) 6 6 6 6;
+	-o-border-image:url(../../images/app/scrollbar.png) 6 6 6 6;
+	border-image:url(../../images/app/scrollbar.png) 6 6 6 6;
+}
+/*------------- E 浠ヤ笂css涓昏鏄豢IOS婊氬姩鏉℃牱寮� -------------*/
+
+#wrapper {
+	position:absolute; z-index:1;
+	top:0px; bottom:0px; left:0;
+	width:100%;
+	overflow:auto;
+}
+
+#scroller {
+	position:relative;
+/*	-webkit-touch-callout:none;*/
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+
+	float:left;
+	width:100%;
+	padding:0;
+}
+
+#scroller ul {
+	position:relative;
+	list-style:none;
+	padding:0;
+	margin:0;
+	width:100%;
+	text-align:left;
+}
+
+#scroller li {
+
+}
+
+#scroller li > a {
+	display:block;
+}
+
+/**
+ *
+ * 涓嬫媺鏍峰紡 Pull down styles
+ *
+ */
+#pullDown, #pullUp {
+	background:#f7f7f7;
+	height:.8rem;
+	line-height:.8rem;
+	padding:.1rem .2rem;
+	font-weight:normal;
+	font-size:.24rem;
+	color:#888;
+	padding-left: 35%;
+}
+#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
+	display: block;
+	float: left;
+	width: .8rem;
+	height: .8rem;
+	-webkit-background-size: .8rem 1.6rem;
+	background-size: .8rem 1.6rem;
+	-webkit-transition-property: -webkit-transform;
+	-webkit-transition-duration: 250ms;
+	background-image: url(../../images/app/pull-icon@2x.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+#pullDown .pullDownIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp .pullUpIcon  {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullDown.flip .pullDownIcon {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullUp.flip .pullUpIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+	background-position:0 100%;
+	-webkit-transform:rotate(0deg) translateZ(0);
+	-webkit-transition-duration:0ms;
+
+	-webkit-animation-name:loading;
+	-webkit-animation-duration:2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+}
+
+@-webkit-keyframes loading {
+	from { -webkit-transform:rotate(0deg) translateZ(0); }
+	to { -webkit-transform:rotate(360deg) translateZ(0); }
+}

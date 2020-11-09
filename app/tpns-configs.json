@@ -1,0 +1,13 @@
+{
+    "tpns": {
+        "access_id": "1500012227",
+        "access_key": "A54P405Q2D44"
+    },
+    "com.dy.travel": {
+        "channel": {
+            "enable": true
+        }
+    },
+    "debug": false,
+    "version": "1.2.0.3"
+}

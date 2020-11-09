@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=no,width=320, minimum-scale=1, initial-scale=1" name="viewport">
+<title>我的</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+//修改会员手机
+function userEdit(){
+	var mobile = $('#mobile_edit').val();
+	if(mobile == null || mobile == ''){
+		alert('请输入手机号码');
+		return ;
+	}else{
+		var myreg = /^[1]([3-9])[0-9]{9}$/;
+     	if(!myreg.test($('#mobile_edit').val())){
+     		alert('请输入有效的手机号码!');
+	   		return;
+        }
+	}
+	
+	var params={"mobile":mobile};
+	
+	ucapp.post(getWebRoot()+"app/user/editUser.do",params,function(data){
+		if(data.success){
+			alert("修改成功!");
+			ucapp.goToBack();
+		}else{
+			alert(data.msg);
+		}
+	});
+}
+
+</script>
+</head>
+<body> 
+
+<div data-role="page" data-control-title="Home" id="bound_phonenumber" class="head">
+<div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back" data-ajax="false"><img src="../images/app/nav_back.png"></a>
+  
+    <h2>绑定手机号</h2>
+    
+  </div>
+  <div data-role="content" style="margin-top: 82px;">      
+    
+     <ul class="txt_list" style="margin-bottom:68px;">
+            <li style="padding-left: 20px;"> 
+                  <input name="mobile_edit" id="mobile_edit" placeholder="请输入你要绑定的手机号"  type="text">
+            </li>
+            
+</ul>  
+ 
+                  <a onclick="userEdit();" data-ajax="false" class="btn_0">保存</a>
+  </div>
+  
+</div>
+</body>
+</html>

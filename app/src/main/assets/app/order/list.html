@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+    <title>订单管理</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+    <link rel="stylesheet" href="../css/app/layout.css">
+    <link href="../css/app/scrollbar.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div data-role="page" id="">
+    <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+        <h1>订单管理</h1>
+
+    </div>
+
+    <div data-role="content">
+        <div data-role="tabs" id="tabs" class="ddan">
+            <div data-role="navbar">
+                <ul>
+
+                    <li><a href="javascript:void(0);" onclick="reload();" data-transition="slide" data-ajax="false" >全部订单</a></li>
+                    <li><a href="javascript:void(0);" onclick="reload(0);" data-transition="slide" data-ajax="false" >待支付</a></li>
+                    <li><a href="javascript:void(0);" onclick="reload(1);" data-transition="slide" data-ajax="false" >待出行/收货</a></li>
+                    <li><a href="javascript:void(0);" onclick="reload(2);" data-transition="slide" data-ajax="false" >待点评</a></li>
+                    <li><a href="javascript:void(0);" onclick="reload(3);" data-transition="slide" data-ajax="false" >退款订单</a></li>
+                </ul>
+            </div>
+
+
+            <div id="or1" class="ui-body-d">
+            </div>
+            <script src="../js/jquery.min.js"></script>
+            <script src="../js/jquery.mobile-1.4.2.min.js"></script>
+            <script src="../js/ucapp.js"></script>
+            <script type="text/javascript">
+
+//微信支付初始化
+
+//获取订单列表
+var isLoad = false;
+function reload(status){
+	ucapp.checkStatus(function(data){
+		let refund = 0
+		if(data.success){
+			if(status==3){
+				status = ""
+				refund = 1
+			}
+			isLoad = true;
+			ucapp.post(getWebRoot()+"app/user/orderdate.do",{"stt":status,"refund":refund,"page":1},function(data){
+				if(data.rows && data.rows.length>0){
+					var rows = data.rows;
+					var arr = [];
+					var row = null;
+					var ulHead = '<ul data-role="listview" data-icon="false" id="thelist" class="md_list2" style="border-top-width:0px">';
+					var ulFooter = '</ul>';
+					var ptype = "";
+					var showUrl = null;
+					for(var i=0;i<rows.length;i++){
+
+						//单类型:0酒店;1景点;2线路;3产品;
+						row = rows[i];
+						switch (row.type) {
+							case 0:ptype = "酒店";break;
+							case 1:ptype = "景点";break;
+							case 2:ptype = "线路";break;
+							case 3:ptype = "产品";break;
+							default:break;
+						}
+						//订单状态
+						var btn = '';
+						if(row.type==0){
+							showUrl = "showHotel.html?id="+row.formerId+"&type="+row.type;
+						}else if(row.type==1){
+							showUrl = "showAttr.html?id="+row.formerId+"&type="+row.type;
+						}else if(row.type==2){
+							showUrl = "showPer.html?id="+row.formerId+"&type="+row.type;
+						}else if(row.type==3){
+							showUrl = "showProduct.html?id="+row.formerId+"&type="+row.type;
+						 }
+						switch (row.status) {
+
+						case 1:
+							btn = '<a  href="'+showUrl+'" data-transition="fade" data-ajax="false" class="an">待支付</a>';
+							break;
+						case 2:
+							btn = '<a href="'+showUrl+'" data-transition="fade" data-ajax="false" class="an">已付款</a>';
+							break;
+						case 3:
+							btn = '<a href="'+showUrl+'" data-transition="fade" data-ajax="false" class="an">订购成功</a>';
+							break;
+						case 4:
+							btn = '<a href="'+showUrl+'" data-transition="fade" data-ajax="false" class="an">已完成</a>';
+							if(row.isCommented==0){
+								btn = '<a href="javascript:gocommnet('+row.formerId+','+row.type+');" data-transition="fade" data-ajax="false" class="an">评价</a>';
+							}
+							break;
+						case -1:
+							btn = '<a href="javascript:;" data-transition="fade" data-ajax="false" class="an">已取消</a>';
+							break;
+						default:
+							break;
+						}
+						var objectImg = getImageUrl() + row.objectImg;
+						arr[i] = '<li><a href="'+showUrl+'" data-transition="fade" data-ajax="false" class="ui-btn">'+
+								'<img src="'+objectImg+'" class="t_img" >'+
+								'<h2><span class="blue">['+ptype+']</span>"'+row.objectName+'"</h2>'+
+								'<h3>总价：'+row.totalPrice+'元 </h3>'+
+			            		'</a>'+btn+
+								'</li>';
+					}
+					$('#or1').html(ulHead+arr.join("")+ulFooter);
+					$("#thelist").listview();
+				}else{
+					var emptyDiv = '<div class="cart_no"><img src="../images/app/dd_no.png"><p>您还没有相关订单</p></div>';
+					$("#or1").html(emptyDiv);
+				}
+				isLoad = false;
+			});
+		}else{
+			ucapp.gotoLogin();
+		}
+	});
+}
+
+//到评价页
+function gocommnet(forid,typ){
+	window.location = 'release.html?forid='+forid+'&type='+typ;
+}
+
+//支付类型:0支付宝;1微信
+function PayNow(payType,orderNo){
+	if(payType==0){
+
+	}else{
+		WXPay(orderNo);
+	}
+}
+
+function ALIPay(orderNo){
+	alert("暂未开通");
+}
+
+function WXPay(orderNo){
+	alert("暂未开通");
+}
+
+
+
+//订单状态标记
+var theRequest = getRequest();
+var type = theRequest['type'];
+selectedType();
+$(function(){
+	reload(type);
+});
+
+function selectedType(){
+	if(type==null || type==""){
+		$("#tabs a:eq(0)").addClass("ui-btn-active");
+	}else if(type==0){
+		$("#tabs a:eq(1)").addClass("ui-btn-active");
+	}else if(type==1){
+		$("#tabs a:eq(2)").addClass("ui-btn-active");
+	}else if(type==2){
+		$("#tabs a:eq(3)").addClass("ui-btn-active");
+	}else if(type==3){
+		$("#tabs a:eq(4)").addClass("ui-btn-active");
+	}
+}
+</script>
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

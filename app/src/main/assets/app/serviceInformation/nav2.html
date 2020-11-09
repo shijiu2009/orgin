@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title><span class="distination"></span>智慧旅游</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<link rel="stylesheet" type="text/css" href="../css/af.ui.css" />
+<link rel="stylesheet" type="text/css" href="../css/icons.css" />
+<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+<link rel="stylesheet" type="text/css"  href="../css/flexslider.css" />
+<script type="text/javascript" charset="utf-8" src="../js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/fastclick.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/af.shim.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/appframework.ui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/my.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+	$.afui.useOSThemes = false; //This must be set before $(document).ready()
+    $.afui.loadDefaultHash = true;
+
+	
+	function changeRoute () {
+		var start = $ ('.cd1').val ();
+		var end = $ ('.cd2').val ();
+		$ ('.cd1').val (end);
+		$ ('.cd2').val (start);
+		
+		var tempX = '';
+		
+		tempX = lngS;
+		lngS = lngE;
+		lngE = tempX;
+		
+		tempX = latS;
+		latS = latE;
+		latE = tempX;
+	}
+	
+	function add_overlay(lng, lat, title, id, img, type, msg){
+		map.clearOverlays();
+		var point = new BMap.Point (lng, lat);
+		map.centerAndZoom(point, 13);
+        point.uc_title = title;
+        point.uc_id = id;
+        point.uc_img = getFullImageUrl (img);
+        point.uc_type = type;
+        point.uc_msg = msg;
+        addMarker (point);
+	}
+</script>
+<style type="text/css">
+.uc_1 .view header .backButton {
+	display: none;
+}
+</style>
+</head>
+
+<body>
+	<div id="afui" class="uc_1">
+    <div class="view" id="mainview">
+        <header>
+        <a href="#page01" id="back" data-rel="back" data-transition="slide" class="btn-return">
+        <img src="../images/return.png"></a>
+            <h2 class="app_title">周边服务</h2>   
+<!--              <a id="setting"  class="shopping_cart"><img src="../images/shec.png"></a>      -->
+      </header> 
+        <div class="pages">
+		<div class="panel" id="page03" style="background:#f9f9f9;"> 
+        <div class="cd-dh">
+         <div class="re-dh"><a href="javascript:changeRoute();"><img src="../images/rud.png"></a></div>
+          <form>
+           <input type="text" id="input_start" class="cd1" placeholder="输入起点...">
+           <input type="text" id="input_end" class="cd2" placeholder="输入终点...">
+          </form>
+        </div>
+        <div class="dh-go">
+         <a href="javascript:navigation();">开始导航</a>
+        </div>
+      </div>  
+      </div>
+     </div>
+    </div>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=jxL9ZCE1KGypzG1MbPwSSAcR"></script>
+	<script type="text/javascript">
+	
+		function GetUrlParam(name){
+		 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		 var r = encodeURI(window.location.search).substr(1).match(reg);
+		 if(r!=null)return unescape(r[2]); return null;
+		}
+	
+		var theRequest = getRequest();
+		var dh = theRequest['dh'];
+		var nv_title = decodeURI(GetUrlParam("title"));
+		var nv_lng = theRequest['lng'];
+		var nv_lat = theRequest['lat'];
+		if(dh){
+			// 用户当前获取经纬度,通用情况
+			ucapp.location (function (data) {
+				if(data && data.lng && data.lat && data.addr){
+					lngS = data.lng;
+					latS = data.lat;
+					$(".cd1").val(data.addr);
+				}
+			});
+			
+			//如果是有目的地的话
+			if(dh==2 && nv_title){
+				lngE = nv_lng;
+				latE = nv_lat;
+				$(".cd2").val(nv_title);
+			}
+		}
+		
+		$ (function () {
+			// 起点有改动时,清空起点经纬度
+			$ ('.cd1').change (function () {
+				lngS = '';
+				latS = '';
+			});
+			// 终点有改动时,清空终点经纬度
+			$ ('.cd2').change (function () {
+				lngE = '';
+				latE = '';
+			});
+			
+		});
+		
+		// 导航
+		function navigation () {
+			var start = $ ('.cd1').val ().trim ();
+			if (!start) {// 未输入起点
+				ucapp.showTip ('请输入起点');
+			} else {// 已输入起点
+				if (latS && lngS) {// 存在起点经纬度
+					var end = $ ('.cd2').val ().trim ();
+					if (!end) {// 未输入终点
+						ucapp.showTip ('请输入终点');
+					} else {// 已输入终点
+						if (latE && lngE) {// 存在终点经纬度
+							ucapp.startNaviX (latS, lngS, start, latE, lngE, end);
+						} else {// 不存在终点经纬度,获取终点经纬度
+							ucapp.getLatAndLng (end, function (lat1, lng1) {
+								if (lat1 && lng1) {// 获得终点经纬度
+									ucapp.startNaviX (latS, lngS, start, lat1, lng1, end);
+								}
+							});
+						}
+					}
+				} else {// 不存在起点经纬度,获取起点经纬度
+					ucapp.getLatAndLng (start, function (lat0, lng0) {
+						if (lat0 && lng0) {// 获得起点经纬度
+							var end = $ ('.cd2').val ().trim ();
+							if (!end) {// 未输入终点
+								ucapp.showTip ('请输入终点');
+							} else {// 已输入终点
+								if (latE && lngE) {// 存在终点经纬度
+									ucapp.startNaviX (lat0, lng0, start, latE, lngE, end);
+								} else {// 不存在终点经纬度,获取终点经纬度
+									ucapp.getLatAndLng (end, function (lat1, lng1) {
+										if (lat1 && lng1) {// 获得终点经纬度
+											ucapp.startNaviX (lat0, lng0, start, lat1, lng1, end);
+										}
+									});
+								}
+							}
+						}
+					});
+				}
+			}
+        }
+		
+		function toDetail (id) {
+			var array = id.split ('_');
+			var path = '';
+			if (array[0] == 0) {
+				path = '../hotel/detail.html?id=';
+			} else if (array[0] == 1) {
+				path = '../attractions/detail.html?id=';
+			} else if (array[0] == 2) {
+				path = '../product/detail.html?id=';
+			} else if (array[0] == 5) {
+				path = 'detail.html?id=';
+			}
+			if (path) {
+				location = path + array[1];
+			}
+		}
+		
+		// 起点和终点的经纬度
+		var lngS = latS = lngE = latE = '';
+		
+		function inputEnd (title, lng, lat) {
+			$ ('.dm3').click ();
+			$ ('.cd2').val (title);
+			lngE = lng;
+			latE = lat;
+		}
+	</script>
+</body>
+</html>

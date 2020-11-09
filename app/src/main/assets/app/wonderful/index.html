@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=0.5, initial-scale=0.5" name="viewport">
+<title>精彩<span class="distination"></span></title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link href="../css/app/scrollbar.css" rel="stylesheet" type="text/css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#title1').html('精彩'+ucapp.resetting.distination)
+	$('#title2').html('走进'+ucapp.resetting.distination)
+	$('#title3').html('<img src="../images/app/nav/menu1.png">'+ucapp.resetting.distination+'概况')
+	ucapp.post(getWebRoot()+"app/wonderful/index.do",{},function(data){
+		if(data.per){
+			for(var i =0;i<data.per.length;i++){
+				var obj = data.per[i];
+				var dd  ='';
+				if(i==0){
+					dd = 'ui-block-a';
+				}else if(i==1){
+					dd = 'ui-block-b';
+				}else if(i==2){
+					dd = 'ui-block-a';
+				}else if(i==3){
+					dd = 'ui-block-b';
+				}
+				var lvxlTitle = obj.title;
+				if(lvxlTitle.length>24){
+					lvxlTitle = lvxlTitle.substring(0,23)+"...";
+				}
+				obj.thumbPath = getImageUrl()+obj.thumbPath;
+				var div = '<div class="'+dd+'">'+
+			        '<a href="../peripherytravel/detail.html?id='+obj.id+'" data-ajax="false" data-transition="slide" class="ui-link1">'+     
+		           '<img src="'+obj.thumbPath+'">'+
+		           '<h2>'+lvxlTitle+'</h2></a></div>';
+				$("#xianlu").append(div);
+			}
+		}
+		if(data.inter){
+			for(var j=0;j<data.inter.length;j++){
+				var ob = data.inter[j];
+				if(ob.author==null||ob.author==""){
+					ob.author = "旅游小编";
+				}
+				if(ob.summary==null){
+					ob.summary = "";
+				}
+				ob.thumbPath = getImageUrl()+ob.thumbPath;
+				var headImg = getImageUrl()+"/defaultImg/userHead.jpg";
+				if(ob.headImg){
+					headImg = getImageUrl() + ob.headImg;
+				}
+				
+				var div = '<li style="margin-bottom: 0px;"> <a href="../interaction/show.html?id='+ob.id+'" data-ajax="false" data-transition="slide" class="ui-link">'+
+			        '<h2>'+ob.title+'</h2>'+
+			        '<div class="text"><img src="'+ob.thumbPath+'">'+ob.summary+'</div>'+
+			        '<div class="name_p"> <img src="'+headImg+'" class="use_img">'+
+			        '<div class="tip_name">'+ob.author+'</div><div class="tip_time">'+ob.createTime.substring(0,10)+'</div></div></a> </li>';
+// 			        '<div class="tip_of1">'+ob.collection+'</div><div class="tip_of2">'+ob.share+'</div>';
+			        $("#youji").append(div);
+			}
+		}
+		if(data.attr){
+			for(var i =0;i<data.attr.length;i++){
+				var pp  = data.attr[i];
+				var vv = '';
+				if(i==0){
+					vv = 'ui-block-a';
+				}else if(i==1){
+					vv = 'ui-block-b';
+				}else if(i==2){
+					vv = 'ui-block-c';
+				}
+				pp.icon  =  getImageUrl()+pp.icon;
+				var div = '<div class="'+vv+'">'+
+			        '<a href="../attractions/detail.html?id='+pp.id+'" data-ajax="false" data-transition="slide" class="ui-link0">'+       
+		           '<img src="'+pp.icon+'">'+
+		            '<h2>'+pp.name+'</h2><h3></h3></a></div>';
+				$("#attr").append(div);
+			}
+			
+		}
+	});
+});
+</script>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1 id="title1">精彩<span class="distination"></span></h1>
+    
+  </div>
+    <div data-role="content">
+    <div class="show00"><img src="../images/app/443.jpg" alt="">
+            <div class="mask1"></div>
+                <div class="text">
+                <h2 id="title2">走进<span class="distination"></span></h2><h3>边关商贸历史文化名城</h3>
+              </div>
+
+          </div>
+<div id="" class="ui-grid-d menu">
+          <div class="ui-block-a"><a href="survey.html" data-ajax="false" id="title3"><img src="../images/app/nav/menu1.png"><span class="distination"></span>概况</a></div>
+          <div class="ui-block-b"><a href="history.html" data-ajax="false"><img src="../images/app/nav/menu2.png">人文历史</a></div>
+          <div class="ui-block-c"><a href="../information/list.html" data-ajax="false"><img src="../images/app/nav/menu3.png">当地资讯</a></div>
+          <div class="ui-block-d"><a href=".<span class="distination"></span>./information/list.html?ty=lyjq" data-ajax="false"><img src="../images/app/nav/menu4.png">旅游节庆</a></div>
+          <div class="ui-block-e"><a href="../attractions/list.html" data-ajax="false"><img src="../images/app/nav/menu5.png">热门景点</a></div>
+          <div class="ui-block-a"><a href="../peripherytravel/list.html" data-ajax="false"><img src="../images/app/nav/menu6.png">精品线路</a></div>
+          <div class="ui-block-b"><a href="../hotel/list.html?hotelOrHome=1" data-ajax="false"><img src="../images/app/nav/menu7.png">酒店住宿</a></div>
+          <div class="ui-block-c"><a href="../interaction/list.html" data-ajax="false"><img src="../images/app/nav/menu8.png">游记攻略</a></div>
+          <div class="ui-block-d"><a href="featurelist.html" data-ajax="false"><img src="../images/app/nav/menu9.png">特色餐馆</a></div>
+          <div class="ui-block-e"><a href="../search/prolist.html" data-ajax="false"><img src="../images/app/nav/menu10.png">特产美食</a></div>
+        </div>
+        <div class="index_k" style="margin-bottom:15px;">
+<div class="title"><h2>当季热门玩点</h2><a href="../attractions/list.html" data-ajax="false" class="aoc">更多></a></div>
+<div class="ui-grid-b index_cp" id="attr">
+
+                
+      </div>
+
+</div>
+<div class="index_k">
+<div class="title"><h2>当季推荐线路</h2><a href="../peripherytravel/list.html" data-ajax="false" class="aoc">更多></a></div>
+<div class="ui-grid-a index_cp" id="xianlu">
+
+        
+        
+        
+        
+      </div>
+</div>
+<div class="index_k">
+<div class="title"><h2>心情游记</h2><a href="../interaction/list.html" data-ajax="false" class="aoc">更多></a></div>
+<ul class="gonglue_list" id="youji">
+
+    </ul>
+</div>
+    </div>
+  
+</div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_color"
+    android:orientation="vertical" >
+
+    <!-- 顶部 -->
+    <LinearLayout
+        android:id="@+id/loginTop"
+        style="@style/main_top_style"
+        android:layout_width="match_parent" >
+
+        <ImageView
+            android:id="@+id/imageView_top_back"
+            style="@style/main_top_image_style"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/back" />
+        <!-- 顶部搜索框 -->
+
+        <TextView
+            android:id="@+id/textView_top_title"
+            style="@style/main_top_title_style"
+            android:text="@string/login_title" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/imageView_top_setting"
+            style="@style/main_top_image_style"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/shec"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/head_images"
+        android:layout_width="@dimen/px110"
+        android:layout_height="@dimen/px110"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/px50"
+        android:layout_marginTop="@dimen/px50"
+        android:contentDescription="@string/login_head_desc"
+        android:src="@drawable/ic_launcher" />
+
+    <!-- 手机号、密码输入框 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px10"
+        android:layout_marginLeft="@dimen/px40"
+        android:layout_marginRight="@dimen/px40"
+        android:background="@drawable/radius_white_bg"
+        android:orientation="vertical" >
+
+        <!-- 手机号输入框 -->
+        <EditText
+            android:id="@+id/edit_login_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px10"
+            android:layout_marginRight="@dimen/px10"
+            android:layout_marginTop="@dimen/px10"
+            android:background="@color/white"
+            android:padding="@dimen/px5"
+            android:drawableLeft="@drawable/acd"
+            android:hint="@string/login_mobile_tip"
+            android:textSize="@dimen/sp20" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/px10"
+            android:layout_marginBottom="@dimen/px10"
+            android:background="#d6d6d6" />
+
+        <!-- 密码输入框 -->
+        <EditText
+            android:id="@+id/edit_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px10"
+            android:layout_marginLeft="@dimen/px10"
+            android:layout_marginRight="@dimen/px10"
+            android:background="@color/white"
+            android:padding="@dimen/px5"
+            android:drawableLeft="@drawable/acf"
+            android:hint="@string/login_password_tip"
+            android:inputType="textPassword"
+            android:textSize="@dimen/sp20" />
+    </LinearLayout>
+
+    <!-- 记住密码、忘记密码 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/px40"
+		android:layout_marginRight="@dimen/px40"
+        android:orientation="horizontal" >
+
+<!--         <CheckBox -->
+<!--             android:id="@+id/remember_me" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="@dimen/px60" -->
+<!--             android:layout_gravity="left|center_vertical" -->
+<!--             android:text="@string/remember_me" -->
+<!--             android:textColor="@color/black" -->
+<!--             android:textSize="@dimen/sp20" /> -->
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/forget"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px60"
+            android:layout_margin="@dimen/px10"
+            android:gravity="center"
+            android:text="@string/forget_Password"
+            android:textSize="@dimen/sp20"
+            android:clickable="true"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- 登陆、注册按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px54"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginRight="@dimen/px5"
+            android:text="@string/login_submit"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:background="@drawable/login_submit_bg"
+            android:textSize="@dimen/sp20" />
+
+        <Button
+            android:id="@+id/button_register"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px54"
+            android:layout_marginLeft="@dimen/px5"
+            android:layout_marginRight="@dimen/px40"
+            android:text="@string/login_register"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:background="@drawable/login_register_bg"
+            android:textSize="@dimen/sp20" />
+    </LinearLayout>
+
+</LinearLayout>

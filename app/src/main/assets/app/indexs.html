@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta id="viewport"
+          content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+          name="viewport">
+    <title>首页</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="css/app/jquery.mobile-1.4.2.css">
+    <link rel="stylesheet" href="css/app/layout.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.mobile-1.4.2.min.js"></script>
+    <script src="js/jquery.myslide.js"></script>
+    <script src="js/ucapp.js"></script>
+
+    <script type="text/javascript">
+		$(function () {
+			$('#box').mySlide({
+				interval: 5000,
+				direction: 'left'
+			});
+		});
+	</script>
+    <style type="text/css">
+		.ui-header .search9 {
+			width: auto;
+			font-size: 24px;
+			text-align: left;
+			display: block;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			outline: 0 !important;
+			font-weight: normal;
+			line-height: 50px;
+			height: 50px;
+			margin-top: 18px;
+			margin-right: 15%;
+			margin-left: 5%;
+			color: #ffffff !important;
+			border: 1px solid #eeeeee;
+			border-radius: 6px;
+			position: relative;
+			padding-top: 0px;
+			padding-right: 0px;
+			padding-bottom: 0px;
+			padding-left: 54px;
+			margin-bottom: 2px;
+		}
+
+		.ui-header .search9 img {
+			height: 40px;
+			width: 40px;
+			position: absolute;
+			left: 8px;
+			top: 6px;
+			margin: 0px;
+			padding: 0px;
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+<div data-role="page" data-control-title="Home" id="page1" class="no_head">
+    <div data-theme="b" data-role="header" data-position="fixed">
+        <!-- <a data-role="button" href="search/index.html" class="search9" data-ajax="false"><img src="images/app/64X64_icon_09.png">搜景点/酒店/线路/特产/攻略</a>-->
+        <h3></h3>
+    </div>
+    <div data-role="content">
+        <!--<div class="demo">
+            <div id="box" class="box">
+  </div>
+  <div class="ui-grid-b slide_link">
+    <div class="ui-block-a">
+    <a href="attractions/list.html" data-ajax="false" data-transition="slide" class="ui-link">
+       <img src="images/app/link01.png">好玩<span class="distination"></span>
+    </a>
+    </div>
+    <div class="ui-block-b">
+     <a href="search/prolist.html" data-ajax="false" data-transition="slide" class="ui-link">
+       <img src="images/app/link02.png">好吃龙州
+    </a>
+    <a href="search/prolist.html" data-ajax="false" data-transition="slide" class="ui-link">
+       <img src="images/app/link02.png">好吃<span class="distination"></span>
+    </a>
+    </div>
+    <div class="ui-block-c">
+    <a href="article/list.html" data-ajax="false" data-transition="slide" class="ui-link">
+       <img src="images/app/link03.png">民俗<span class="distination"></span>
+    </a>
+    </div>
+  </div>
+</div>-->
+        <div class='mc_h'>
+            <img id="titleImg" src="" class="mm"><!--images/app/big1.jpg-->
+            <div class='h2'>此刻，<span class="distination"></span>最美</div>
+            <div class='h3'>
+                <span class="distination"></span><!-- <img src="images/app/wea4.png" class="mm"> --> <span
+                    id="wtext"></span>&nbsp;<span id="wtemperature"></span>
+                <!-- 小雨转阴 25／18°C -->
+            </div>
+            <div class='sous'>
+                <img src="images/app/443.png" class="mm">
+
+                <a href="search/index.html" data-ajax="false" class="text">搜景点/酒店/线路/特产/攻略</a>
+            </div>
+            <div class='sm'>
+                <!--<img src="images/app/sm.png" class="mm"> -->
+
+            </div>
+            <div class='iio'>
+                <a href="attractions/list.html" data-ajax="false" data-transition="slide" class="gh1 ui-link">
+                    <div class='li'>
+                        <img src="images/app/ii1.png" class="mm">
+                        <h4>热门景点</h4>
+                    </div>
+                </a>
+                <a href="peripherytravel/list.html" data-ajax="false" data-transition="slide" class="gh1 ui-link">
+                    <div class='li'>
+                        <img src="images/app/ii2.png" class="mm">
+                        <h4>精品线路</h4>
+                    </div>
+                </a>
+                <a href="hotel/list.html?hotelOrHome=1" data-ajax="false" data-transition="slide"
+                   class="gh1 ui-link">
+                    <div class='li'>
+                        <img src="images/app/ii3.png" class="mm">
+                        <h4>酒店住宿</h4>
+                    </div>
+                </a>
+                <a href="hotel/list.html?hotelOrHome=2" data-ajax="false" data-transition="slide" class="gh1 ui-link">
+                    <div class='li'>
+                        <img src="images/app/fuwu/ii4.png" class="mm">
+                        <h4>特色民宿</h4>
+                    </div>
+                </a>
+                <!--<a href="product/list.html?byname=tsms" data-ajax="false" data-transition="slide"
+                    class="gh1 ui-link">
+                    <div class='li'>
+                        <img src="images/app/ii4.png" class="mm">
+                        <h4>特色美食</h4>
+                    </div>
+                </a>-->
+                <a href="product/list.html?byname=dbtc" data-ajax="false" data-transition="slide"
+                   class="gh1 ui-link">
+                    <div class='li'>
+                        <img src="images/app/ii5.png" class="mm">
+                        <h4>地标特产</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="ui-grid-a index_g">
+            <div class="ui-block-a">
+                <a href="wonderful/survey.html" data-ajax="false" data-transition="slide" class="gh0 ui-link">
+                    <div class="text">
+                        <img src="images/app/i1.png">
+                        <h3><span class="distination"></span>概况</h3>
+                        <h4>让您更了解<span class="distination"></span></h4>
+                    </div>
+                </a> </div>
+
+            <div class="ui-block-b">
+                <a href="video/list.html" data-ajax="false" data-transition="slide" class="gh1 ui-link">
+                    <div class="text">
+                        <img src="images/app/i2.png">
+                        <h3>微视频</h3>
+                        <h4>轻松玩转景点</h4>
+                    </div>
+                </a> </div>
+
+            <!-- <div class="ui-block-a">
+      <a href="peripherytravel/list.html" data-ajax="false" data-transition="slide" class="gh0 ui-link">
+      <div class="text">
+      <img src="images/app/i3.png">
+          <h3>精品线路</h3>
+          <h4>轻松玩转景点</h4>
+      </div>
+        </a> </div> -->
+
+            <div class="ui-block-a">
+                <a href="atlas/list.html" data-ajax="false" data-transition="slide" class="gh0 ui-link">
+                    <div class="text">
+                        <img src="images/app/i3.png">
+                        <h3>最美<span class="distination"></span></h3>
+                        <h4>精美图集</h4>
+                    </div>
+                </a> </div>
+
+
+            <div class="ui-block-b">
+                <a href="serviceInformation/index.html" data-ajax="false" data-transition="slide"
+                   class="gh1 ui-link">
+                    <div class="text">
+                        <div class="hot"></div>
+                        <img src="images/app/i7.png">
+                        <h3>智能服务</h3>
+                        <h4>轻松去旅游</h4>
+                    </div>
+                </a> </div>
+            <div class="ui-block-z">
+                <a href="interaction/list.html" data-ajax="false" data-transition="slide"
+                   class="gh0 ui-link">
+                    <div class="text">
+                        <h3>游记攻略</h3>
+                        <img src="images/app/i8.png">
+                    </div>
+                </a> </div>
+            <div class="ui-block-z">
+                <a href="article/xiuxianlist.html" data-ajax="false" data-transition="slide" class="gh0 ui-link">
+                    <div class="text">
+                        <h3>休闲娱乐</h3>
+                        <img src="images/app/i6.png">
+                    </div>
+
+                </a> </div>
+
+
+
+            <div class="ui-block-z">
+                <a href="activitys/list.html" data-ajax="false" data-transition="slide" class="gh0 ui-link">
+                    <div class="text">
+                        <h3>活动盛世</h3>
+                        <img src="images/app/i4.png">
+                    </div>
+                </a></div>
+
+            <div class="ui-block-z">
+                <a href="my/consultation.html?typeId=2" data-ajax="false" data-transition="slide"
+                   class="gh0 ui-link">
+
+                    <div class="text">
+                        <h3>旅游咨询</h3>
+                        <img src="images/app/i5.png">
+                    </div>
+
+                </a> </div>
+        </div>
+        <div class="news"><img src="images/app/hot_m.jpg" class="hot_m">
+            <div class="index_msn">
+                <div class="li-box">
+                    <ul id="zixun">
+
+                    </ul>
+                </div>
+            </div>
+            <a href="information/list.html" data-ajax="false" class="pdao_a ui-link">更多</a>
+        </div>
+
+        <div class="title_banner" style="background-color:#f9f9f9;"><img src="images/app/45.jpg"></div>
+        <div class="index_k">
+            <div class="title">
+                <h2>热门景点</h2>
+                <a href="attractions/list.html" data-ajax="false" class="aoc">更多></a>
+            </div>
+            <div class="ui-grid-b index_cp" id="attr">
+
+
+
+
+
+            </div>
+            <!-- <div class="title"><h2>精品线路</h2><a href="peripherytravel/list.html" data-ajax="false" class="aoc">更多></a></div>
+<div class="ui-grid-a index_cp" id="per">
+
+  </div> -->
+        </div>
+        <div class="title_banner" style="background-color:#fff2df;"><img src="images/app/44.jpg"></div>
+        <div class="index_k">
+
+
+            <div class="title">
+                <h2>当地特产</h2><a href="product/list.html?byname=dbtc" data-ajax="false" class="aoc">更多></a>
+            </div>
+            <div class="ui-grid-a index_cp" id="tecan">
+
+
+            </div>
+            <div class="title">
+                <h2>特产美食</h2><a href="product/list.html?byname=tsms"
+                                data-ajax="false" class="aoc">更多></a>
+            </div>
+            <div class="ui-grid-b index_cp" id="meishi">
+
+            </div>
+        </div>
+        <div class="title_banner" style="background-color:#edf0f5;"><img src="images/app/43.jpg"></div>
+        <div class="index_k" style="margin-bottom:15px;">
+            <div class="title">
+                <h2>民俗文化</h2><a href="article/list.html" data-ajax="false" class="aoc">更多></a>
+            </div>
+            <div class="ui-grid-b index_cp" id="minsu">
+
+
+            </div>
+            <div class="title">
+                <h2>旅游攻略</h2><a href="interaction/list.html" data-ajax="false" class="aoc">更多></a>
+            </div>
+            <div class="ui-grid-a index_cp" id="youji">
+
+
+            </div>
+        </div>
+        <div class="index_k">
+            <div class="title">
+                <h2>活动盛世</h2><a href="activitys/list.html" data-ajax="false" class="aoc">更多></a>
+            </div>
+            <ul class="hd_list" id="zhuat">
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+		var myArray = new Array();
+		function reload() {
+
+			$('#wtext').html(ucapp.weather.results[0].now.text)
+			$('#wtemperature').html(ucapp.weather.results[0].now.temperature + "℃")
+			/* if(ucapp.data.zixuns){
+				myArray = ucapp.data.zixuns;
+			}
+		//setInterval(timeOutShow,3000);//热门资讯循环显示
+			if(ucapp.data.hwlzlist){
+				var data = ucapp.data
+				$("#attr").empty();
+				for(var i =0;i<data.hwlzlist.length;i++){
+					//处理过长的字符
+					var indexTip = 'data.hwlzlist[i].indexTip';
+					var dd = '';
+					if(i==0){
+						dd="ui-block-a";
+						indexTip = '';
+					}else if(i==1){
+						dd="ui-block-b";
+						indexTip = '';
+					}else if(i==2){
+						dd="ui-block-c";
+						indexTip = '';
+					}
+					var icon =getImageUrl()+data.hwlzlist[i].icon;
+					var div = '<div class="'+dd+'" ><a href="attractions/detail.html?id='+data.hwlzlist[i].id+'" data-ajax="false" data-transition="slide" class="ui-link0">'+
+					   '<img src="'+icon+'"><h2>'+data.hwlzlist[i].name+'</h2><h2>'+indexTip+'</h2></a></div>';
+					$("#attr").append(div);
+				}
+			}
+
+			$('.distination').html(ucapp.data.setting.distination);
+			if(ucapp.data.dbtc){
+				var data = ucapp.data
+				$("#tecan").empty();
+				for(var i =0;i<data.dbtc.length;i++){
+					var dd = '';
+					if(i==0){
+						dd="ui-block-a";
+					}else if(i==1){
+						dd="ui-block-b";
+					}else if(i==2){
+						dd="ui-block-a";
+					}else if(i==3){
+						dd="ui-block-b";
+					}
+					var icon = getImageUrl()+data.dbtc[i].icon;
+					var div = '<div class="'+dd+'"><a href="product/detail.html?id='+data.dbtc[i].id+'" data-ajax="false" data-transition="slide" class="ui-link1">'+
+					   '<img src="'+icon+'"><h2>'+data.dbtc[i].name+'</h2></a></div>';
+					$("#tecan").append(div);
+				}
+			}
+			if(ucapp.data.minsu){
+				var data = ucapp.data
+				$("#minsu").empty();
+				for(var i =0;i<data.minsu.length;i++){
+					if(i==0){
+						dd="ui-block-a";
+					}else if(i==1){
+						dd="ui-block-b";
+					}else if(i==2){
+						dd="ui-block-c";
+					}
+					var imgMinsu = getImageUrl()+ data.minsu[i].titleimgurl;
+					if(i==0){
+						imgMinsu = getImageUrl() + data.minsu[i].imglogo;
+					}
+					var div = '<div class="'+dd+'"><a href="article/detail.html?id='+data.minsu[i].id+'" data-ajax="false" data-transition="slide" class="ui-link0">'+
+					   '<img src="'+imgMinsu+'">'+
+					   '<h4>'+data.minsu[i].title+'</h4> </a></div>';
+					$("#minsu").append(div);
+				}
+			}
+
+			if(ucapp.data.youji){
+				var data = ucapp.data
+				$("#youji").empty();
+				for(var i =0;i<data.youji.length;i++){
+					if(i==0){
+						dd="ui-block-a";
+					}else if(i==1){
+						dd="ui-block-b";
+					}else if(i==2){
+						dd="ui-block-a";
+					}else if(i==3){
+						dd="ui-block-b";
+					}
+
+					var title = data.youji[i].title;
+					if(title && title.length>11){
+						title = title.substring(0,10)+"...";
+					}
+
+					var summary = data.youji[i].summary;
+					if(summary && summary.length>23){
+						summary = summary.substring(0,22)+"...";
+					}
+					var thumbPath = getImageUrl()+data.youji[i].thumbPath;
+
+					var headImg = getImageUrl()+"/defaultImg/userHead.jpg";
+					if(data.youji[i].headImg){
+						headImg = getImageUrl() + data.youji[i].headImg;
+					}
+					var div = '<div class="'+dd+'"><a href="interaction/show.html?id='+data.youji[i].id+'" data-ajax="false" data-transition="slide" class="ui-link1">'+
+					   '<img src="'+thumbPath+'"><div class="name_p"><img src="'+headImg+'" class="use_img">'+
+					   '<div class="tip_name">'+data.youji[i].author+'</div></div><h3>'+title+'</h3>'+
+					   '<h4>'+summary+'</h4></a></div>';
+					$("#youji").append(div);
+				}
+			}
+			if(ucapp.data.zhuanti){
+				var data = ucapp.data
+				$("#zhuat").empty();
+				var span_atype = '<span class="sp2">往期活动</span>';
+				for(var i =0;i<data.zhuanti.length;i++){
+					var zname = data.zhuanti[i].name;
+					if(zname && zname.length>26){
+						zname = zname.substring(0,25)+"...";
+					}
+					var appTitleImg = getImageUrl()+data.zhuanti[i].appTitleImg;
+
+					var atypeId = data.zhuanti[i].typeId;
+					if(atypeId==2){
+						span_atype = '<span class="sp1">活动预告</span>';
+					}
+					var div = '<li><a href="activitys/detail.html?id='+data.zhuanti[i].id+'" data-ajax="false" class="ui-link">'+
+					'<div class="img"><img src="'+appTitleImg+'">'+
+				   '</div><h2>'+zname+'</h2></a></li>';
+					$("#zhuat").append(div);
+				}
+			} */
+			/**********************************之前的index************************************/
+
+
+
+			ucapp.post(getWebRoot() + "app/ads.do", {}, function (data) {
+				if (data.advertList) {
+					$("#box").empty();
+					for (var i = 0; i < data.advertList.length; i++) {
+						var ddd = 'list slide in';
+						if (i == 0) {
+							ddd = ""
+						} else {
+							ddd = "list slide out";
+						}
+						data.advertList[i].titleImg = getImageUrl() + data.advertList[i].titleImg;
+						var div = '<a href="' + data.advertList[i].link + '" class="' + ddd + '" data-ajax="false"><img src="' + data.advertList[i].titleImg + '" class="ij"></a>';
+						$("#box").append(div);
+					}
+					$('#box').mySlide({
+						interval: 5000,
+						direction: 'left'
+					});
+					$("#demo").trigger("create");
+				}
+			});
+			ucapp.post(getWebRoot() + "app/index.do", {}, function (data) {
+				var url = getImageUrl()
+				$('#titleImg').attr("src",url+data.setting.appLogo);
+				$('.distination').html(data.setting.distination);
+				if (data.zixuns) {
+					myArray = data.zixuns;
+					/* for(var i =0;i<data.zixuns.length;i++){
+						var div = '<li><a href="information/show.html?id='+data.zixuns[i].id+'" data-ajax="false" class="ui-link">'+data.zixuns[i].title+'</a></li>';
+						/*  $("#zixun").append(div);
+					}
+					$("#li-box").trigger("create");
+
+					*/
+				}
+				//setInterval(timeOutShow,1000);//热门资讯循环显示
+				timeOutShow()
+				if (data.hwlzlist) {
+					$("#attr").empty();
+					for (var i = 0; i < data.hwlzlist.length; i++) {
+						//处理过长的字符
+						var indexTip = data.hwlzlist[i].indexTip;
+						var dd = '';
+						if (i == 0) {
+							dd = "ui-block-a";
+							indexTip = '';
+						} else if (i == 1) {
+							dd = "ui-block-b";
+							indexTip = '';
+						} else if (i == 2) {
+							dd = "ui-block-c";
+							indexTip = '';
+						}
+						data.hwlzlist[i].icon = getImageUrl() + data.hwlzlist[i].icon;
+						var div = '<div class="' + dd + '"><a href="attractions/detail.html?id=' + data.hwlzlist[i].id + '" data-ajax="false" data-transition="slide" class="ui-link0">' +
+							'<img style="height:75px;width:100px" src="' + data.hwlzlist[i].icon + '"><h2>' + data.hwlzlist[i].name + '</h2><h3>' + indexTip + '</h3></a></div>';
+						$("#attr").append(div);
+					}
+				}
+
+				/* if(data.lvxl){
+					for(var i =0;i<data.lvxl.length;i++){
+						var dd = '';
+						if(i==0){
+							dd="ui-block-a";
+						}else if(i==1){
+							dd="ui-block-b";
+						}else if(i==2){
+							dd="ui-block-a";
+						}else if(i==3){
+							dd="ui-block-b";
+						}
+						var lvxlTitle = data.lvxl[i].title;
+						if(lvxlTitle.length>24){
+							lvxlTitle = lvxlTitle.substring(0,23)+"...";
+						}
+						data.lvxl[i].thumbPath =getImageUrl()+data.lvxl[i].thumbPath;
+						var div = '<div class="'+dd+'">'+
+							'<a href="peripherytravel/detail.html?id='+data.lvxl[i].id+'" data-ajax="false" data-transition="slide" class="ui-link1">'+
+						   '<img src="'+data.lvxl[i].thumbPath+'">'+
+						   '<h2>'+lvxlTitle+'</h2><div class="tip_a">'+data.lvxl[i].schedule+'</div></a></div>';
+						$("#per").append(div);
+					}
+				} */
+				if (data.tsms) {
+					$("#meishi").empty();
+					for (var i = 0; i < data.tsms.length; i++) {
+						if (i == 0) {
+							dd = "ui-block-a";
+						} else if (i == 1) {
+							dd = "ui-block-b";
+						} else if (i == 2) {
+							dd = "ui-block-c";
+						}
+						data.tsms[i].icon = getImageUrl() + data.tsms[i].icon;
+						var div = '<div class="' + dd + '">' +
+							'<a href="product/detail.html?id=' + data.tsms[i].id + '" data-ajax="false" data-transition="slide" class="ui-link0">' +
+							'<img src="' + data.tsms[i].icon + '"><h4>' + data.tsms[i].name + '</h4></a></div>';
+						$("#meishi").append(div);
+					}
+				}
+				if (data.dbtc) {
+					$("#tecan").empty();
+					for (var i = 0; i < data.dbtc.length; i++) {
+						var dd = '';
+						if (i == 0) {
+							dd = "ui-block-a";
+						} else if (i == 1) {
+							dd = "ui-block-b";
+						} else if (i == 2) {
+							dd = "ui-block-a";
+						} else if (i == 3) {
+							dd = "ui-block-b";
+						}
+						data.dbtc[i].icon = getImageUrl() + data.dbtc[i].icon;
+						var div = '<div class="' + dd + '"><a href="product/detail.html?id=' + data.dbtc[i].id + '" data-ajax="false" data-transition="slide" class="ui-link1">' +
+							'<img src="' + data.dbtc[i].icon + '"><h2>' + data.dbtc[i].name + '</h2></a></div>';
+						$("#tecan").append(div);
+					}
+				}
+				if (data.minsu) {
+					$("#minsu").empty();
+					for (var i = 0; i < data.minsu.length; i++) {
+						if (i == 0) {
+							dd = "ui-block-a";
+						} else if (i == 1) {
+							dd = "ui-block-b";
+						} else if (i == 2) {
+							dd = "ui-block-c";
+						}
+						var imgMinsu = getImageUrl() + data.minsu[i].titleimgurl;
+						if (i == 0) {
+							imgMinsu = getImageUrl() + data.minsu[i].imglogo;
+						}
+						var div = '<div class="' + dd + '"><a href="article/detail.html?id=' + data.minsu[i].id + '" data-ajax="false" data-transition="slide" class="ui-link0">' +
+							'<img style="height:75px;width:100px" src="' + imgMinsu + '">' +
+							'<h4>' + data.minsu[i].title + '</h4> </a></div>';
+						$("#minsu").append(div);
+					}
+				}
+
+				if (data.youji) {
+					$("#youji").empty();
+					for (var i = 0; i < data.youji.length; i++) {
+						if (i == 0) {
+							dd = "ui-block-a";
+						} else if (i == 1) {
+							dd = "ui-block-b";
+						} else if (i == 2) {
+							dd = "ui-block-a";
+						} else if (i == 3) {
+							dd = "ui-block-b";
+						}
+
+						var title = data.youji[i].title;
+						if (title && title.length > 11) {
+							title = title.substring(0, 10) + "...";
+						}
+
+						var summary = data.youji[i].summary;
+						if (summary && summary.length > 23) {
+							summary = summary.substring(0, 22) + "...";
+						}
+						data.youji[i].thumbPath = getImageUrl() + data.youji[i].thumbPath;
+
+						var headImg = getImageUrl() + "/defaultImg/userHead.jpg";
+						if (data.youji[i].headImg) {
+							headImg = getImageUrl() + data.youji[i].headImg;
+						}
+						var div = '<div class="' + dd + '"><a href="interaction/show.html?id=' + data.youji[i].id + '" data-ajax="false" data-transition="slide" class="ui-link1">' +
+							'<img style="height:80px;width:150px" src="' + data.youji[i].thumbPath + '"><div class="name_p"><img src="' + headImg + '" class="use_img">' +
+							'<div class="tip_name">' + data.youji[i].author + '</div></div><h3>' + title + '</h3>' +
+							'<h4>' + summary + '</h4></a></div>';
+						$("#youji").append(div);
+					}
+				}
+				if (data.zhuanti) {
+					$("#zhuat").empty();
+					var span_atype = '<span class="sp2">往期活动</span>';
+					for (var i = 0; i < data.zhuanti.length; i++) {
+						var zname = data.zhuanti[i].name;
+						if (zname && zname.length > 26) {
+							zname = zname.substring(0, 25) + "...";
+						}
+						data.zhuanti[i].appTitleImg = getImageUrl() + data.zhuanti[i].appTitleImg;
+
+						var atypeId = data.zhuanti[i].typeId;
+						if (atypeId == 2) {
+							span_atype = '<span class="sp1">活动预告</span>';
+						}
+						var div = '<li><a href="activitys/detail.html?id=' + data.zhuanti[i].id + '" data-ajax="false" class="ui-link">' +
+							'<div class="img"><img src="' + data.zhuanti[i].appTitleImg + '">' +
+							'</div><h2>'/* +span_atype */ + zname + '</h2></a></li>';
+						$("#zhuat").append(div);
+					}
+				}
+			});
+		}
+		$(function () {
+			reload();
+		});
+
+		var count = 0;
+		function timeOutShow() {
+			$('#zixun').empty();
+			if (myArray != null && myArray.length > 0) {
+				var o = myArray[count];
+				// 		console.log('myArray.length '+myArray.length);
+				// 		console.log('obj '+o+'  count '+count);
+				var big = '<li style="margin-bottom: 2rem;"><a href="information/show.html?id=' + o.id + '" data-ajax="false" class="ui-link">' + o.title + '</a></li>';
+				$('#zixun').append(big);
+				count++;
+				if (count > myArray.length - 1) {
+					count = 0;
+				}
+			}
+		}
+	</script>
+</body>
+
+</html>

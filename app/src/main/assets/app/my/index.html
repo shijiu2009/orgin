@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta id="viewport"
+        content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+        name="viewport">
+    <title>我的</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+    <link rel="stylesheet" href="../css/app/layout.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+</head>
+
+<body>
+    <div data-role="page" data-control-title="Home" id="page1" class="no_head">
+
+        <div data-role="content">
+
+            <a id="a_userInfo" href="javascript:goInfo();" data-ajax="false" class="cc-user" style="height:2.28rem;">
+                <img id="userhead" src="../images/app/userHead.jpg" class="t_img" />
+                <div class="name">
+                    <h2 id="nickname"></h2>
+                    <div class="level" id="username"></div>
+                </div>
+                <span class="text-muted">帐号管理 <i class="fa fa-angle-right"></i> </span>
+            </a>
+
+            <div class="ues_con">
+                <ul data-role="listview" class="ues_list1">
+                    <li>
+                        <a href="javascript:goOrder();" data-ajax="false" class="title_a">
+                            我的订单
+                            <div class="all">全部订单</div>
+                        </a>
+                    </li>
+
+                    <li style="padding-left:5px;padding-right:5px;">
+                        <div id="grid" class="ui-grid-c cen_tad">
+                            <div class="ui-block-a"><a href="javascript:goOrder(0);" data-ajax="false">
+                                    <div class="d4"><img src="../images/app/c2.png" class="c_n">待支付</div>
+                                </a></div>
+                            <div class="ui-block-b"><a href="javascript:goOrder(1);" data-ajax="false">
+                                    <div class="d4"><img src="../images/app/c1.png" class="c_n">待出行/收货</div>
+                                </a></div>
+                            <div class="ui-block-c"><a href="javascript:goOrder(2);" data-ajax="false">
+                                    <div class="d4"><img src="../images/app/c4.png" class="c_n">待点评</div>
+                                </a></div>
+                            <div class="ui-block-d"><a href="javascript:goOrder(3);" data-ajax="false">
+                                    <div class="d4"><img src="../images/app/c3.png" class="c_n">退款订单</div>
+                                </a></div>
+                        </div>
+                    </li>
+
+                </ul>
+                <ul data-role="listview" class="list1">
+                    <li style="border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #e8e8e8;">
+                        <div id="grid" class="ui-grid-b cen_tad">
+                            <div class="ui-block-a"><a id="a_mycolle" href="javascript:goMycollection();"
+                                    data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v1.jpg" class="c_m">我的收藏</div>
+                                </a></div>
+                            <div class="ui-block-b"><a id="a_comment" href="javascript:goComment();" data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v2.jpg" class="c_m">我的点评</div>
+                                </a></div>
+                            <div class="ui-block-c"><a id="a_address" href="javascript:goAddressList();"
+                                    data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v3.jpg" class="c_m">邮寄地址</div>
+                                </a></div>
+
+                        </div>
+                    </li>
+                    <li style="border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #e8e8e8;">
+                        <div id="grid" class="ui-grid-b cen_tad">
+                            <div class="ui-block-a"><a id="a_complaint" href="javascript:goComplaint();"
+                                    data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v4.jpg" class="c_m">投诉建议</div>
+                                </a>
+                            </div>
+                            <div class="ui-block-b"><a href="help.html" data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v7.jpg" class="c_m">帮助中心</div>
+                                </a>
+                            </div>
+                            <div class="ui-block-c"><a href="about.html" data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v8.jpg" class="c_m">关于</div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="ui-grid-b cen_tad">
+                            <div class="ui-block-b"><a href="javascript:message();" data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v5.jpg" class="c_m">消息中心</div>
+                                </a>
+                            </div>
+                            <div class="ui-block-b"><a id="a_complaint" href="javascript:AppUpdate();"
+                                    data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v5.jpg" class="c_m">应用更新</div>
+                                </a>
+                            </div>
+
+                            <!--<div class="ui-block-b"><a href="javascript:scanning();" data-ajax="false">
+                            <div class="d4" style="border-right-width: 0px;"><img src="../images/app/user_v1.png" class="c_m">电子导游</div>
+                        </a>
+                        </div>-->
+                            <div class="ui-block-b" id="trading"><a href="javascript:scanning();" data-ajax="false">
+                                    <div class="d4" style="border-right-width: 0px;"><img
+                                            src="../images/app/user_v8.png" class="c_m">商家扫码</div>
+                                </a>
+                            </div>
+                            <!-- <div class="ui-block-b"><a href="../attractions/test.html" data-ajax="false">
+                         <div class="d4" style="border-right-width: 0px;"><img src="../images/app/user_v5.jpg" class="c_m">测试</div>
+                         </a>
+                         </div> -->
+
+                        </div>
+
+                    </li>
+                </ul>
+
+
+            </div>
+
+        </div>
+        <div data-role="footer" data-position="fixed" style="overflow:hidden;">
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.mobile-1.4.2.min.js"></script>
+    <script src="../js/ucapp.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            reload();
+        })
+        var isLogin = false;
+        function reload() {
+            ucapp.checkStatus(function (data) {
+                if (data.success) {
+                    isLogin = true;
+                    getData();
+                } else {
+                    //ucapp.gotoLogin();
+                    $("#userhead").attr("src", "../images/app/userHead.jpg");
+                    $('#nickname').html("");
+                    $('#username').html("");
+                    isLogin = false;
+                }
+            });
+            $('#trading').hide()
+            ucapp.post(getWebRoot() + "app/checkTrading.do", {}, function (data) {
+                if(data.success){
+                    $('#trading').show()
+                }
+            })
+        }
+
+        function getData() {
+            ucapp.post(getWebRoot() + "app/user/getUserinfo.do", {}, function (data) {
+                if (data && data.user) {
+                    var user = data.user;
+                    $('#userhead').attr('src', '../images/app/user.jpg');
+                    if (user.headImg != null && user.headImg != '') {
+                        $('#userhead').attr('src', getImageUrl() + user.headImg);
+                    }
+                    $('#nickname').html(user.nickname);
+                    $('#username').html(user.username);
+
+                    //处理空链接
+                    //$('#a_userInfo').attr('href','userInfo.html');
+                    //$('#a_mycolle').attr('href','mycollection.html');
+                    //$('#a_address').attr('href','addressList.html');
+                    //$('#a_comment').attr('href','comment.html');
+                    //$('#a_complaint').attr('href','complaint.html');
+
+
+
+                }
+            });
+        }
+        //去账号管理
+        function goInfo() {
+            if (isLogin) {
+                location = "userInfo.html";
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function goOrder(flag) {
+            if (isLogin) {
+                if (flag == null) {
+                    location = "../order/list.html";
+                } else {
+                    location = "../order/list.html?type=" + flag;
+                }
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function goMycollection() {
+            if (isLogin) {
+                location = "mycollection.html";
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function goAddressList() {
+            if (isLogin) {
+                location = "addressList.html";
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function goComment() {
+            if (isLogin) {
+                location = "comment.html";
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function goComplaint() {
+            if (isLogin) {
+                location = "complaint.html";
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function AppUpdate() {
+            ucapp.checkUpdate();
+        }
+        function message() {
+            if (isLogin) {
+                location = "information.html";
+            } else {
+                ucapp.gotoLogin();
+            }
+        }
+        function scanning() {
+            //调用二维码扫码
+            /*  	ucapp.isCameraUseable(function(is){
+                    if(is){
+                    	
+                    }else{
+                        alert("未开启!");
+                    }
+                }  */
+            ucapp.scanning(function (content) {
+                //获取扫码结果，上传打卡信息
+
+            });
+        }
+    </script>
+</body>
+
+</html>

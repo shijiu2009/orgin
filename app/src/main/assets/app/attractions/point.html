@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>电子导游</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/chimee-mobile-player.browser.css">
+
+ <style type="text/css">
+chimee-state {
+	font-size: 26px;
+	
+}
+chimee-state svg {
+    border: 3px solid #FFF;
+	border-radius:50%;
+}
+ .nav_back {
+
+    height: 38px;
+    width: 38px;}
+.nav_back img {
+    height: 23px;
+    width: 23px;
+    margin-top: 7px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.article {
+    padding: 10px;
+	background-color:#f2f2f2;
+}
+.article h2 {
+    font-size: 21px;
+    line-height: 27px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #333;
+    margin-top: 15px;
+    max-height: 100%;
+}
+.article .article_meta {
+    font-size: 13px;
+    line-height: 12px;
+    margin-bottom: 15px;
+}
+.article .article_meta em {
+    font-size: 13px;
+    color: #999;
+    font-style: normal;
+    line-height: normal;
+    max-height: 100%;
+}
+.article .raiders p, .article .raiders p font, .article .raiders p span {
+    font-size: 14px!important;
+    font-weight: normal!important;
+    color: #666666!important;
+    line-height: 22px!important;
+    overflow: hidden!important;
+    max-height: 100%!important;
+    margin-top: 0px!important;
+    margin-bottom: 15px!important;
+}
+.mhjs {
+	padding: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #e0e0e0;
+}
+.mhjs h2 {
+	font-size: 16px;
+	line-height: 22px;
+	height: 22px;
+	color: #333;
+	font-weight: normal;
+}
+.mhjs h3 {font-size: 13px;
+    line-height: 20px;
+	height: 20px;
+	    color: #999;
+		font-weight: normal;}
+.mhjs h4 {font-size: 14px;
+    line-height: 20px;
+	height: 20px;
+	    color: #333;
+		font-weight: normal;
+		margin-bottom:5px;}
+.mhjs audio { width:100%;}
+#page1{width:100%;}
+ </style>
+ 
+</head>
+<body>
+<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ffffff;">
+  <div data-theme="b" data-role="header" data-position="fixed">
+  <a data-role="button" onclick="closeMedia()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> 
+  <img src="../images/app/nav_back.png"> </a>
+    <h3></h3>
+  </div>
+<div data-role="content">
+
+
+	<div class="demo">
+ 	<section id="chimeebox" class="chimee-container">
+    </section>
+   </div>
+  
+<div class="mhjs"><h2 id="h_dname"></h2>
+<h3 id="h_aname"></h3></div>
+
+<!-- http://rm.sina.com.cn/wm/VZ2010050511043310440VK/music/MUSIC1005051622027270.mp3 -->
+<div id="divAudio">
+</div>
+
+
+
+<div class="article">
+
+<div class="raiders" id="Gallery">
+  
+    </div></div>   
+  </div>
+
+</div>
+
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js"></script>
+<script src="../js/chimee-mobile-player.browser.js"></script>
+<script type="text/javascript">
+var Request = getRequest(); 
+var qrcode = Request["qrcode"];
+var prefix = getResoucePrefix();
+$(function(){
+	if(qrcode){
+		ucapp.showWatting();
+		ucapp.post(getWebRoot()+"app/attractions/guidePoint.do",{"qrcode":qrcode},function(data){
+			if(data.attractionsPoint){
+				var ap = data.attractionsPoint;
+				$("#h_dname").text(ap.title);
+				$("#h_aname").text(ap.attractionsName);
+				$("#Gallery").html(ap.info);
+				//初始化视频
+				if(ap.videoUrl){
+					initvideo(prefix+ap.videoUrl);
+				}
+				//初始化音频
+				if(ap.audioUrl){
+					var asdiv = '<div class="mhjs">'+
+						'<h4>音频导游</h4>'+
+						'<audio controls name="media" id="audio">'+
+						'<source id="audioSource" src="'+prefix+ap.audioUrl+'" type="audio/mpeg"></audio>'+
+						'</div>';
+					//$("#audioSource").attr("src".ap.audioUrl);
+					$("#divAudio").html(asdiv);
+				}
+			}else{
+				ucapp.showTip('该导游点暂不开放')
+				ucapp.goToBack()
+			}
+			ucapp.hideWatting();
+		});
+	}
+})
+
+function initvideo(url){
+	if(!url)return;
+	new ChimeeMobilePlayer({
+		  wrapper: '#chimeebox',  // video dom容器
+		  src: url,
+		  autoplay: false,
+		  controls: true,
+		  playsInline: true,
+		  preload: true,
+		  x5VideoPlayerFullscreen: true,
+		  x5VideoOrientation: true,
+		  xWebkitAirplay: true,
+		  muted: false,
+		  box: 'native'
+		});
+}
+function closeMedia(){
+	var audio = document.getElementById('audio');
+	if(audio){
+			audio.pause();//离开页面暂停播放音乐
+		}else{
+			audio.play();
+		}
+	ucapp.goToBack();
+}
+</script> 
+</body>
+</html>

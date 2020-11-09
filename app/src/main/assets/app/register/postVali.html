@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>找回密码</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/login.css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	changeImg();
+});
+
+//获取邮箱验证码
+function postCode(){
+	var username = $('#username').val();
+	if(username == null || username == ''){
+		alert('请输入帐号！');
+		return ;
+	}
+	
+	var codephoto = $('#codephoto').val();
+	if(codephoto == null || codephoto == ''){
+		alert('请输入验证码！');
+		return ;
+	}
+	$.post(getCodeUrl()+"app/getPostCode.do",{'code':codephoto,'username':username},function(data){
+		if(data && data.success){
+			$('#a_post_code').click();
+		}else{
+			if(data.msg){
+				alert(data.msg);
+			}else{
+				alert('验证失败!')
+			}
+		}
+	});
+}
+
+//改变验证码
+function changeImg(){
+	$('#showphoto').attr("src",getCodeUrl()+"createImage.do?dt="+new Date().getTime());
+}
+function closePop(){
+	$("#popup_window").popup("close");
+};
+</script>
+</head>
+<body>
+<div data-role="page" id="">
+<div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back_a.png"> </a> 
+    <h1>找回密码</h1>    
+  </div>
+<div data-role="content">
+<div class="login">
+<div class="title">邮箱验证</div>
+<ul data-role="listview" data-inset="true" data-icon="" class="set_list2 ui-listview ui-listview-inset ui-corner-all ui-shadow">
+			<li class="ui-li-static ui-body-inherit ui-first-child"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input name="username" id="username" placeholder="请输入账户名"  type="text" class="inp_0"></div></li>
+            <li class="ui-li-static ui-body-inherit ui-last-child"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input name="codephoto" id="codephoto" placeholder="输入右图验证码" type="text" class="inp_3">
+	<a onclick="changeImg()" class="te">看不清？<br/>换一张</a><img id="showphoto" src="" class="r_img"></div></li>
+</ul>
+<a onclick="postCode();"  data-transition="slide"  data-inline="true" class="btn_0">下一步</a>
+</div>
+</div>
+
+  
+  </div>
+<div data-role="page" id="post_code">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back_a.png"> </a> 
+
+    <h1>找回密码</h1>    
+  </div>
+<div data-role="content">
+<div class="login">
+<div class="title">输入帐号-验证码</div>
+<ul data-role="listview" data-inset="true" data-icon="" class="set_list2 ui-listview ui-listview-inset ui-corner-all ui-shadow">
+			<li class="ui-li-static ui-body-inherit ui-first-child"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input name="textinput-hide" id="textinput-hide" placeholder="请输入已发送到您邮箱的验证码" value="" type="text" class="inp_0"></div></li>
+            
+</ul>
+<a href="#reset_password" data-role="button" data-transition="slide"  data-inline="true" class="btn_0">确认验证码</a>
+<a href="#popup_window" data-rel="popup" data-role="button" data-transition="pop"  data-inline="true" class="btn_0">错误时的弹出框</a>
+</div>
+<div data-role="popup" id="popup_window" class="ui-content popup_window" data-theme="a" style="max-width:350px;">
+  <p>您输入的验证码错误或超时</p>
+  <a href="javascript:closePop();" class="btn">确定</a>
+</div>
+</div>
+
+  
+  </div>
+  <div data-role="page" id="reset_password">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back_a.png"> </a> <a data-role="button" href="设置.html" class="ui-btn-right nav_more" data-ajax="false"> <img src="../images/app/nav_more_a.png"> </a>
+    <h1>找回密码</h1>    
+  </div>
+<div data-role="content">
+<div class="login">
+<div class="title">修改密码</div><form>
+<ul data-role="listview" data-inset="true" data-icon="" class="set_list2 ui-listview ui-listview-inset ui-corner-all ui-shadow">
+			<li class="ui-li-static ui-body-inherit ui-first-child"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input name="textinput-hide" id="textinput-hide" placeholder="新密码" value="" type="password" class="inp_0"></div></li>
+            <li class="ui-li-static ui-body-inherit ui-last-child"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input name="textinput-hide" id="textinput-hide" placeholder="重输入新密码" value="" type="text" class="inp_0">
+</div></li>
+</ul></form>
+<a href="#" data-transition="slide"  data-inline="true" class="btn_0">提交</a>
+</div>
+</div>
+
+  
+  </div>
+   <div style="display: none;">
+  	<a href="#post_code" id="a_post_code"></a>
+  </div>
+</body>
+</html>

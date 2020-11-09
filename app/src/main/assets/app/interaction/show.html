@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>游记攻略详情</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/gldp_default.css">
+<link rel="stylesheet" href="../css/app/photoswipe.css"/>
+<style type="text/css">
+.ui-popup-container {
+	width: 90%;
+}
+</style>
+</head>
+<body>
+<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ffffff;">
+  <div data-theme="b" data-role="header" data-position="fixed">
+  <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h3></h3>
+  </div>
+  
+  <div data-role="content">
+    <div data-controltype="image" class="play_show">
+    <div class="play_name" id="title"></div>
+  <div class="name" id="headimg">
+
+  </div>
+   <img src="" id="path" alt="image" class="show_img"></div>
+ <div class="ui-grid-b sketch">
+        <div class="ui-block-a">
+        	<h2>发布时间</h2>
+        </div>
+        <div class="ui-block-c">
+        	<h3 id="ct"></h3>
+        </div>
+<!--         <div class="ui-block-b">
+        <h2>收藏</h2><h3 id="coll"></h3>
+        </div>
+        <div class="ui-block-c">
+       <h2>分享</h2><h3 id="fen"></h3>
+        </div> -->
+       
+      </div>
+     
+<div class="play_con">
+ <div class="device">
+  <div class="container" id="con">
+</div>
+</div>
+</div>
+  
+  
+  <!-- 相关酒店/景点 -->
+    <!-- <div class="index_k">
+    
+  	<div class="title"><h2>相关景点</h2></div>
+  	<div class="ui-grid-a index_cp" id="div_attrs">
+        <div class="ui-block-b">
+        <a href="${pageContext.request.contextPath}/wx/attractions/detail.do?id=${yy.id}" data-ajax="false" data-transition="slide" class="ui-link1 ui-link">          
+           <img src="${yy.imglogo }">
+           <h2>${yy.name }</h2>
+        </a>
+        </div>
+      </div>
+    
+  	<div class="title"><h2>相关酒店</h2></div>
+  		<div class="ui-grid-a index_cp" id="div_hotels">
+        <div class="ui-block-a">
+        <a href="${pageContext.request.contextPath}/wx/hotel/detail.do?id=${yy.id}" data-ajax="false" data-transition="slide" class="ui-link1 ui-link">          
+           <img src="${yy.imglogo }">
+           <h2>${yy.name }</h2>
+        </a>
+        </div>
+      </div>
+      
+	</div> -->
+  	
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+var theRequest = getRequest();
+var id = theRequest['id'];
+var prifix = getFullImageUrl();
+$(function(){
+	getInfo(id);
+});
+function getInfo(id){
+	if(!id)return;
+	ucapp.post(getWebRoot()+"app/interaction/show.do",{"id":id},function(data){
+		if(data.interaction){
+			
+			
+			var headImg = getImageUrl()+"/defaultImg/userHead.jpg";
+			if(data.interaction.headImg){
+				headImg = getImageUrl() + data.interaction.headImg;
+			}
+			//data.interaction.headImg  = getImageUrl()+data.interaction.headImg;
+			data.interaction.thumbPath = getImageUrl()+data.interaction.thumbPath;
+			$("#headimg").html('<img src="'+headImg+'">');
+			$("#ct").html(data.interaction.createTime.substring(0,10));
+			$("#coll").html(data.interaction.collection);
+			$("#fen").html(data.interaction.share);
+			
+			$("#path").attr("src",data.interaction.thumbPath);
+			if(data.interaction.author==null||data.interaction.author==""){
+				data.interaction.author = ucapp.data.setting.distination+"旅游开发局";
+			}
+			if(data.interaction.category==1){
+			$("#title").html('<h3>游记由<span>'+data.interaction.author+'</span>提供</h3><h2>'+data.interaction.title+'</h2>');
+			}else{
+			$("#title").html('<h3>攻略由<span>'+data.interaction.author+'</span>提供</h3><h2>'+data.interaction.title+'</h2>');	
+			}  
+			
+			//批量替换图片路径
+			$("#con").html(data.interaction.content);
+			var imgsrc = "";
+			$("#con img").each(function(){
+				imgsrc = $(this).attr("src");
+				if(imgsrc.indexOf(getImageUrl())==-1){
+					var imgUrl = getImageUrl() + imgsrc;
+					$(this).attr("src",imgUrl);
+				}
+			});
+			
+			//相关酒店/景点
+			var inter = data.interaction;
+			if(inter.hotels && inter.hotels.length>0){
+				var hotels = inter.hotels;
+				var arr = [];
+				var row = null;
+				for(var i=0;i<hotels.length;i++){
+					row = hotels[i];
+					var showClass = 'class="ui-block-b"';
+					if(i%2==0){
+						showClass = 'class="ui-block-a"';
+					}
+					arr[i] = '<div '+showClass+'>'+
+				        '<a href="../hotel/detail.html?id='+row.hotelId+'" data-ajax="false" data-transition="slide" class="ui-link1 ui-link"> '+         
+			           '<img src="'+prifix+row.imglogo+'">'+
+			           '<h2>'+row.name+'</h2></a>'+
+			        '</div>';
+				}
+				$('#div_hotels').html(arr.join(""));
+			}
+			//景点
+			if(inter.attrs && inter.attrs.length>0){
+				var attrs = inter.attrs;
+				var arr = [];
+				var row = null;
+				for(var i=0;i<attrs.length;i++){
+					row = attrs[i];
+					var showClass = 'class="ui-block-b"';
+					if(i%2==0){
+						showClass = 'class="ui-block-a"';
+					}
+					arr[i] = '<div '+showClass+'>'+
+				        '<a href="../attractions/detail.html?id='+row.attrId+'" data-ajax="false" data-transition="slide" class="ui-link1 ui-link"> '+         
+			           '<img src="'+prifix+row.imglogo+'">'+
+			           '<h2>'+row.name+'</h2></a>'+
+			        '</div>';
+				}
+				$('#div_attrs').html(arr.join(""));
+			}
+			
+			
+			
+			
+		}
+	});
+}
+</script>
+</body>
+</html>

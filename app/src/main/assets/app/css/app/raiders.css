@@ -1,0 +1,435 @@
+.im .title2 {
+	position: relative;
+	height: 22px;
+	padding-top: 5px;
+	margin-right: 10px;
+	padding-bottom: 5px;
+	margin-left: 10px;
+	border-bottom-width: 1px;
+border-bottom-style: solid;
+border-bottom-color: #d8d8d8;
+}
+.im .title2 h2 {
+float: left;
+font-size: 14px;
+color: #666;
+font-weight: normal;
+display: block;
+line-height: 22px;
+height: 22px;
+margin-right: 6px;
+}
+.im .feature2 {
+padding-top: 8px;
+padding-bottom: 8px;
+font-size: 13px;
+line-height: 18px;
+font-weight: normal;
+color: #888888;
+padding-right: 10px;
+padding-left: 10px;
+}
+.index_show .raiders_name {
+	background-image: none;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	padding-top: 8px;
+	padding-right: 25px;
+	padding-bottom: 8px;
+	padding-left: 25px;
+}
+.index_show .raiders_name h2 {
+	font-size: 26px;
+	font-weight: normal;
+	color: #FFF;
+	text-shadow: 1px 1px 0px #444;
+	margin-bottom: 5px;
+	text-align: center;
+}
+.index_show .raiders_name h3 {
+	font-size: 13px;
+	font-weight: normal;
+	color: #FFF;
+	text-shadow: 1px 1px 0px #444;
+	text-align: center;
+}
+.title_h4 {
+line-height: 30px;
+height: 30px;
+padding-left: 10px;
+color: #333;
+font-size: 14px;
+font-weight: normal;
+position: relative;
+}
+.travel {background-image: url(../../images/app/raiders/ti.jpg);
+	background-repeat: repeat-y;
+	background-position: 17px top;}
+.level {
+	background-color: #FFF;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #d8d8d8;
+	border-bottom-color: #d8d8d8;
+	margin-bottom: 6px;
+}
+.level .title {
+	background-image: url(../../images/app/raiders/ti.jpg);
+	background-repeat: repeat-y;
+	background-position: 17px top;
+	padding-left: 36px;
+	padding-right: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d8d8d8;
+	font-size: 13px;
+	line-height: 32px;
+	font-weight: normal;
+	color: #333;
+	position: relative;
+	}
+.level .title em {
+	font-size: 12px;
+	color: #ccc;
+	font-style: normal;
+	line-height: normal;
+	margin-right: 5px;
+	margin-left: 5px;
+	}
+.level .title .k_img {
+	height: 22px;
+	width: 22px;
+	position: absolute;
+	left: 7px;
+	top: 5px;
+	z-index: 99;
+}
+.travel .level .pic {
+	overflow: hidden;
+	position: relative;
+	display: block;
+}
+.travel .level .pic .t_line {
+	position: absolute;
+	height: 280px;
+	left: 0px;
+	top: 0px;
+	width: 20px;
+	z-index:97;
+	background-image: url(../../images/app/raiders/ti.jpg);
+	background-repeat: repeat-y;
+	background-position: 17px top;
+}
+.travel .level .pic .in_bg {
+	position: absolute;
+	height: 48px;
+	left: 0px;
+	z-index: 95;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.7)));
+	width: 94%;
+	bottom: 0px;
+	color: #FFF;
+	padding-right: 3%;
+	padding-left: 3%;	
+}
+.travel .level .pic .in_bg .ticket {
+	font-size: 14px;
+	color: #FFF;
+	font-weight: normal;
+	text-shadow: 1px 1px 0px #444;
+	text-align: right;
+	position: relative;
+	padding-right: 52px;
+}
+.travel .level .pic .in_bg .ticket .point {
+	background-color: #fa0909;
+	font-size: 12px;
+	color: #FFF;
+	padding-top: 2px;
+	padding-right: 5px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	float: right;
+	text-shadow: 0px 0px 0px #444;
+	border-radius: 2px;
+	margin-left: 4px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+.travel .level .pic .in_bg .price {
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFF;
+	float: right;
+	margin-top: 4px;
+	text-shadow: 1px 1px 0px #444;
+}
+.travel .level .pic .in_bg em {
+	font-size: 12px;
+font-weight: normal;
+font-style: normal;
+}
+.travel .level .pic .in_bg span {
+	font-size: 20px;
+	margin-right: 3px;
+	font-weight: normal;
+}
+
+.travel .level .pic img{
+	float: left;
+}
+
+.level .container {
+	background-image: url(../../images/app/raiders/ti.jpg);
+	background-repeat: repeat-y;
+	background-position: 17px top;
+	padding-left: 36px;
+	padding-right: 10px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	font-size: 12px;
+	line-height: 18px;
+	color: #999;
+	overflow: hidden;
+	display: block;
+}
+.level .container .tips {
+	position: relative;
+	line-height: 18px;
+	font-size: 13px;
+	font-weight: normal;
+	padding-left: 22px;
+	margin-bottom: 4px;
+	margin-top: 4px;
+}
+.level .container .tips .tips_img {
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	left: 1px;
+	top: 1px;
+}
+.level .container .proposal {
+	height: 18px;
+	position: relative;
+	line-height: 18px;
+	font-size: 13px;
+	font-weight: normal;
+	padding-left: 27px;
+	margin-bottom: 4px;
+	background-color: #eeeeee;
+	float: left;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 4px;
+		margin-top: 4px;
+}
+.travel .level .container .text {
+
+}
+
+.level .container .proposal .pro_img {
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	left: 5px;
+top: 5px;
+}
+.add_panel {
+	position: fixed;
+	top: 10%;
+	right: 0px;
+	background-image: url(../../images/app/mask_bg.png);
+	z-index: 999;
+	border-radius:14px 0px 0px 14px;
+}
+.add_panel .container {
+	position: relative;
+	line-height: 29px;
+	height: 28px;
+	width: 64px;
+	font-size: 13px;
+	color: #FFF;
+	padding-left: 26px;
+	background-image: url(../../images/app/raiders/kn.png);
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-size: 10%;
+	margin-right: 5px;
+}
+.add_panel .container .hs {
+	position: absolute;
+	height: 16px;
+	width: 16px;
+	left: 7px;
+top: 6px;
+}
+.ui-panel-animate.ui-panel-open.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-open.ui-panel-position-right.ui-panel-display-push {
+-webkit-transform: translate3d(0,0,0);
+transform: translate3d(0,0,0);
+-moz-transform: none;
+}
+.ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
+right: 0;
+-webkit-transform: translate3d(17em,0,0);
+-moz-transform: translate3d(17em,0,0);
+transform: translate3d(17em,0,0);
+}
+.ui-panel-animate.ui-panel:not(.ui-panel-display-reveal) {
+-webkit-backface-visibility: hidden;
+-webkit-transform: translate3d(0,0,0);
+}
+.ui-panel-position-right.ui-panel-display-overlay {
+-webkit-box-shadow: -5px 0 5px rgba(0,0,0,.15);
+-moz-box-shadow: -5px 0 5px rgba(0,0,0,.15);
+box-shadow: -5px 0 5px rgba(0,0,0,.15);
+}
+.ui-panel-position-right.ui-panel-display-reveal, .ui-panel-position-right.ui-panel-open {
+right: 0;
+}
+.ui-panel-display-overlay {
+-webkit-box-shadow: 5px 0 5px rgba(0,0,0,.15);
+-moz-box-shadow: 5px 0 5px rgba(0,0,0,.15);
+box-shadow: 5px 0 5px rgba(0,0,0,.15);
+}
+.ui-panel-position-right {
+right: -17em;
+}
+.ui-panel-animate {
+-webkit-transition: -webkit-transform 300ms ease;
+-webkit-transition-duration: 300ms;
+-moz-transition: -moz-transform 300ms ease;
+transition: transform 300ms ease;
+}
+.ui-panel-display-overlay {
+z-index: 1200;
+}
+.ui-panel-animate.ui-panel-position-right.ui-panel-display-overlay, .ui-panel-animate.ui-panel-position-right.ui-panel-display-push {
+right: 0;
+-webkit-transform: translate3d(17em,0,0);
+-moz-transform: translate3d(17em,0,0);
+transform: translate3d(17em,0,0);}
+.gl_panel .ui-panel-inner {
+padding: 0em;
+}
+.gl_panel .title {
+	padding: 10px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d8d8d8;
+}
+.gl_panel .title h2 {
+	color: #333;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 20px;
+	height: 20px;
+}
+.gl_panel .title h3 {
+	color: #999;
+	font-size: 12px;
+	font-weight: normal;
+}
+.gl_panel .container {	}
+.gl_panel .container .title_h3 {
+	background-color: #f5f5f5;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d8d8d8;
+}
+.gl_panel .container .ui-link {
+	display: block;
+	position: relative;
+	height: 34px;
+	line-height: 34px;
+	padding-left: 34px;
+	font-size: 13px;
+	font-weight: normal;
+	color: #999;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d8d8d8;
+}
+.gl_panel .container .t_img {
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	left: 8px;
+	top: 5px;
+}
+.food_li {
+	background-color: #FFF;
+	margin-bottom: 6px;
+}
+.food_li .title {
+	font-size: 13px;
+	line-height: 34px;
+	color: #666;
+	position: relative;
+	padding-right: 8px;
+	padding-left: 8px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #ededed;
+}
+.food_li .title .tip {
+	font-size: 12px;
+	line-height: 20px;
+	color: #FFF;
+	background-color: #A0E22B;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 20px;
+	padding-right: 6px;
+	padding-left: 6px;
+}
+.food_li .container {
+	position: relative;
+	padding-top: 8px;
+	padding-right: 8px;
+	padding-bottom: 8px;
+	padding-left: 96px;
+	color: #999;
+	font-size: 12px;
+	line-height: 20px;
+	height: 80px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #ededed;
+}
+.food_li .container .img_t {
+	position: absolute;
+	padding: 8px;
+	height: 80px;
+	width: 80px;
+	left: 0px;
+	top: 0px;
+}
+.food_li .tasting {
+	padding-right: 8px;
+	padding-left: 8px;
+}
+.food_li .tasting h3 {
+	font-size: 13px;
+	line-height: 28px;
+	font-weight: normal;
+	color: #666;
+	height: 28px;
+}
+.food_li .tasting .ui-link {
+	font-size: 12px;
+	display: block;
+	margin-right: 5px;
+	margin-left: 5px;
+	color: #999;
+	margin-bottom: 5px;
+}
+.food_li .tasting .ui-link img {
+	margin-bottom: 4px;
+}

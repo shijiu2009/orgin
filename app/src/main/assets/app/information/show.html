@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>咨讯</title>
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> 
+  <a data-role="button" onclick="ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> 
+  <img src="../images/app/nav_back.png"> 
+  </a> 
+    <h1>资讯详情</h1>    
+  </div>
+<div data-role="content">
+<div class="article">
+  <h2 id="h_title"></h2>
+                    <div class="article_meta">
+                     <em>
+                     <span id="span_time"></span>
+                     </em>
+                    </div>
+                    <div class="raiders" id="div_info">
+                    
+        </div></div>   
+  </div>
+
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js"></script>
+<script type="text/javascript">
+var theRequest = getRequest ();
+var id = theRequest['id'];//获取id
+$(function(){
+	reload();
+});
+function reload(){
+	if(id){
+		$("#div_info").html("");
+		ucapp.post(getWebRoot()+"app/information/show.do",{id:id},function(data) {
+			if (data.information) {
+				var information = data.information;
+				$("#h_title").text(information.title);
+				
+				var createTime = information.createTime;
+				if(createTime){
+					createTime = createTime.substring(0,10);
+				}
+				$("#span_time").text(createTime);
+				$("#div_info").append(information.info);
+				
+				//批量替换图片路径
+				$("#div_info img").each(function(){
+					if($(this).attr("src").indexOf(getImageUrl())==-1){
+						var imgUrl = getImageUrl() + $(this).attr("src");
+						$(this).attr("src",imgUrl);
+					}
+				});
+			}
+		});
+	}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>最美<span class="distination"></span></title>
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link rel="stylesheet" href="../css/app/photoswipe.css">
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>最美<span class="distination"></span></h1>    
+  </div>
+<div data-role="content">
+<div id="MainContent">
+	
+	<ul id="Gallery" class="gallery">
+		<!-- <li><a href="images/full/001.jpg"><img src="images/thumb/001.jpg" alt="Image 001" /></a></li> -->
+	</ul>
+	
+</div>
+  </div>
+
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script type="text/javascript" src="../js/klass.min.js"></script>
+<script type="text/javascript" src="../js/code.photoswipe-3.0.5.min.js"></script>
+<script type="text/javascript" src="../js/ucapp.js"></script>	
+	
+	<script type="text/javascript">
+	var theRequest = getRequest();
+    var typeId = theRequest['typeId'];
+	
+	
+	var options = {};  
+	var instance;  
+	(function(window, $, PhotoSwipe) {  
+	    $(document).ready(function() {  
+	        loadDatas();  
+	    });  
+	  
+	        /*初始化插件*/  
+	    function bindPhotoSwipe() {  
+	        instance = $("#Gallery a").photoSwipe(options);  
+	        var size = $("#Gallery a").length;
+	        // onDisplayImage  
+	        instance.addEventHandler(PhotoSwipe.EventTypes.onDisplayImage,  
+	                function(e) {  
+	                    console.log("Number of images loaded so far: "+ instance.cache.images.length);  
+	                });  
+	    }  
+	    /* 
+        加载数据 
+    */  
+     function loadDatas(){  
+       var url = getWebRoot()+'app/img/list.do';
+       ucapp.post(url,{typeId:typeId},function(data){
+    	   if(data.rows){
+       			var rows = data.rows;
+       			var row = null;
+       			for(var i=0;i<rows.length;i++){
+       				row = rows[i];
+       				var imglogo = getFullImageUrl(row.imglogo);
+       				var li = '<li><a href="'+imglogo+'"><img style="height:75px;width:120px" src="'+imglogo+'" alt="'+row.name+'" /></a></li>';
+       				$("#Gallery").append(li);
+       			}
+       			
+       		}
+    	   bindPhotoSwipe();  
+        });   
+    };  
+	        /* 
+	            解绑 
+	        */  
+	        function detatch(){  
+	            PhotoSwipe.detatch(instance);  
+	            PhotoSwipe.activeInstances = [];
+	        }  
+	}(window, window.jQuery, window.Code.PhotoSwipe)); 
+	
+	</script>
+</body>
+</html>
+

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport"
+		content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+		name="viewport">
+	<title>酒店详情</title>
+	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+	<link rel="stylesheet" href="../css/app/layout.css?ss=2">
+	<link rel="stylesheet" href="../css/app/gldp_default.css?s=1">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+	<script src="../js/jquery.myslide.js"></script>
+	<script src="../js/ucapp.js"></script>
+	<style type="text/css">
+		.ui-popup-container {
+			width: 90%;
+		}
+
+		.slide.out {
+			display: block;
+			width: 100%;
+		}
+
+		.slide.in {
+			display: block;
+			width: 100%;
+		}
+
+		.room_list li .ui-btn {
+			padding-left: 1.6rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div data-role="page" data-control-title="Home" id="page1" class="no_head" style="background-color:#ebebeb;">
+		<div data-theme="b" data-role="header" data-position="fixed">
+			<a data-role="button" onclick="ucapp.goToBack()" data-rel="back" data-transition="slide"
+				class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+			<a data-role="button" href="#" onclick="collect()" class="ui-btn-right nav_share" style="right: .4em;"> <img
+					id="imgg" src="../images/app/nav_collect.png"> </a>
+			<h3></h3>
+		</div>
+		<div data-role="content">
+			<!-- <div data-controltype="image" class="index_show">
+<div class="name">
+<h2 id="name"></h2>
+<h3 id="xingji"></h3>
+</div>
+    <img src="" id="imgtop" alt="image" class="show_img">
+    </div> -->
+
+			<div id="MainContent" class="demo">
+				<div id="Gallery">
+					<div id="box" class="box" data-pswp-uid="1"></div>
+				</div>
+			</div>
+
+
+			<div class="index_show">
+				<div class="name">
+					<h2 id="name"></h2>
+					<h3 id="xingji"></h3>
+				</div>
+			</div>
+
+			<ul data-role="listview" id="" data-inset="true" class="jd_list">
+				<li class="jtou"><a href="#notice" data-transition="slide">
+						<img src="../images/app/eu1.png" class="ui-li-icon">
+						<h2>酒店介绍</h2>
+					</a>
+				</li>
+				<li class="jtou"><a href="javascript:goNav();" data-transition="fade">
+						<img src="../images/app/eu2.png" class="ui-li-icon">
+						<h2>酒店地址：<span id="address"></span><span class="dh">导航</span></h2>
+					</a>
+				</li>
+
+			</ul>
+
+			<a href="#bbs" id="dianji" data-transition="slide" style="display: none;">
+				<!--        <ul data-role="listview" id=""  data-inset="true" class="jd_list">
+      <li class="jtou"><a href="#bbs" id="dianji" data-transition="slide" >
+        <h2><span class="red" id="comping">0</span>人入住点评</h2>
+       <h3>大家的印象</h3>
+        </a> </li>
+    </ul> -->
+				<div class="check_time">
+					<div id="grid" class="ui-grid-b">
+						<input id="stdd" type="hidden" value="">
+						<input id="endd" type="hidden" value="">
+						<div class="ui-block-a"><a href="#date1" onclick="clst()" data-transition="pop"
+								class="ui-bar ui-bar-a ui-link">
+								<h2>入住</h2>
+								<h3><span id="J_begin_date"></span><em>星期一</em></h3>
+							</a></div>
+						<div class="ui-block-b"><a href="#" data-transition="pop" class="ui-bar ui-bar-a ui-link">
+								<div class="d3" id="totwan">共1晚</div>|
+							</a></div>
+						<div class="ui-block-c"><a href="#itinerary" onclick="clend()" data-transition="pop"
+								class="ui-bar ui-bar-a ui-link">
+								<h2>退房</h2>
+								<h3><span id="J_end_date"></span><em>星期二</em></h3>
+							</a></div>
+
+					</div>
+
+				</div>
+				<ul data-role="listview" data-icon="false" class="room_list" id="all">
+
+				</ul>
+
+				<!-- 平台协议 -->
+				<!--<ul data-role="listview" data-inset="true" class="jd_list">
+      <li class="jtou">
+		<a href="../public/agreement.html" data-transition="fade"> <img src="../images/app/eu1.png" class="ui-li-icon">
+		<h2>服务条款</h2>
+		</a>
+	  </li>
+    </ul>-->
+
+				<div class="comment_on">
+					<h1>评价</h1>
+					<ul id="onecom">
+					</ul>
+					<div class="btn_an">
+						<a href="javascript:chliks()" data-ajax="false" class="ui-link">查看全部评价</a></div>
+				</div>
+
+		</div>
+	</div>
+	<div data-role="page" id="itinerary">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+				<img src="../images/app/nav_back.png"> </a>
+			<a data-role="button" href="#page1" class="ui-btn-right nav_more"> <img src="../images/app/nav_more.png">
+			</a>
+			<h1>选择日期</h1>
+		</div>
+		<div data-role="content">
+			<div class="gldp_default">
+				<div class="titte" id="pa1"></div>
+				<div class="container">
+					<ul class="week">
+						<li>日</li>
+						<li>一</li>
+						<li>二</li>
+						<li>三</li>
+						<li>四</li>
+						<li>五</li>
+						<li>六</li>
+					</ul>
+					<div class="clear"></div>
+					<ul class="con" id="dipage">
+
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<div class="titte" id="pa2"></div>
+				<div class="container">
+					<ul class="week">
+						<li>日</li>
+						<li>一</li>
+						<li>二</li>
+						<li>三</li>
+						<li>四</li>
+						<li>五</li>
+						<li>六</li>
+					</ul>
+					<div class="clear"></div>
+					<ul class="con" id="nextpa">
+
+					</ul>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<div data-role="page" id="date1">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+				<img src="../images/app/nav_back.png"> </a>
+			<!--<a data-role="button" href="#page1" class="ui-btn-right nav_more"> <img src="${pageContext.request.contextPath}/wxplatform/images/app/nav_more.png"> </a>-->
+			<h1>选择入住日期</h1>
+		</div>
+		<div data-role="content">
+			<div class="gldp_default">
+				<div class="titte" id="pe1"></div>
+
+				<div class="container">
+					<ul class="week">
+						<li>日</li>
+						<li>一</li>
+						<li>二</li>
+						<li>三</li>
+						<li>四</li>
+						<li>五</li>
+						<li>六</li>
+					</ul>
+					<div class="clear"></div>
+					<ul class="con" id="datst">
+
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<div class="titte" id="pe2"></div>
+
+				<div class="container">
+					<ul class="week">
+						<li>日</li>
+						<li>一</li>
+						<li>二</li>
+						<li>三</li>
+						<li>四</li>
+						<li>五</li>
+						<li>六</li>
+					</ul>
+					<div class="clear"></div>
+					<ul class="con" id="datend">
+
+					</ul>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div data-role="page" id="notice">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+				<img src="../images/app/nav_back.png"> </a>
+			<a data-role="button" href="#page1" class="ui-btn-right nav_more"> <img src="../images/app/nav_more.png">
+			</a>
+			<h1>酒店介绍</h1>
+
+		</div>
+		<div data-role="content">
+
+			<div class="jt_text" style="margin-top:6px;">
+				<h2 class="title" id="pename"></h2>
+				<h2 class="title">酒店地址：<span id="peaddress"></span></h2>
+				<h2 class="title">酒店级别：<span id="strt"></span></h2>
+				<h2 class="title" style="border-bottom-width: 0px;">联系方式：<span id="phone"></span></h2>
+
+			</div>
+			<div class="jt_text">
+				<h2 class="title">酒店详情</h2>
+				<div class="con" id="info">
+
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">如何到达酒店</h2>
+				<div class="con" id="traffic">
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">酒店周边</h2>
+				<div class="con" id="surrounding">
+
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">预订须知</h2>
+				<div class="con" id="yuding">
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<div data-role="page" id="bbs">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" href="#page1" data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+				<img src="../images/app/nav_back.png"> </a>
+			<h1>评价</h1>
+
+		</div>
+		<div data-role="content">
+			<ul data-role="listview" data-icon="false" id="thelist" class="bbs_list1">
+				<li class="li5">
+					<div class="txt" id="hao">
+						<div class="num">0%</div>
+						入住此酒店的用户满意度为0%<br /> 已有0人点评
+					</div>
+				</li>
+				<div id="cccv">
+				</div>
+				<li id="xiaye" class="li2"
+					style="border-top-width: 1px;border-top-style: solid;border-top-color: #ededed;"> <a href="#"
+						onclick="xia()" data-transition="fade" class="more" style="text-align:center" data-ajax="false">
+						查看更多点评 </a> </li>
+			</ul>
+		</div>
+
+
+	</div>
+	<div data-role="page" id="notice1">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" href="#" data-rel="back" data-direction="reverse" data-transition="slide"
+				class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+			<a data-role="button" href="#" class="ui-btn-right nav_more"> <img src="../images/app/nav_more.png"> </a>
+			<h1>预定须知</h1>
+
+		</div>
+		<div data-role="content">
+
+			<div class="jt_text" style="margin-top:6px;">
+				<h2 class="title">在线预订</h2>
+				<div class="con">
+					<p>1、建议至少提前12小时预订，周末、法定节假日至少提前24小时。部分酒店因房源紧张需提前1－2天预订，节假日、会展期间或旅游旺季最好提前较长时间预订，以防酒店客满。</p>
+					<p>2、为确保您的行程，在您填写预订单时，务必留下准确入住人姓名（请确保与所使用的有效证件上的姓名一致）及联系人手机号码。</p>
+					<p>3、如您已为相同入住人预定了入离时段相同（或部分重合）的客房，请不要重复预定。</p>
+					<p>4、当您需要预订多间客房时，须提供不少于所预订客房数量的实际入住人的信息，入住人姓名需要不同，以方便预订确认。</p>
+					<p>5、在您提交订单，接到确认信息后，表示您的预订成功，您可如期安排您的行程。</p>
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">费用说明</h2>
+				<div class="con">
+					<p>1、手机客户端呈现的酒店价格为酒店房费，不包含酒店其他费用及税收。</p>
+					<p>2、手机客户端价格可能因为酒店原因会有所变更，请以最终确认为准。</p>
+					<p>3、您入住酒店的早餐与加床价格视各酒店规定有所不同。</p>
+					<p>通常情况下，酒店均提供发票，您需在退房时向酒店索要发票，离开酒店后将无法提供（部分酒店因政策等原因不提供发票，敬请谅解）。</p>
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">入住、延住与离店</h2>
+				<div class="con">
+					<p>1、入住当天凭心仪广西旅行网预订成功短信，到酒店前台报订单验证码与手机号码核对信息，即可办理入住手续。</p>
+					<p>2、入住时需要出示政府核发的身份证件(带照片)。</p>
+					<p>3、通常情况下，酒店的最晚入住时间为20:00，最晚离店时间为14:00。</p>
+					<p>4、若您提前入住，请与酒店协商，可能会遇到无空房的情况，需要您等待。</p>
+					<p>5、若您推迟离店，需与酒店协商，酒店一般会加收一定的费用。</p>
+					<p>6、请您在预订单注明的最晚到店时间前到达酒店，如未能如期到达请及时与酒店联系，否则酒店将会取消您的订单。若您已在线支付房费的，酒店将为您保留客房至您离店日期止，如到入住时间未能如期入住的，订单将不能申请取消，房费也不予退还。
+					</p>
+					<p>7、若您因行程变化取消了酒店订单，但之后再次需要预订时，价格将有可能会变更，请以最新确认的价格为准。</p>
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">您的权利和责任</h2>
+				<div class="con">
+					<p>1、若订单已确认，您可如期入住所预订的酒店。</p>
+					<p>2、若订单已确认，您在约定时间至预订酒店前台发现无房，请立即拨打电话联系心仪广西客服，以便我们尽快帮您协调解决。</p>
+					<p>3、您对您的订房亦负有相应的承诺，如由于您已预付或心仪旅行为您预付房款后而未入住所造成的损失亦将由您承担。如您在酒店入住时遇到困难，请致电心仪旅行客服，心仪旅行将为您提供必要的帮助。</p>
+				</div>
+			</div>
+			<div class="jt_text">
+				<h2 class="title">免责条款</h2>
+				<div class="con">
+					<p>1、心仪旅行手机客户端酒店产品页显示特定地点的酒店信息，但不代表建议去这些地方旅行或认为没有风险， 对于去这些地方旅行造成的损害或损失心仪旅行不承担任何责任。</p>
+					<p>2、心仪旅行对您入住酒店期间发生的意外不承担任何责任。建议您查看将要去旅行的地区政府发布的相关旅行公告，并采取必要的预防措施。 同时建议您购买个人旅行保险。 </p>
+					<p>3、如您被法院列入全国失信被执行人名单，您可能无法正常出游，您可以于预订前自行核实，避免不必要的损失。</p>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<link rel="stylesheet" href="../css/app/photoswipe.css">
+	<script type="text/javascript" src="../js/klass.min.js"></script>
+	<script type="text/javascript" src="../js/code.photoswipe-3.0.5.min.js"></script>
+
+	<script type="text/javascript">
+		var theRequest = getRequest();
+		var id = theRequest['id'];
+		var currage = 1;
+		var totalPage = 1;
+		var currLatitude = null;
+		var currLongitude = null;
+		var currAddress = null;
+		$(function () {
+			reload();
+			var myDate = new Date();
+			var st = add0(myDate.getMonth() + 1) + '-' + add0(myDate.getDate());
+			var stt = myDate.getFullYear() + "-" + add0(myDate.getMonth() + 1) + '-' + add0(myDate.getDate());
+			myDate.setDate(myDate.getDate() + 1);
+			var end = add0(myDate.getMonth() + 1) + '-' + add0(myDate.getDate());
+			var endd = myDate.getFullYear() + "-" + add0(myDate.getMonth() + 1) + '-' + add0(myDate.getDate());
+			$("#J_begin_date").html(st);
+			$("#J_end_date").html(end);
+			$("#stdd").val(stt);
+			$("#endd").val(endd);
+			detail();
+			commentpage();
+		});
+
+
+
+		function detail() {
+			var st = $("#stdd").val();
+			var end = $("#endd").val();
+			$("#all").html("");
+			if (st != null && end != null) {
+				var myDate = new Date();
+				var mo = myDate.getMonth() + 1;
+				$("#pa1").html(myDate.getFullYear() + "年" + mo + "月");
+				$("#pe1").html(myDate.getFullYear() + "年" + mo + "月");
+				myDate.setMonth(myDate.getMonth() + 1);
+				var mc = myDate.getMonth() + 1;
+				$("#pa2").html(myDate.getFullYear() + "年" + mc + "月");
+				$("#pe2").html(myDate.getFullYear() + "年" + mc + "月");
+				ucapp.post(getWebRoot() + "app/hotel/detail.do", { "id": id, "start": st, "end": end }, function (data) {
+
+					//多图轮播
+					if (data.imgs) {
+						for (var i = 0; i < data.imgs.length; i++) {
+							var ddd = 'list slide in';
+							if (i == 0) {
+								ddd = "";
+							} else {
+								ddd = "list slide out";
+							}
+							var img = getImageUrl() + data.imgs[i].path;
+							var div = '<div class="' + ddd + '"><a href="' + img + '" class="ui-link" data-ajax="false"><img src="' + img + '" class="ij"></a></div>';
+							$("#box").append(div);
+						}
+						$('#box').mySlide({
+							interval: 3000,
+							direction: 'left'
+						});
+						//initPS(window.Code.PhotoSwipe);
+					}
+
+
+					if (data.startDate) {
+						$("#J_begin_date").html(data.startDate.substring(5, 10));
+						$("#J_end_date").html(data.endDate.substring(5, 10));
+						$("#stdd").val(data.startDate);
+						$("#endd").val(data.endDate);
+					}
+					$("#comping").html(data.tital);
+					$("#hao").html('<div class="num" >' + data.haoping + '%</div>入住此酒店的用户满意度为' + data.haoping + '%<br/> 已有' + data.tital + '人点评');
+					if (data.hotel) {
+
+						//经纬度
+						currLatitude = data.hotel.latitude;
+						currLongitude = data.hotel.longitude;
+						currAddress = data.hotel.address;
+
+						$("#pename").html(data.hotel.name);
+						$("#peaddress").html(data.hotel.address);
+						$("#name").html(data.hotel.name);
+						$("#imgtop").attr("src", getImageUrl() + data.hotel.titleImg);
+						$("#click").html(data.hotel.notice);
+						$("#surrounding").html(data.hotel.surrounding);
+						$("#info").html(data.hotel.info);
+						$("#phone").html(data.hotel.contact);
+						$("#traffic").html(data.hotel.traffic);
+						$("#address").html(data.hotel.address);
+						$("#yuding").html(data.hotel.notice)
+
+						var hotelOrHome = data.hotel.hotelOrHome;
+						if (hotelOrHome == 1) {
+							if (data.hotel.stars) {
+								if (data.hotel.stars == 1) {
+									$("#xingji").html('[一星级]');
+									$("#strt").html('一星级');
+								} else if (data.hotel.stars == 2) {
+									$("#strt").html('二星级');
+									$("#xingji").html('[二星级]');
+								} else if (data.hotel.stars == 3) {
+									$("#strt").html('三星级');
+									$("#xingji").html('[三星级]');
+								} else if (data.hotel.stars == 4) {
+									$("#strt").html('四星级');
+									$("#xingji").html('[四星级]');
+								} else if (data.hotel.stars == 5) {
+									$("#strt").html('五星级');
+									$("#xingji").html('[五星级]');
+								}
+							}
+						} else if (hotelOrHome == 2) {
+							var bstars = data.hotel.bstars;
+							if (bstars == 1) {
+								$("#xingji").html('[广西五星级乡村旅游区]');
+							} else if (bstars == 2) {
+								$("#xingji").html('[广西五星级农家乐]');
+							} else if (bstars == 3) {
+								$("#xingji").html('[广西四星级乡村旅游区]');
+							} else if (bstars == 4) {
+								$("#xingji").html('[广西四星级农家乐]');
+							} else if (bstars == 5) {
+								$("#xingji").html('[广西三星级乡村旅游区]');
+							} else if (bstars == 6) {
+								$("#xingji").html('[广西三星级农家乐]');
+							} else if (bstars == 0) {
+								$("#xingji").html('[无星级]');
+							}
+						}
+
+						$("#all").trigger("create");
+						$('#all').listview('refresh');
+						if (data.hotel.isOpen == 1) { //开放预定
+							if (data.hotel.rooms) {
+								for (var i = 0; i < data.hotel.rooms.length; i++) {
+									var obj = data.hotel.rooms[i];
+									var icon = getImageUrl() + obj.icon;
+									var div = '<li><a href="javascript:orders(' + obj.id + ')" data-transition="fade" data-ajax="false">' +
+										'<div style="float:left;width:80px;margin-right: 10px;"><img src="' + icon + '" class="t_img"></div><div><h2>' + obj.name + '</h2></div>' +
+										'<h3>' + obj.strbedType + ' ' + obj.strbreakfast + '</h3>' +
+										'<div class="tj">预定</div>' +
+										'<div class="price"><span><em>￥</em>' + obj.salePrice + '</span>起</div></a></li>';
+									$("#all").append(div);
+
+								}
+
+								$("#all").trigger("create");
+								$('#all').listview('refresh');
+							}
+						}
+					}
+					if (data.monthMap) {
+						$("#dipage").html("");
+						$("#datst").html("");
+						for (var key in data.monthMap) {
+							var il = '';
+							var lll = '';
+
+							if (data.monthMap[key] == 1) {
+								il = '<li><a href="#">&nbsp;</a></li>';
+								lll = '<li><a href="#">&nbsp;</a></li>';
+							} else if (data.monthMap[key] == 2) {
+								il = ' <li class="past"><a href="#" class="past"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+								lll = '<li class="past"><a href="#"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+							} else if (data.monthMap[key] == 3) {
+								lll = '<li class="m"><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>今天</h2><h3></h3></a></li>';
+								il = '<li class="m"><a href="#"><h2>今天</h2><h3></h3></a></li>';
+							} else if (data.monthMap[key] == 4) {
+								lll = '<li><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+								il = '<li><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+							} else if (data.monthMap[key] == 5) {
+								lll = '<li class="first"><a href="#" class="ui-link">' + key.substring(8, 10) + '<h2></h2><h3>入住</h3></a></li>';
+								il = '<li><a href="#"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+							} else if (data.monthMap[key] == 6) {
+								lll = '<li class="first"><a href="#"><h2>今天</h2><h3>入住</h3></a></li>';
+								il = '<li class="m"><a href="#" class="ui-link"><h2>今天</h2><h3></h3></a></li>';
+							} else if (data.monthMap[key] == 7) {
+								lll = '<li><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>'
+								il = '<li class="first"><a href="#" class="ui-link"><h2>' + key.substring(8, 10) + '</h2><h3>离店</h3></a></li>';
+							}
+							$("#datst").append(lll);
+							$("#dipage").append(il);
+						}
+					}
+					if (data.nextMonthMap) {
+						$("#nextpa").html("");
+						$("#datend").html("");
+						for (var key in data.nextMonthMap) {
+							var il = '';
+							var lll = '';
+
+							if (data.nextMonthMap[key] == 1) {
+								il = '<li><a href="#">&nbsp;</a></li>';
+								lll = '<li><a href="#">&nbsp;</a></li>';
+							} else if (data.nextMonthMap[key] == 2) {
+								il = ' <li class="past"><a href="#" class="past"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+								lll = '<li class="past"><a href="#"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+							} else if (data.nextMonthMap[key] == 3) {
+								lll = '<li class="m"><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>今天</h2><h3></h3></a></li>';
+								il = '<li class="m"><a href="#"><h2>今天</h2><h3></h3></a></li>';
+							} else if (data.nextMonthMap[key] == 4) {
+								lll = '<li><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+								il = '<li><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+							} else if (data.nextMonthMap[key] == 5) {
+								lll = '<li class="first"><a href="#" class="ui-link">' + key.substring(8, 10) + '<h2></h2><h3>入住</h3></a></li>';
+								il = '<li><a href="#"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>';
+							} else if (data.nextMonthMap[key] == 6) {
+								lll = '<li class="first"><a href="#"><h2>今天</h2><h3>入住</h3></a></li>';
+								il = '<li class="m"><a href="#" class="ui-link"><h2>今天</h2><h3></h3></a></li>';
+							} else if (data.nextMonthMap[key] == 7) {
+								lll = '<li><a href="javascript:selectStartDate(\'' + key.substring(0, 10) + '\');"><h2>' + key.substring(8, 10) + '</h2><h3></h3></a></li>'
+								il = '<li class="first"><a href="#" class="ui-link"><h2>' + key.substring(8, 10) + '</h2><h3>离店</h3></a></li>';
+							}
+							$("#datend").append(lll);
+							$("#nextpa").append(il);
+						}
+					}
+					if (data.vvv) {
+						if (data.vvv == 1) {
+							$("#imgg").attr("src", "../images/app/nav_collect_a.png");
+						}
+					}
+					if (data.diff) {
+						$("#totwan").html("共" + data.diff + "晚");
+					}
+				});
+			}
+		}
+
+		function commentpage() {
+			ucapp.post(getWebRoot() + "app/hotel/commentpage.do", { "page": currage, "objectId": id, "type": 0 }, function (data) {
+				totalPage = data.pages;
+				currage = data.currage;
+				if (currage >= totalPage) {
+					$("#xiaye").hide();
+				}
+				if (data.rows) {
+					for (var i = 0; i < data.rows.length; i++) {
+						var obj = data.rows[i];
+						if (obj.createTime) {
+							obj.createTime = obj.createTime.substring(0, 10);
+						}
+						var dd = "";
+						if (obj.star) {
+							for (var j = 0; j < data.onecomt.star; j++) {
+								dd += '<img src="../images/app/star.png">';
+							}
+						}
+						if (obj.headImg == null || obj.headImg == "") {
+							obj.headImg = '../images/app/userHead.jpg';
+						} else {
+							obj.headImg = getImageUrl() + obj.headImg;
+						}
+						/*     				var div = '<li class="li5"><div class="txt1"><h2>'+obj.userName+'</h2>'+
+											  '<div class="star">'+dd+'</div>'+
+											  '<h3>'+obj.content+'</h3>'+
+											  '<div class="time">'+obj.createTime+'</div></div></li>'; */
+						var div = '<li><div class="comment"><div class="title"><img src="' + obj.headImg + '" class="user">' +
+							'<h2>' + obj.userName + '</h2><div class="star">' + dd + '</div></div>' +
+							'<div class="container"><div class="time">' + obj.createTime + '</div>' +
+							'<div class="text">' + obj.content + '</div>' +
+							'</div></div></li>';
+						$("#cccv").append(div);
+					}
+				} else {
+					$("#pings").html("暂无评价");
+					$("#pings").attr("href", "#");
+				}
+				if (data.onecomt) {
+					var dd = "";
+					if (data.onecomt.star) {
+						for (var j = 0; j < data.onecomt.star; j++) {
+							dd += '<img src="../images/app/star.png">';
+						}
+					}
+					if (data.onecomt.headImg == null || data.onecomt.headImg == "") {
+						data.onecomt.headImg = '../images/app/userHead.jpg';
+					} else {
+						data.onecomt.headImg = getImageUrl() + data.onecomt.headImg;
+					}
+					var li = '<li><div class="comment"><div class="title"><img src="' + data.onecomt.headImg + '" class="user">' +
+						'<h2>' + data.onecomt.userName + '</h2><div class="star">' + dd + '</div></div>' +
+						'<div class="container"><div class="time">' + data.onecomt.createTime + '</div>' +
+						'<div class="text">' + data.onecomt.content + '</div>' +
+						'</div></div></li>';
+					$("#onecom").html("");
+					$("#onecom").append(li);
+				}
+			});
+		}
+
+		function add0(i) {
+			i = parseInt(i);
+			if (!isNaN(i)) {
+				if (i < 10) {
+					i = '0' + i;
+				}
+			}
+			return i;
+		}
+
+		function selectStartDate(xuan) {
+			var st = $("#J_begin_date").html();
+			var end = $("#J_end_date").html();
+			if (sel == 0) {
+				$("#stdd").val(xuan);
+				$("#J_begin_date").html(xuan.substring(5, 10));
+			} else if (sel == 1) {
+				$("#J_end_date").html(xuan.substring(5, 10));
+				$("#endd").val(xuan);
+			}
+			history.go(-1);
+			detail();
+		}
+		var sel = null;
+		function clst() {
+			sel = 0;
+		}
+		function clend() {
+			sel = 1;
+		}
+
+		function chliks() {
+			$("#dianji").click();
+		}
+
+		function xia() {
+			if (currage < totalPage) {
+				currage++;
+				$("#cccv").html("");
+				commentpage();
+			} else {
+				$("#xiaye").hide();
+			}
+		}
+
+		//检测是否可以支付
+		var canPay = false;
+		var hasLogin = false;
+		function reload() {
+			ucapp.showWatting();
+			ucapp.post(getWebRoot() + "app/public/checkpay.do", { ptype: 0 }, function (data) {
+				canPay = data.canPay;
+				hasLogin = data.hasLogin;
+				ucapp.hideWatting();
+			});
+		}
+
+
+		function orders(roomid) {
+			if (!hasLogin) {
+				ucapp.gotoLogin();
+				return;
+			}
+			if (!canPay) {
+				ucapp.showTip("演示系统已关闭支付功能");
+				return;
+			}
+
+			var sttime = $("#stdd").val();
+			var endtime = $("#endd").val();
+			if (sttime != null && endtime != null && roomid != null) {
+				sttime = sttime.substring(0, 10);
+				endtime = endtime.substring(0, 10);
+				ucapp.checkStatus(function (data) {
+					if (data.success) {
+						window.location = "order_fill.html?roomId=" + roomid + "&startDate=" + sttime + "&endDate=" + endtime;
+					} else {
+						ucapp.gotoLogin();
+					}
+				});
+			}
+		}
+		function collect() {
+			ucapp.checkStatus(function (data) {
+				if (data.success) {
+					ucapp.post(getWebRoot() + 'app/hotel/collectornot.do', { 'yjId': id },
+						function (data) {
+							if (parseInt(data.count) > -1) {
+								$('#colle').html(data.count);
+							}
+							if (data.ccc == 0) {
+								$("#imgg").attr("src", "../images/app/nav_collect.png");
+							} else if (data.ccc == 1) {
+								$("#imgg").attr("src", "../images/app/nav_collect_a.png");
+							}
+							ucapp.showTip(data.msg);
+						});
+				} else {
+					ucapp.gotoLogin();
+				}
+			});
+		}
+		function goNav() {
+			if (currLatitude && currLongitude && currAddress) {
+				ucapp.startNavi(currLatitude, currLongitude, currAddress);
+				//direct(currLatitude,currLongitude)
+			} else {
+				ucapp.showTip("抱歉，经纬度参数缺失");
+			}
+		}
+
+		function direct(lat, lng) {
+			var geolocation = new BMap.Geolocation();
+			geolocation.getCurrentPosition(function (r) {
+				if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+					ucapp.direct("http://api.map.baidu.com/direction?origin=" + r.point.lat + "," + r.point.lng + "&destination=" + lat + "," + lng + "&mode=driving&region=''&output=html")
+				}
+				else {
+					alert('failed' + this.getStatus());
+				}
+			});
+		}
+
+	</script>
+	<script type="text/javascript">
+		//初始化图片插件
+		function initPS(PhotoSwipe) {
+
+
+			var options = { enableMouseWheel: false, enableKeyboard: false },
+				instance = PhotoSwipe.attach(window.document.querySelectorAll('#Gallery a'), options);
+
+			// onBeforeShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeShow, function (e) {
+				console.log('onBeforeShow');
+			});
+
+			// onShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onShow, function (e) {
+				console.log('onShow');
+			});
+
+			// onBeforeHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeHide, function (e) {
+				console.log('onBeforeHide');
+			});
+
+			// onHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onHide, function (e) {
+				console.log('onHide');
+			});
+
+			// onDisplayImage
+			instance.addEventHandler(PhotoSwipe.EventTypes.onDisplayImage, function (e) {
+				console.log('onDisplayImage{');
+				console.log('onDisplayImage - e.action = ' + e.action);
+				console.log('onDisplayImage - e.index = ' + e.index);
+				console.log(instance.getCurrentImage());
+				console.log('onDisplayImage}');
+			});
+
+			// onResetPosition
+			instance.addEventHandler(PhotoSwipe.EventTypes.onResetPosition, function (e) {
+				console.log('onResetPosition');
+			});
+
+			// onSlideshowStart
+			instance.addEventHandler(PhotoSwipe.EventTypes.onSlideshowStart, function (e) {
+				console.log('onSlideshowStart');
+			});
+
+			// onSlideshowStop
+			instance.addEventHandler(PhotoSwipe.EventTypes.onSlideshowStop, function (e) {
+				console.log('onSlideshowStop');
+			});
+
+			// onTouch
+			instance.addEventHandler(PhotoSwipe.EventTypes.onTouch, function (e) {
+				console.log('onTouch{');
+				console.log('onTouch - e.action = ' + e.action);
+				console.log('onTouch - e.point = ');
+				console.log(e.point);
+				console.log('onTouch}');
+			});
+
+			// onBeforeCaptionAndToolbarShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeCaptionAndToolbarShow, function (e) {
+				console.log('onBeforeCaptionAndToolbarShow');
+			});
+
+			// onCaptionAndToolbarShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onCaptionAndToolbarShow, function (e) {
+				console.log('onCaptionAndToolbarShow');
+			});
+
+			// onBeforeCaptionAndToolbarHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeCaptionAndToolbarHide, function (e) {
+				console.log('onBeforeCaptionAndToolbarHide');
+			});
+
+			// onCaptionAndToolbarHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onCaptionAndToolbarHide, function (e) {
+				console.log('onCaptionAndToolbarHide');
+			});
+
+			// onToolbarTap
+			instance.addEventHandler(PhotoSwipe.EventTypes.onToolbarTap, function (e) {
+				console.log('onToolbarTap');
+				console.log(e);
+			});
+
+			// onBeforeZoomPanRotateShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeZoomPanRotateShow, function (e) {
+				console.log('onBeforeZoomPanRotateShow');
+			});
+
+			// onZoomPanRotateShow
+			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateShow, function (e) {
+				console.log('onZoomPanRotateShow');
+			});
+
+			// onBeforeZoomPanRotateHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeZoomPanRotateHide, function (e) {
+				console.log('onBeforeZoomPanRotateHide');
+			});
+
+			// onZoomPanRotateHide
+			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateHide, function (e) {
+				console.log('onZoomPanRotateHide');
+			});
+
+			// onZoomPanRotateTransform
+			instance.addEventHandler(PhotoSwipe.EventTypes.onZoomPanRotateTransform, function (e) {
+				console.log('onZoomPanRotateTransform');
+				console.log(e);
+			});
+
+		}
+	</script>
+</body>
+
+</html>

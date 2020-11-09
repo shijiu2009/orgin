@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>休闲娱乐</title>
+<link rel="shortcut icon"
+	href="../favicon.ico">
+<link rel="stylesheet"
+	href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet"
+	href="../css/app/layout.css">
+<link
+	href="../css/app/scrollbar.css"
+	rel="stylesheet" type="text/css">
+<script
+	src="../js/jquery.min.js"></script>
+<script
+	src="../js/jquery.mobile-1.4.2.min.js"></script>
+  <script src="../js/ucapp.js"></script>
+
+<script 	src="../js/iscroll.js" type="text/javascript"></script>
+<script type="text/javascript">
+	
+	$(document).on("pageinit","#scenic",function() {
+		$(document).on("scrollstop",function() {
+			if ($(document).scrollTop() >= $(document).height()- $(window).height() - 85) {
+				
+				if (currage + 1 <= totalPage) {
+			    	currage++;
+			    	$("#dataList").html("");
+			    	getdate ();
+			    }
+				$("#currentPage").html(currage);
+			     
+			}
+				});
+		 });
+
+	var currage = 1;//当前页
+	var totalPage = 1;//总页数
+	
+	$(function() {
+		getdate();
+	});
+
+	function getdate() {
+		ucapp.post(getWebRoot()+"app/article/xiuxianlist.do",{"page" : currage},
+		function(data) {
+			totalPage = data.pages;
+			if (data.rows) {
+				for (var i = 0; i < data.rows.length; i++) {
+					var obj = data.rows[i];
+					if(obj.titleimgurl==null||obj.titleimgurl==""){
+						obj.titleimgurl = '../wxplatform/images/app/longz.jpg';
+					}
+					if(obj.summary!=null&&obj.summary.length>40){
+						obj.summary = obj.summary.substring(0,40)+"...";
+					}
+					obj.titleimgurl = getImageUrl()+obj.titleimgurl;
+					var ul = '<li><a href="detail.html?id='+ obj.id+'" data-transition="fade" data-ajax="false">'
+					+ '<img src="'+obj.titleimgurl+'" class="t_img"><h2>'+obj.title+'</h2>'/* +'<p class="h_type">'+obj.summary+'</p>'; */
+					$("#thelist").append(ul);
+				}
+			}
+
+		});
+	}
+</script>
+</head>
+<body>
+	<div data-role="page" id="scenic">
+		<div data-role="header" data-position="fixed" class="normal_head">
+			<a data-role="button" onclick="ucapp.goToBack()" data-rel="back"
+				data-transition="slide" class="ui-btn-left nav_back"> <img
+				src="../images/app/nav_back.png">
+			</a>
+			<h1>休闲娱乐</h1>
+
+		</div>
+		<div class="ui-panel-wrapper">
+			<div data-role="content">
+
+				<div id="wrapper" style="" class="index_list2">
+					<div id="scroller">
+						<ul data-role="listview" data-icon="false" id="thelist">
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+</div>
+			<div data-role="footer"></div>
+
+		</div>
+</body>
+</html>

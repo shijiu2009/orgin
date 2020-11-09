@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_color"
+    android:orientation="vertical" >
+
+    <!-- 顶部 -->
+
+    <LinearLayout
+        style="@style/main_top_style"
+        android:layout_width="match_parent" >
+
+        <ImageView
+            android:id="@+id/register_top_back"
+            style="@style/main_top_image_style"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/back" />
+        <!-- 顶部搜索框 -->
+
+        <TextView
+            style="@style/main_top_title_style"
+            android:text="@string/login_register" />
+
+        <ImageView
+            style="@style/main_top_image_style"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/shec"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/register_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

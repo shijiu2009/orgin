@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+<title>我的收藏</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+<link rel="stylesheet" href="../css/app/layout.css">
+<link href="../css/app/scrollbar.css" rel="stylesheet" type="text/css">
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.mobile-1.4.2.min.js"></script>
+<script src="../js/ucapp.js" type="text/javascript"></script>
+<script type="text/javascript">
+var currage= 1;
+var totalPage = 1;
+$(function(){
+	reload();
+});
+
+function reload(){
+	
+	ucapp.checkStatus(function(data){
+		if(data.success){
+			$("#thelist").empty();
+			ucapp.post(getWebRoot()+"app/user/postmycollection.do",{},function(data){
+				totalPage =data.totalPage;
+				currage = data.currentPage;
+				if(data.favorites){
+					  $ (data.favorites).each (
+					            function (i, o) {
+					            	var sc="";
+				          			if(o.type==0){
+				          				sc = "酒店";
+				          			}else if(o.type==1){
+				          				sc = "景点";
+				          			}else if(o.type==2){
+				          				sc = "线路";
+				          			}else if(o.type==3){
+				          				sc = "产品";
+				          			}else if(o.type==5){
+				          				sc = "文章";
+				          			}else if(o.type==6){
+				          				sc = "游记攻略";
+				          			}
+				        var oicon = getImageUrl() + o.icon;
+						var div = '	<li><a onclick="jump('+o.objectId+','+o.type+')" data-transition="fade" data-ajax="false" class="ui-btn">'+
+						'<img src="'+oicon+'" class="t_img">'+
+						'<h2>'+o.objectName+'</h2><p class="hotel_type">'+sc+'</p></a></li>';
+						$("#thelist").append(div);
+					});
+				}
+			});
+		}else{
+			ucapp.gotoLogin();
+		}
+	});
+	
+}
+
+//跳转详细页
+function jump(id,type){
+	if(type==0){
+		location = "../hotel/detail.html?id="+id;
+	}else if(type==1){
+		location = "../attractions/detail.html?id="+id;
+	}else if(type==2){
+		location = "../peripherytravel/detail.html?id="+id;
+	}else if(type==3){
+		location = "../product/detail.html?id="+id;
+	}else if(type==5){
+		location = "../article/detail.html?id="+id;
+	}else if(type==6){
+		location = "../interaction/wxinteractionxq.html?id="+id;
+	}
+}
+</script>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button" onclick="javascript:ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img src="../images/app/nav_back.png"> </a>
+    <h1>收藏</h1>
+    
+  </div>
+
+   <div data-role="content">
+      <ul data-role="listview" data-icon="false" id="thelist" class="md_list2" style="border-top-width:0px">
+<!-- 		   <li>
+           <a href="我的_点评发布.html" data-transition="fade" data-ajax="false" class="ui-btn">
+				<img src="images/app/03.jpg" class="t_img">
+				<h2><泰新马9晚10日超值游>特色行程，超值特惠</h2>	
+                <p class="hotel_type">精品线路</p>
+                </a>
+			</li>
+			<li>
+           <a href="我的_点评发布.html" data-transition="fade" data-ajax="false" class="ui-btn">
+				<img src="images/app/03.jpg" class="t_img">
+				<h2>南宁青秀山景区</h2>	
+                <p class="hotel_type">热门景点</p>
+                </a>
+			</li>
+			<li>
+           <a href="我的_点评发布.html" data-transition="fade" data-ajax="false" class="ui-btn">
+				<img src="images/app/03.jpg" class="t_img">
+				<h2>防城港斯蒂芬酒店</h2>	
+                <p class="hotel_type">酒店</p>
+                </a>
+			</li> -->
+			
+            
+			
+
+		</ul>
+    </div>
+
+  
+</div>
+</body>
+</html>

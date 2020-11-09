@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/watting_bg"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    android:orientation="vertical" >
+
+
+	    <!-- 等待框 -->
+	    <ProgressBar
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:indeterminateDrawable="@drawable/progress_loading"/>
+ 		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal" 
+	        android:layout_marginTop="5dp"     
+	        android:textSize="20sp"
+	        android:visibility="gone"
+	        android:textColor="#FFFFFFFF"
+	        android:text="@string/watting_tip" />
+</LinearLayout>

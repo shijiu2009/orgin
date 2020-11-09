@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/an_plan"
+    android:padding="5dp" >
+   
+    <!-- 下载通知栏通知 -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_launcher" />
+
+	<LinearLayout
+	    	android:layout_marginLeft="7dp"
+	        android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="vertical" >
+	    <TextView
+	        android:id="@+id/textView_down_item"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@android:color/black"
+	        android:text="@string/app_name" />
+	
+	    <ProgressBar
+	        android:id="@+id/progressBar_down_item"
+	        style="?android:attr/progressBarStyleHorizontal"
+	        android:progressDrawable="@drawable/progress_bar_green"
+	        android:layout_marginTop="5dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="18dp" />    		
+	    
+	</LinearLayout>
+
+</LinearLayout>

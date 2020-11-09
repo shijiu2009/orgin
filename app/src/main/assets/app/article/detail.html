@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta id="viewport"
+          content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no"
+          name="viewport">
+    <title>文章详细</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+    <link rel="stylesheet" href="../css/app/layout.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.mobile-1.4.2.min.js"></script>
+    <script src="../js/ucapp.js"></script>
+    <script type="text/javascript">
+		var id;
+
+		$(function () {
+			var theRequest = getRequest();
+			id = theRequest['id'];
+			ucapp.post(getWebRoot() + "app/article/detail.do", { "id": id }, function (data) {
+				if (data.article) {
+					$("#title").html(data.article.title);
+					$("#shijian").html(data.article.createTime.substring(0, 10));
+					// $("#gallery").append('<img alt="" src="' + data.article.titleimgurl + '">');
+					$("#gallery").append(data.article.content);
+
+					//批量替换图片路径
+					$("#gallery img").each(function () {
+						if ($(this).attr("src").indexOf(getImageUrl()) == -1) {
+							var imgUrl = getImageUrl() + $(this).attr("src");
+							$(this).attr("src", imgUrl);
+						}
+					});
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+<div data-role="page" id="scenic">
+    <div data-role="header" data-position="fixed" class="normal_head"> <a data-role="button"
+                                                                          onclick="ucapp.goToBack()" data-rel="back" data-transition="slide" class="ui-btn-left nav_back"> <img
+            src="../images/app/nav_back.png"> </a>
+        <h1>文章详细</h1>
+    </div>
+    <div data-role="content">
+        <div class="article">
+            <h2 id="title"></h2>
+            <div class="article_meta">
+                <em id="shijian"></em>
+            </div>
+            <div class="raiders" id="gallery">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

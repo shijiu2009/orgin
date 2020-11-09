@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta id="viewport" content="target-densitydpi=320, user-scalable=yes,width=320, minimum-scale=1, initial-scale=1,maximum-scale=1, user-scalable=no" name="viewport">
+  <title>旅游攻略</title>
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/app/jquery.mobile-1.4.2.css">
+  <link rel="stylesheet" href="../css/app/layout.css">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.mobile-1.4.2.min.js"></script>
+  <script src="../js/ucapp.js"></script>
+  <script type="text/javascript">
+$(document).on("pageinit","#scenic",function() {
+	$(document).on("scrollstop",function() {
+		if ($(document).scrollTop() >= $(document).height()- $(window).height() - 85) {
+			
+			if (currage + 1 <= totalPage) {
+		    	currage++;
+		    	getdate ();
+		    }
+			$("#currentPage").html(currage);
+		     
+		}
+			});
+	 });
+
+var currage = 1;//当前页
+var totalPage = 1;//总页数
+var name='';
+$(function() {
+	 var theRequest = getRequest();
+	 if(theRequest['name']!=null){
+	 name = theRequest['name'];
+	 }
+	$("#top4").attr("class", "first");
+	getdate();
+});
+
+function getdate() {
+
+	ucapp.post(getWebRoot()+"app/interaction/list.do",{"title":name,"page" : currage},
+	function(data) {
+		totalPage = data.pages;
+		if (data.rows) {
+			for (var i = 0; i < data.rows.length; i++) {
+				var obj = data.rows[i];
+				var strDate=obj.createTime;
+				if(strDate){
+					strDate=strDate.substring(0,10);
+				}
+				
+				var str1 = obj.summary == null?" ":obj.summary;
+				obj.thumbPath = getImageUrl()+obj.thumbPath;
+				
+				
+				var headImg = getImageUrl()+"/defaultImg/userHead.jpg";
+				if(obj.headImg){
+					headImg = getImageUrl() + obj.headImg;
+				}
+				
+				var ul = '<li><a href="show.html?id='+obj.id+'" class="ui-link" data-ajax="false"><h2>'+obj.title+'</h2>'+
+				' <div class="text"><img src="'+obj.thumbPath+'">'+str1+'</div>'+
+				'<div class="name_p"> <img src="'+headImg+'" class="use_img">'+
+				'<div class="tip_name" style="width:300rem">'+obj.author+'</div><div class="tip_time">'+strDate+'</div></div></a> </li>';
+// 				'<div class="tip_of1">'+obj.collection+'</div><div class="tip_of2">'+obj.share+'</div>
+                $("#hd_list").append(ul);
+			}
+
+		}
+
+	});
+}
+</script>
+</head>
+<body>
+<div data-role="page" id="scenic">
+  <div data-role="header" data-position="fixed" class="normal_head">
+    <a data-role="button" onclick="ucapp.goToBack();" data-rel="back" data-transition="slide" class="ui-btn-left nav_back">
+      <img src="../images/app/nav_back.png">
+    </a>
+    <!--  	<a data-role="button" href="../peripherytravel/list.html" class="ui-btn-right nav_more" data-ajax="false">
+         <img src="../images/app/nav_more.png">
+      </a> -->
+    <h1>旅游攻略</h1>
+  </div>
+  <div data-role="content">
+    <ul class="gonglue_list" id="hd_list">
+
+    </ul>
+  </div>
+</div>
+</body>
+</html>
